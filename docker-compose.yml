@@ -1,0 +1,51 @@
+services:
+
+  postgres:
+    image: postgres:16
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: qdrant
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrant_storage:/qdrant/storage
+
+  mcp-server:
+    build:
+      context: ./mcp-server
+      dockerfile: Dockerfile
+    ports:
+      - "${MCP_SERVER_PORT:-9000}:${MCP_SERVER_PORT:-9000}"
+    env_file:
+      - .env
+    environment:
+      MCP_SERVER_HOST: "0.0.0.0"
+
+  mcp-client:
+    build:
+      context: ./mcp-client
+      dockerfile: Dockerfile
+    ports:
+      - "2024:2024"
+    env_file:
+      - .env
+    environment:
+      MCP_SERVER_HOST: "mcp-server"
+    depends_on:
+      - mcp-server
+
+volumes:
+  postgres_data:
+  qdrant_storage:
+
+networks:
+  default:
+    name: agentics-network

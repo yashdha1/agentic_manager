@@ -1,0 +1,7 @@
+target-version = "py312"
+
+[lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[lint.per-file-ignores]
+"__init__.py" = ["F401"]
