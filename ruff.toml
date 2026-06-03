@@ -1,7 +1,14 @@
 target-version = "py312"
+line-length = 100
 
 [lint]
 select = ["E", "F", "I", "UP", "B"]
 
+exclude = [
+    "seeder.py",
+    "generate_dataset.py",
+    "qdrant_session.py",
+]
+
 [lint.per-file-ignores]
-"__init__.py" = ["F401"]
+"__init__.py" = ["F401"] 

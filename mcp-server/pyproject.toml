@@ -5,7 +5,16 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "asyncpg>=0.29.0",
     "fastmcp>=3.3.1",
+    "langchain-openai>=1.2.2",
     "loguru>=0.7.3",
     "pydantic-settings>=2.0",
+    "qdrant-client>=1.18.0",
+    "sqlalchemy>=2.0.50",
+]
+
+[dependency-groups]
+dev = [
+    "faker>=26.0.0",
 ]

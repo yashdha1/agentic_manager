@@ -1,0 +1,4 @@
+2026-06-03 15:15:28.251 | ERROR    | core.db.qdrant_client:create_collections:66 - Error creating collections: [WinError 10061] No connection could be made because the target machine actively refused it
+2026-06-03 15:16:37.980 | ERROR    | core.db.qdrant_client:create_collections:66 - Error creating collections: [WinError 10061] No connection could be made because the target machine actively refused it
+2026-06-03 15:17:08.552 | ERROR    | core.db.qdrant_client:create_collections:66 - Error creating collections: [WinError 10061] No connection could be made because the target machine actively refused it
+2026-06-03 15:17:52.124 | ERROR    | core.db.qdrant_client:create_collections:66 - Error creating collections: [WinError 10061] No connection could be made because the target machine actively refused it

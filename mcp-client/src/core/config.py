@@ -9,19 +9,11 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
-    azure_openai_api_key: SecretStr | None = Field(
-        default=None, alias="AZURE_OPENAI_API_KEY"
-    )
-    azure_openai_api_version: str | None = Field(
-        default=None, alias="AZURE_OPENAI_API_VERSION"
-    )
+    azure_openai_api_key: SecretStr | None = Field(default=None, alias="AZURE_OPENAI_API_KEY")
+    azure_openai_api_version: str | None = Field(default=None, alias="AZURE_OPENAI_API_VERSION")
     azure_openai_model: str | None = Field(default=None, alias="AZURE_OPENAI_MODEL")
-    azure_openai_endpoint: str | None = Field(
-        default=None, alias="AZURE_OPENAI_ENDPOINT"
-    )
-    azure_embedding_model: str | None = Field(
-        default=None, alias="AZURE_EMBEDDING_MODEL"
-    )
+    azure_openai_endpoint: str | None = Field(default=None, alias="AZURE_OPENAI_ENDPOINT")
+    azure_embedding_model: str | None = Field(default=None, alias="AZURE_EMBEDDING_MODEL")
 
     langchain_tracing_v2: bool = Field(default=False, alias="LANGCHAIN_TRACING_V2")
     langsmith_api_key: SecretStr | None = Field(default=None, alias="LANGSMITH_API_KEY")

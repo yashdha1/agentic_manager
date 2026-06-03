@@ -5,11 +5,14 @@ build/
 dist/
 wheels/
 *.egg-info
+.ruff_cache/
 
 # js generated files
 node_modules/
 dist/
 build/
+dataset/
+scripts/
 
 # Virtual environments
 .venv/
@@ -17,3 +20,4 @@ build/
 # envs 
 env/
 .env
+.logs

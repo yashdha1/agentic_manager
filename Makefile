@@ -43,6 +43,11 @@ inspect:
 	npx @modelcontextprotocol/inspector http://127.0.0.1:${MCP_SERVER_PORT}/mcp
 # 	cd mcp-server && uv run fastmcp inspect src/main.py:mcp
 
+.PHONY: seed
+seed: 
+	cd mcp-server && $(UV) run scripts/seeder.py  
+	cd mcp-server && $(UV) run scripts/qdrant_seeder.py
+
 .PHONY: langgraph-dev
 langgraph-dev:
 	cd mcp-client && $(UV) run langgraph dev --config langgraph.json --host 0.0.0.0 --port 2024
@@ -50,7 +55,6 @@ langgraph-dev:
 .PHONY: up 
 up: 
 	echo "Starting Docker services..."
-
 .PHONY: precommit-run
 precommit-run:
 	$(UV) run pre-commit run --all-files

@@ -18,29 +18,29 @@ services:
     volumes:
       - qdrant_storage:/qdrant/storage
 
-  mcp-server:
-    build:
-      context: ./mcp-server
-      dockerfile: Dockerfile
-    ports:
-      - "${MCP_SERVER_PORT:-9000}:${MCP_SERVER_PORT:-9000}"
-    env_file:
-      - .env
-    environment:
-      MCP_SERVER_HOST: "0.0.0.0"
+  # mcp-server:
+  #   build:
+  #     context: ./mcp-server
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "${MCP_SERVER_PORT:-9000}:${MCP_SERVER_PORT:-9000}"
+  #   env_file:
+  #     - .env
+  #   environment:
+  #     MCP_SERVER_HOST: "0.0.0.0"
 
-  mcp-client:
-    build:
-      context: ./mcp-client
-      dockerfile: Dockerfile
-    ports:
-      - "2024:2024"
-    env_file:
-      - .env
-    environment:
-      MCP_SERVER_HOST: "mcp-server"
-    depends_on:
-      - mcp-server
+  # mcp-client:
+  #   build:
+  #     context: ./mcp-client
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "2024:2024"
+  #   env_file:
+  #     - .env
+  #   environment:
+  #     MCP_SERVER_HOST: "mcp-server"
+  #   depends_on:
+  #     - mcp-server
 
 volumes:
   postgres_data:
