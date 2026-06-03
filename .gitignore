@@ -20,4 +20,4 @@ scripts/
 # envs 
 env/
 .env
-.logs
+.log
