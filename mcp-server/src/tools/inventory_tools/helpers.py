@@ -1,4 +1,4 @@
-from core.db.schemas import InventoryEvent, Product
+from core.db.schemas import InventoryEvent, Product, Refund
 
 from tools.sales_tools.helpers import _as_float
 
@@ -27,4 +27,16 @@ def _event_payload(e: InventoryEvent, product_name: str | None = None) -> dict:
 		"new_stock_level": e.new_stock_level,
 		"event_date": e.event_date.isoformat() if e.event_date else None,
 		"notes": e.notes,
+	}
+
+
+def _refund_payload(r: Refund, order_user_id: int | None = None) -> dict:
+	return {
+		"refund_id": r.id,
+		"order_id": r.order_id,
+		"user_id": order_user_id,
+		"refund_amount": _as_float(r.refund_amount),
+		"reason": r.reason,
+		"status": r.status.value if hasattr(r.status, "value") else str(r.status),
+		"processed_at": r.processed_at.isoformat() if r.processed_at else None,
 	}
