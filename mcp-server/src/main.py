@@ -4,6 +4,7 @@ from core.db.pg_engine import ensure_schema_presence
 from core.db.qdrant_client import QdrantClientManager
 from core.logger import logger
 from fastmcp import FastMCP
+from tools import mcp as tools_mcp
 
 
 @asynccontextmanager
@@ -15,9 +16,11 @@ async def lifespan(server: FastMCP):
 
 
 mcp = FastMCP(
-    "e_commerce_mcp",
+    "ecomm_mcp",
     lifespan=lifespan,
 )
+
+mcp.mount(tools_mcp)
 
 
 @mcp.tool

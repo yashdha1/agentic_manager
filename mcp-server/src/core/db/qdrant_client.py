@@ -11,7 +11,9 @@ from core.logger import logger
 
 
 class QdrantCollections(enum.Enum):
-    KB = settings.KB_COLLECTION
+    KB_POLICY = settings.KB_POLICY_COLLECTION
+    KB_MARKETING = settings.KB_MARKETING_COLLECTION
+    KB_CAMPAIGN = settings.KB_CAMPAIGN_COLLECTION
     THREAD = settings.THREAD_COLLECTION
     RESOLVER = settings.RESOLVER_COLLECTION
 
@@ -40,7 +42,9 @@ class QdrantClientManager:
     @classmethod
     def get_collections(cls) -> dict[str, str]:
         return {
-            "kb": settings.KB_COLLECTION,
+            "policy": settings.KB_POLICY_COLLECTION,
+            "marketing": settings.KB_MARKETING_COLLECTION,
+            "campaign": settings.KB_CAMPAIGN_COLLECTION,
             "thread": settings.THREAD_COLLECTION,
             "resolver": settings.RESOLVER_COLLECTION,
         }
@@ -79,7 +83,7 @@ class QdrantClientManager:
         vector = self.embed(text)
         self.get_client().upsert(
             collection_name=collection.value,
-            points=[PointStruct(id=uuid.uuid4().hex, vector=vector, payload=payload)],
+            points=[PointStruct(id=str(uuid.uuid4()), vector=vector, payload=payload)],
         )
 
     def search(self, collection: QdrantCollections, query: str, limit: int = 5)->list[ScoredPoint]:
@@ -93,11 +97,12 @@ class QdrantClientManager:
             RETURNS - list[ScoredPoint] - the search results
         """
         vector = self.embed(query)
-        return self.get_client().search(
+        # print(f"Searching collection '{collection.value}' with query vector: {vector[:5]}...")
+        return self.get_client().query_points(
             collection_name=collection.value,
-            query_vector=vector,
+            query=vector,
             limit=limit,
-        )
+        ).points
     
     def embed(self, text: str) -> list[float]:
         """
@@ -105,7 +110,14 @@ class QdrantClientManager:
             ARGS - text: str - the text to be embedded
             RETURNS - list[float] - the embedding vector
         """
-        return self._embeddings.embed_query(text)
+        try:
+            return self._embeddings.embed_query(text)
+        except Exception as e:
+            logger.exception(f"Embedding request failed: {e}")
+            raise RuntimeError(
+                f"Embedding provider is unreachable: {e}. "
+                "Check AZURE endpoint/API key/API version and network access."
+            ) from e
 
 @lru_cache
 def get_qdrant_client() -> QdrantClientManager:
