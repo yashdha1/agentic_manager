@@ -33,7 +33,7 @@ class QdrantClientManager:
 
     def get_client(self) -> QdrantClient:
         """
-            QDRANT CLIENT
+        QDRANT CLIENT
         """
         if self.client is None:
             self.client = QdrantClient(url=self.url)
@@ -52,9 +52,9 @@ class QdrantClientManager:
     @classmethod
     def create_collections(cls) -> None:
         """
-            CREATE QDRANT COLLECTIONS IF THEY DON'T EXIST
+        CREATE QDRANT COLLECTIONS IF THEY DON'T EXIST
         """
-        try: 
+        try:
             client = get_qdrant_client().get_client()
             existing = {c.name for c in client.get_collections().collections}
             for col in QdrantCollections:
@@ -69,12 +69,11 @@ class QdrantClientManager:
             logger.info("Qdrant collections created successfully.")
         except Exception as e:
             logger.error(f"Error creating collections: {e}")
-        
 
     def upsert(self, collection: QdrantCollections, text: str, payload: dict) -> None:
         """
         UPSERTS THE QUERY USING AZURE OPENAI EMB
-            ARGS -  
+            ARGS -
                     collection: QdrantCollections - the collection to upsert in
                     text: str - the text to be embedded
                     payload: dict - the payload to be associated with the point
@@ -86,10 +85,12 @@ class QdrantClientManager:
             points=[PointStruct(id=str(uuid.uuid4()), vector=vector, payload=payload)],
         )
 
-    def search(self, collection: QdrantCollections, query: str, limit: int = 5)->list[ScoredPoint]:
+    def search(
+        self, collection: QdrantCollections, query: str, limit: int = 5
+    ) -> list[ScoredPoint]:
         """
         SEARCHES THE QUERY USING AZURE OPENAI EMBEDDING MODEL
-            ARGS -  
+            ARGS -
                     collection: QdrantCollections - the collection to search in
                     query: str - the query to be searched
                     limit: int - the number of search results to return
@@ -98,12 +99,16 @@ class QdrantClientManager:
         """
         vector = self.embed(query)
         # print(f"Searching collection '{collection.value}' with query vector: {vector[:5]}...")
-        return self.get_client().query_points(
-            collection_name=collection.value,
-            query=vector,
-            limit=limit,
-        ).points
-    
+        return (
+            self.get_client()
+            .query_points(
+                collection_name=collection.value,
+                query=vector,
+                limit=limit,
+            )
+            .points
+        )
+
     def embed(self, text: str) -> list[float]:
         """
         EMBED'S THE QUERY USING AZURE OPENAI EMBEDDING MODEL
@@ -119,10 +124,11 @@ class QdrantClientManager:
                 "Check AZURE endpoint/API key/API version and network access."
             ) from e
 
+
 @lru_cache
 def get_qdrant_client() -> QdrantClientManager:
     """
-        POOLED QDRANT CLIENT
+    POOLED QDRANT CLIENT
     """
     url = f"http://{settings.QDRANT_HOST}:{settings.QDRANT_PORT}"
     return QdrantClientManager(url=url)

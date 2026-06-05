@@ -50,5 +50,4 @@ class Settings(BaseSettings):
     RESOLVER_COLLECTION: str = "resolver_memory"
 
 
-
 settings = Settings()

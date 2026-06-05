@@ -1,6 +1,8 @@
 from fastmcp import FastMCP
 
 from .customers_tools import Command, Queries
+from .knowledge_tools import Command as KnowledgeCommand
+from .knowledge_tools import Queries as KnowledgeQueries
 from .orchestrator_tools import Query as OrchestratorQuery
 from .sales_tools import Analyze as SalesAnalyze
 from .sales_tools import Command as SalesCommand
@@ -16,3 +18,5 @@ mcp.mount(SalesOrderQueries.mcp)
 mcp.mount(SalesAnalyze.mcp)
 mcp.mount(SalesCommand.mcp)
 mcp.mount(OrchestratorQuery.mcp)
+mcp.mount(KnowledgeQueries.mcp)
+mcp.mount(KnowledgeCommand.mcp)

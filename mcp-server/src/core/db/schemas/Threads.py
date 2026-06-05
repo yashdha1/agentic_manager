@@ -1,4 +1,3 @@
-
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
@@ -13,16 +12,17 @@ class Threads(Base):
     title = Column(String(500), nullable=False)
     created_at = Column(DateTime, nullable=False)
 
+
 class ThreadConversation(Base):
     __tablename__ = "thread_conversations"
 
     id = Column(Integer, primary_key=True, index=True)
     thread_id = Column(
-        String(255), 
-        ForeignKey("all_threads.thread_id", ondelete="CASCADE"), 
-        nullable=False, 
-        index=True
-        )
+        String(255),
+        ForeignKey("all_threads.thread_id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
 
     ai_message = Column(String(255), nullable=False)
     human_message = Column(String(2000), nullable=False)
@@ -30,5 +30,5 @@ class ThreadConversation(Base):
 
     token_usage = Column(Integer, nullable=True)
     call_metadata = Column(String(2000), nullable=True)
-    timestamp = Column(DateTime, nullable=False)      
+    timestamp = Column(DateTime, nullable=False)
     thread = relationship("Threads", backref="conversations")

@@ -8,6 +8,7 @@ from sqlalchemy import select
 
 mcp = FastMCP("ecomm_mcp_customer_commands")
 
+
 @mcp.tool
 async def customers_send_subscribed_users_newsletter(
     subject: str,
@@ -24,7 +25,7 @@ async def customers_send_subscribed_users_newsletter(
     - Step 2 — confirmed=True: inserts a single Email record into the emails table with
       all subscriber addresses in the recipients array and status='sent'.
 
-    Always call with confirmed=False first, 
+    Always call with confirmed=False first,
     (Human-in-the-Loop) (HITL) review the preview, then call again
     with confirmed=True to complete the send.
 

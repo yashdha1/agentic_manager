@@ -6,6 +6,7 @@ dist/
 wheels/
 *.egg-info
 .ruff_cache/
+.langgraph_api/
 
 # js generated files
 node_modules/

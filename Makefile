@@ -11,15 +11,12 @@ DOCKER_COMPOSE := docker compose -f docker-compose.yml
 .PHONY: help
 help:
 	@echo "  setup               install deps"
-	@echo "  containers          docker services"
-	@echo "  dev                 start mcp server + client in dev mode (hot reload)"    
+	@echo "  containers          start all Docker services"
+	@echo "  dev                 start mcp server in dev mode (hot reload)"
+	@echo "  app-dev             start mcp-server + FastAPI backend (LangGraph in-process, hot reload)"
 	@echo "  inspect             open MCP Inspector for the running HTTP server"
+	@echo "  seed                seed postgres + qdrant"
 	@echo "  precommit-run       run pre-commit on all files"
-	@echo ""
-	@echo "  langgraph-dev       start LangGraph dev server with Studio UI (hot reload)"
-	@echo "  langgraph-build     build the LangGraph Docker image"
-	@echo "  langgraph-up        run LangGraph server via Docker"
-	@echo "  langgraph-logs      tail logs from the running LangGraph container"
 
 .PHONY: setup
 setup:
@@ -48,9 +45,9 @@ seed:
 	cd mcp-server && $(UV) run scripts/seeder.py  
 	cd mcp-server && $(UV) run scripts/qdrant_seeder.py
 
-.PHONY: langgraph-dev
-langgraph-dev:
-	cd mcp-client && $(UV) run langgraph dev --config langgraph.json --host 0.0.0.0 --port 2024
+.PHONY: api-dev
+api-dev: 
+	cd mcp-client && $(UV) run uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload
 
 .PHONY: up 
 up: 
@@ -58,15 +55,3 @@ up:
 .PHONY: precommit-run
 precommit-run:
 	$(UV) run pre-commit run --all-files
-
-.PHONY: langgraph-build
-langgraph-build:
-	cd mcp-client && $(UV) run langgraph build --config langgraph.json
-
-.PHONY: langgraph-up
-langgraph-up:
-	cd mcp-client && $(UV) run langgraph up --config langgraph.json
-
-.PHONY: langgraph-logs
-langgraph-logs:
-	cd mcp-client && $(UV) run langgraph logs --config langgraph.json

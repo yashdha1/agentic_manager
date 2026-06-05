@@ -68,7 +68,7 @@ async def customers_get_user_by_name(name: str, surname: str) -> dict:
 
         if not row:
             return {"error": f"User '{name} {surname}' not found"}
-        
+
         log.info(f"Retrieved user {row.id}: {row.first_name} {row.last_name}, email: {row.email}")
         return {
             "id": row.id,
@@ -99,7 +99,7 @@ async def customers_get_user_by_email(email: str) -> dict:
         row = result.scalars().first()
         if not row:
             return {"error": f"User with email '{email}' not found"}
-        
+
         log.info(f"Retrieved user {row.id}: {row.first_name} {row.last_name}, email: {row.email}")
         return {
             "id": row.id,
