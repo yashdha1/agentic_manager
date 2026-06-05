@@ -7,13 +7,13 @@ class Message(BaseModel):
 
 
 class ChatRequest(BaseModel):
-    thread_id: str
     message: str
+    thread_id: str | None = None
 
 
 class ChatResponse(BaseModel):
-    thread_id: str
-    content: str
+    response: str
+    thread_id: str | None = None
 
 
 class ThreadResponse(BaseModel):

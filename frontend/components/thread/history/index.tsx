@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { useThreads } from "@/providers/Thread";
 import { Thread } from "@langchain/langgraph-sdk";
 import { useEffect } from "react";
+import { motion, AnimatePresence } from "motion/react";
 
 import { getContentString } from "../utils";
 import { useQueryState, parseAsBoolean } from "nuqs";
@@ -12,8 +13,76 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { Skeleton } from "@/components/ui/skeleton";
-import { PanelRightOpen, PanelRightClose } from "lucide-react";
+import { PanelLeftClose, SquarePen, MessageSquare } from "lucide-react";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { cn } from "@/lib/utils";
+
+function ThreadItem({
+  thread,
+  isActive,
+  onClick,
+  index,
+}: {
+  thread: Thread;
+  isActive: boolean;
+  onClick: () => void;
+  index: number;
+}) {
+  let itemText = thread.thread_id;
+  if (
+    typeof thread.values === "object" &&
+    thread.values &&
+    "messages" in thread.values &&
+    Array.isArray(thread.values.messages) &&
+    thread.values.messages?.length > 0
+  ) {
+    const firstMessage = thread.values.messages[0];
+    itemText = getContentString(firstMessage.content);
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: -10 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay: index * 0.03, duration: 0.22, ease: "easeOut" }}
+    >
+      <button
+        onClick={onClick}
+        className={cn(
+          "group flex w-full items-start gap-2.5 rounded-xl px-3 py-2.5 text-left text-sm transition-all duration-150",
+          isActive
+            ? "bg-sidebar-accent text-sidebar-foreground font-medium ring-1 ring-sidebar-border"
+            : "text-sidebar-foreground/70 hover:bg-sidebar-accent/70 hover:text-sidebar-foreground",
+        )}
+      >
+        <MessageSquare
+          className={cn(
+            "mt-0.5 size-3.5 shrink-0 transition-colors",
+            isActive ? "text-sidebar-primary" : "text-sidebar-foreground/40 group-hover:text-sidebar-foreground/70",
+          )}
+        />
+        <p className="truncate leading-snug">{itemText}</p>
+      </button>
+    </motion.div>
+  );
+}
+
+function ThreadHistoryLoading() {
+  return (
+    <div className="flex flex-col gap-1 px-2">
+      {Array.from({ length: 12 }).map((_, i) => (
+        <motion.div
+          key={`skeleton-${i}`}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: i * 0.04 }}
+        >
+          <Skeleton className="h-9 w-full rounded-xl bg-sidebar-accent/50" />
+        </motion.div>
+      ))}
+    </div>
+  );
+}
 
 function ThreadList({
   threads,
@@ -25,52 +94,27 @@ function ThreadList({
   const [threadId, setThreadId] = useQueryState("threadId");
 
   return (
-    <div className="flex h-full w-full flex-col items-start justify-start gap-2 overflow-y-scroll [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-track]:bg-transparent">
-      {threads.map((t) => {
-        let itemText = t.thread_id;
-        if (
-          typeof t.values === "object" &&
-          t.values &&
-          "messages" in t.values &&
-          Array.isArray(t.values.messages) &&
-          t.values.messages?.length > 0
-        ) {
-          const firstMessage = t.values.messages[0];
-          itemText = getContentString(firstMessage.content);
-        }
-        return (
-          <div
+    <div className="flex h-full w-full flex-col gap-0.5 overflow-y-auto px-2 pb-4">
+      <AnimatePresence>
+        {threads.map((t, i) => (
+          <ThreadItem
             key={t.thread_id}
-            className="w-full px-1"
-          >
-            <Button
-              variant="ghost"
-              className="w-[280px] items-start justify-start text-left font-normal"
-              onClick={(e) => {
-                e.preventDefault();
-                onThreadClick?.(t.thread_id);
-                if (t.thread_id === threadId) return;
-                setThreadId(t.thread_id);
-              }}
-            >
-              <p className="truncate text-ellipsis">{itemText}</p>
-            </Button>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
-function ThreadHistoryLoading() {
-  return (
-    <div className="flex h-full w-full flex-col items-start justify-start gap-2 overflow-y-scroll [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-track]:bg-transparent">
-      {Array.from({ length: 30 }).map((_, i) => (
-        <Skeleton
-          key={`skeleton-${i}`}
-          className="h-10 w-[280px]"
-        />
-      ))}
+            thread={t}
+            isActive={t.thread_id === threadId}
+            index={i}
+            onClick={() => {
+              onThreadClick?.(t.thread_id);
+              if (t.thread_id === threadId) return;
+              setThreadId(t.thread_id);
+            }}
+          />
+        ))}
+      </AnimatePresence>
+      {threads.length === 0 && (
+        <p className="px-3 py-4 text-xs text-sidebar-foreground/40">
+          No conversations yet
+        </p>
+      )}
     </div>
   );
 }
@@ -81,6 +125,7 @@ export default function ThreadHistory() {
     "chatHistoryOpen",
     parseAsBoolean.withDefault(false),
   );
+  const [, setThreadId] = useQueryState("threadId");
 
   const { getThreads, threads, setThreads, threadsLoading, setThreadsLoading } =
     useThreads();
@@ -94,31 +139,50 @@ export default function ThreadHistory() {
       .finally(() => setThreadsLoading(false));
   }, []);
 
-  return (
-    <>
-      <div className="shadow-inner-right hidden h-screen w-[300px] shrink-0 flex-col items-start justify-start gap-6 border-r-[1px] border-slate-300 lg:flex">
-        <div className="flex w-full items-center justify-between px-4 pt-1.5">
+  const sidebar = (
+    <div className="flex h-full w-full flex-col">
+      {/* Sidebar header */}
+      <div className="flex items-center justify-between px-3 py-3">
+        <span className="text-xs font-semibold uppercase tracking-widest text-sidebar-foreground/40">
+          Conversations
+        </span>
+        <div className="flex items-center gap-1">
           <Button
-            className="hover:bg-gray-100"
             variant="ghost"
+            size="icon"
+            className="size-7 rounded-lg text-sidebar-foreground/50 hover:bg-sidebar-accent hover:text-sidebar-foreground"
+            onClick={() => {
+              setThreadId(null);
+            }}
+          >
+            <SquarePen className="size-3.5" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="size-7 rounded-lg text-sidebar-foreground/50 hover:bg-sidebar-accent hover:text-sidebar-foreground"
             onClick={() => setChatHistoryOpen((p) => !p)}
           >
-            {chatHistoryOpen ? (
-              <PanelRightOpen className="size-5" />
-            ) : (
-              <PanelRightClose className="size-5" />
-            )}
+            <PanelLeftClose className="size-3.5" />
           </Button>
-          <h1 className="text-xl font-semibold tracking-tight">
-            Thread History
-          </h1>
         </div>
-        {threadsLoading ? (
-          <ThreadHistoryLoading />
-        ) : (
-          <ThreadList threads={threads} />
-        )}
       </div>
+
+      {/* Thread list */}
+      <div className="flex-1 overflow-hidden">
+        {threadsLoading ? <ThreadHistoryLoading /> : <ThreadList threads={threads} />}
+      </div>
+    </div>
+  );
+
+  return (
+    <>
+      {/* Desktop sidebar — embedded in motion panel */}
+      <div className="hidden h-full w-[280px] shrink-0 lg:flex">
+        {sidebar}
+      </div>
+
+      {/* Mobile sheet */}
       <div className="lg:hidden">
         <Sheet
           open={!!chatHistoryOpen && !isLargeScreen}
@@ -129,15 +193,14 @@ export default function ThreadHistory() {
         >
           <SheetContent
             side="left"
-            className="flex lg:hidden"
+            className="w-[280px] border-r border-sidebar-border bg-sidebar p-0"
           >
-            <SheetHeader>
-              <SheetTitle>Thread History</SheetTitle>
+            <SheetHeader className="sr-only">
+              <SheetTitle>Conversation History</SheetTitle>
             </SheetHeader>
-            <ThreadList
-              threads={threads}
-              onThreadClick={() => setChatHistoryOpen((o) => !o)}
-            />
+            <div className="h-full">
+              {sidebar}
+            </div>
           </SheetContent>
         </Sheet>
       </div>

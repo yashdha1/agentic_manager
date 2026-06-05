@@ -31,3 +31,4 @@ async def get_thread(thread_id: str) -> ThreadDetailResponse:
     if thread_id not in THREAD_MESSAGES:
         raise HTTPException(status_code=404, detail="Thread not found")
     return ThreadDetailResponse(thread_id=thread_id, messages=THREAD_MESSAGES[thread_id])
+

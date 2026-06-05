@@ -1,45 +1,171 @@
-/* Base markdown styles */
-.markdown-content code:not(pre code) {
-  background-color: rgba(0, 0, 0, 0.05);
-  padding: 0.2em 0.4em;
-  border-radius: 3px;
-  font-size: 0.9em;
+/* ── Markdown content styles ─────────────────────────────── */
+.markdown-content {
+  line-height: 1.7;
+  font-size: 0.9rem;
 }
 
+.markdown-content p {
+  margin: 0.6em 0;
+}
+
+.markdown-content p:first-child {
+  margin-top: 0;
+}
+
+.markdown-content p:last-child {
+  margin-bottom: 0;
+}
+
+/* Inline code */
+.markdown-content code:not(pre code) {
+  background-color: oklch(0.20 0.007 285 / 0.6);
+  color: oklch(0.80 0.12 289);
+  padding: 0.15em 0.45em;
+  border-radius: 4px;
+  font-size: 0.85em;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  border: 1px solid oklch(0.28 0.009 285 / 0.5);
+}
+
+:root:not(.dark) .markdown-content code:not(pre code) {
+  background-color: oklch(0.93 0.006 280);
+  color: oklch(0.45 0.15 289);
+  border-color: oklch(0.84 0.008 280);
+}
+
+/* Links */
 .markdown-content a {
-  color: #0070f3;
+  color: oklch(0.70 0.18 289);
   text-decoration: none;
+  border-bottom: 1px solid oklch(0.70 0.18 289 / 0.35);
+  transition: border-color 0.15s ease, color 0.15s ease;
 }
 
 .markdown-content a:hover {
-  text-decoration: underline;
+  color: oklch(0.80 0.20 289);
+  border-bottom-color: oklch(0.80 0.20 289 / 0.7);
 }
 
+:root:not(.dark) .markdown-content a {
+  color: oklch(0.50 0.20 289);
+  border-bottom-color: oklch(0.50 0.20 289 / 0.35);
+}
+
+/* Blockquote */
 .markdown-content blockquote {
-  border-left: 4px solid #ddd;
+  border-left: 3px solid oklch(0.65 0.24 289 / 0.5);
   padding-left: 1rem;
-  color: #666;
+  margin: 0.8em 0;
+  color: oklch(0.60 0.01 280);
+  font-style: italic;
 }
 
+:root:not(.dark) .markdown-content blockquote {
+  color: oklch(0.50 0.008 280);
+}
+
+/* Code blocks */
 .markdown-content pre {
   overflow-x: auto;
+  border-radius: 10px;
+  margin: 0.8em 0;
+  border: 1px solid oklch(0.22 0.009 285);
+  background: oklch(0.085 0.007 285) !important;
 }
 
+:root:not(.dark) .markdown-content pre {
+  border-color: oklch(0.88 0.006 280);
+  background: oklch(0.96 0.003 280) !important;
+}
+
+/* Tables */
 .markdown-content table {
   border-collapse: collapse;
   width: 100%;
+  margin: 0.8em 0;
+  font-size: 0.875em;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid oklch(0.22 0.009 285);
+}
+
+:root:not(.dark) .markdown-content table {
+  border-color: oklch(0.88 0.006 280);
 }
 
 .markdown-content th,
 .markdown-content td {
-  border: 1px solid #ddd;
-  padding: 8px;
+  border-bottom: 1px solid oklch(0.22 0.009 285);
+  padding: 8px 12px;
+  text-align: left;
+}
+
+:root:not(.dark) .markdown-content th,
+:root:not(.dark) .markdown-content td {
+  border-bottom-color: oklch(0.88 0.006 280);
 }
 
 .markdown-content th {
-  background-color: #f2f2f2;
+  background-color: oklch(0.15 0.007 285 / 0.6);
+  font-weight: 600;
+  font-size: 0.8em;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: oklch(0.65 0.012 280);
 }
 
-.markdown-content tr:nth-child(even) {
-  background-color: #f9f9f9;
+:root:not(.dark) .markdown-content th {
+  background-color: oklch(0.93 0.006 280);
+  color: oklch(0.40 0.008 280);
+}
+
+.markdown-content tr:last-child td {
+  border-bottom: none;
+}
+
+.markdown-content tr:hover td {
+  background-color: oklch(0.65 0.24 289 / 0.04);
+}
+
+/* Lists */
+.markdown-content ul,
+.markdown-content ol {
+  padding-left: 1.5em;
+  margin: 0.5em 0;
+}
+
+.markdown-content li {
+  margin: 0.25em 0;
+}
+
+/* Headings */
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4 {
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 1em 0 0.4em;
+}
+
+.markdown-content h1 { font-size: 1.3em; }
+.markdown-content h2 { font-size: 1.15em; }
+.markdown-content h3 { font-size: 1.05em; }
+.markdown-content h4 { font-size: 0.95em; }
+
+.markdown-content h1:first-child,
+.markdown-content h2:first-child,
+.markdown-content h3:first-child {
+  margin-top: 0;
+}
+
+/* Horizontal rule */
+.markdown-content hr {
+  border: none;
+  border-top: 1px solid oklch(0.22 0.009 285);
+  margin: 1em 0;
+}
+
+:root:not(.dark) .markdown-content hr {
+  border-top-color: oklch(0.88 0.006 280);
 }

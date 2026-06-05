@@ -6,12 +6,14 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from src.api.v1 import router as api_router
 from src.core.logger import logger
-from src.declarative.mcp_tools import prepare_workflow
+from src.core.tracing import configure_langsmith_tracing
 from src.declarative.AgentSpec import _all_tools
+from src.declarative.mcp_tools import prepare_workflow
 
 
 @asynccontextmanager
 async def lifespan(_: FastAPI) -> AsyncIterator[None]:
+    configure_langsmith_tracing()
     logger.info("Starting up — connecting to MCP server...")
     await prepare_workflow() 
     logger.info(f"MCP client is ready to serve requests. {len(_all_tools)} tools loaded.")

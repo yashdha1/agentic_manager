@@ -9,7 +9,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { TooltipIconButton } from "../tooltip-icon-button";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 

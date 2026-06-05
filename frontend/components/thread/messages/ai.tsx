@@ -14,6 +14,8 @@ import { ThreadView } from "../agent-inbox";
 import { useQueryState, parseAsBoolean } from "nuqs";
 import { GenericInterruptView } from "./generic-interrupt";
 import { useArtifact } from "../artifact";
+import { motion } from "motion/react";
+import { Sparkles } from "lucide-react";
 
 function CustomComponent({
   message,
@@ -98,6 +100,15 @@ function Interrupt({
   );
 }
 
+/* ── AI avatar icon ──────────────────────────────────────── */
+function AIAvatar() {
+  return (
+    <div className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full bg-primary/10 ring-1 ring-primary/20">
+      <Sparkles className="size-3.5 text-primary" />
+    </div>
+  );
+}
+
 export function AssistantMessage({
   message,
   isLoading,
@@ -146,8 +157,15 @@ export function AssistantMessage({
   }
 
   return (
-    <div className="group mr-auto flex w-full items-start gap-2">
-      <div className="flex w-full flex-col gap-2">
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
+      className="group mr-auto flex w-full items-start gap-3"
+    >
+      <AIAvatar />
+
+      <div className="flex min-w-0 flex-1 flex-col gap-2">
         {isToolResult ? (
           <>
             <ToolResult message={message} />
@@ -160,7 +178,7 @@ export function AssistantMessage({
         ) : (
           <>
             {contentString.length > 0 && (
-              <div className="py-1">
+              <div className="py-0.5 text-foreground">
                 <MarkdownText>{contentString}</MarkdownText>
               </div>
             )}
@@ -180,19 +198,17 @@ export function AssistantMessage({
             )}
 
             {message && (
-              <CustomComponent
-                message={message}
-                thread={thread}
-              />
+              <CustomComponent message={message} thread={thread} />
             )}
             <Interrupt
               interrupt={threadInterrupt}
               isLastMessage={isLastMessage}
               hasNoAIOrToolMessages={hasNoAIOrToolMessages}
             />
+
             <div
               className={cn(
-                "mr-auto flex items-center gap-2 transition-opacity",
+                "mr-auto flex items-center gap-2 transition-all duration-150",
                 "opacity-0 group-focus-within:opacity-100 group-hover:opacity-100",
               )}
             >
@@ -212,18 +228,31 @@ export function AssistantMessage({
           </>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }
 
 export function AssistantMessageLoading() {
   return (
-    <div className="mr-auto flex items-start gap-2">
-      <div className="bg-muted flex h-8 items-center gap-1 rounded-2xl px-4 py-2">
-        <div className="bg-foreground/50 h-1.5 w-1.5 animate-[pulse_1.5s_ease-in-out_infinite] rounded-full"></div>
-        <div className="bg-foreground/50 h-1.5 w-1.5 animate-[pulse_1.5s_ease-in-out_0.5s_infinite] rounded-full"></div>
-        <div className="bg-foreground/50 h-1.5 w-1.5 animate-[pulse_1.5s_ease-in-out_1s_infinite] rounded-full"></div>
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.2 }}
+      className="flex items-start gap-3"
+    >
+      <div className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full bg-primary/10 ring-1 ring-primary/20">
+        <Sparkles className="size-3.5 text-primary" />
       </div>
-    </div>
+      <div className="flex h-8 items-center gap-1.5 rounded-2xl bg-muted px-4 py-2">
+        {[0, 0.22, 0.44].map((delay, i) => (
+          <motion.div
+            key={i}
+            className="size-1.5 rounded-full bg-muted-foreground/60"
+            animate={{ opacity: [0.3, 1, 0.3], scale: [0.8, 1, 0.8] }}
+            transition={{ repeat: Infinity, duration: 1.4, delay, ease: "easeInOut" }}
+          />
+        ))}
+      </div>
+    </motion.div>
   );
 }

@@ -19,9 +19,11 @@ async def _wait_for_mcp_server() -> None:
                 await http.get(url, timeout=2.0)
                 return  # any response (even 405) means server is up
             except (httpx.ConnectError, httpx.TimeoutException):
-                logger.warning(f"MCP server not ready (attempt {attempt}/{_RETRY_ATTEMPTS}), retrying in {_RETRY_DELAY}s...")
+                logger.warning(f"MCP server not ready (attempt {attempt}/{_RETRY_ATTEMPTS})," 
+                               f" retrying in {_RETRY_DELAY}s...")
                 await asyncio.sleep(_RETRY_DELAY)
-    raise RuntimeError(f"MCP server at {url} did not become ready after {_RETRY_ATTEMPTS} attempts.")
+    raise RuntimeError(f"MCP server at {url} did not become ready after"
+                       f"{_RETRY_ATTEMPTS} attempts.")
 
 
 def get_mcp_client() -> MultiServerMCPClient:
@@ -37,13 +39,15 @@ def get_mcp_client() -> MultiServerMCPClient:
 
 
 async def prepare_workflow() -> None:
-    """Wait for MCP server, fetch tools, store them, and compile the graph."""
+    """Wait for MCP server, fetch tools, store them, and initialise agents."""
     from src.declarative.AgentSpec import store_tools
-    from src.declarative.graph import init_graph
+    from src.declarative.agent_static import init_agents
+    from src.declarative.workflow import init_workflow
 
     await _wait_for_mcp_server()
     client = get_mcp_client()
     tools = await client.get_tools()
     logger.info(f"Loaded {len(tools)} tools from MCP server")
     store_tools(tools)
-    init_graph(tools)
+    init_agents()
+    init_workflow()

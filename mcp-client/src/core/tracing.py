@@ -17,17 +17,15 @@ def configure_langsmith_tracing() -> bool:
     os.environ["LANGSMITH_TRACING"] = enabled_str
 
     if settings.langsmith_api_key:
-        os.environ["LANGSMITH_API_KEY"] = settings.langsmith_api_key
+        os.environ["LANGSMITH_API_KEY"] = settings.langsmith_api_key.get_secret_value()
 
-    project = settings.langsmith_project or settings.langchain_project
+    project = settings.langsmith_project
     if project:
         os.environ["LANGSMITH_PROJECT"] = project
-        os.environ["LANGCHAIN_PROJECT"] = project
 
-    endpoint = settings.langsmith_endpoint or settings.langchain_endpoint
+    endpoint = settings.langsmith_endpoint
     if endpoint:
         os.environ["LANGSMITH_ENDPOINT"] = endpoint
-        os.environ["LANGCHAIN_ENDPOINT"] = endpoint
 
     logger.info(
         "LangSmith tracing configured: "

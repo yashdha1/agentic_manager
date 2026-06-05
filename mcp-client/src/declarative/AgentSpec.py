@@ -13,11 +13,11 @@ class AgentsTool(enum.Enum):
     INVENTORY    = "inventory_"
 
 class Agent(enum.Enum):
-    ORCHESTRATOR = "orchestrator agent"
-    SALES        = "sales agent"
-    CUSTOMER     = "customer support agent"
-    KNOWLEDGE    = "knowledge agent"
-    INVENTORY    = "inventory manager agent"
+    ORCHESTRATOR = "orchestrator"
+    SALES        = "sales"
+    CUSTOMER     = "customers"
+    KNOWLEDGE    = "knowledge"
+    INVENTORY    = "inventory"
 
 # Module-level tool store — populated once at FastAPI startup via store_tools().
 _all_tools: list[BaseTool] = []
