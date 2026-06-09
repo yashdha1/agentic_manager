@@ -5,7 +5,6 @@ from core.time_utils import now
 from fastmcp import FastMCP
 
 mcp = FastMCP("ecomm_mcp_sales_commands")
-HITL_CONFIRM_INSTRUCTION = "Review and call again with confirmed=True to apply."
 
 
 def _parse_order_status(status: str) -> OrderStatus:
@@ -13,26 +12,22 @@ def _parse_order_status(status: str) -> OrderStatus:
 
 
 @mcp.tool
-async def update_product_status(product_id: int, is_active: bool, confirmed: bool = False) -> dict:
+async def sales_update_product_status_hitl(product_id: int, is_active: bool) -> dict:
     """
-    HITL tool to update a product active status.
+    Update a product's active/inactive status.
 
-    Step 1: call with confirmed=False to preview.
-    Step 2: call with confirmed=True to apply update.
+    Requires human approval before executing — the HITL middleware intercepts
+    this call and raises a LangGraph interrupt. The update is only applied after
+    the operator approves.
+
+    Args:
+        product_id: ID of the product to update.
+        is_active:  New active status.
     """
     async with get_async_session() as session:
         product = await session.get(Product, product_id)
         if not product:
             return {"error": f"Product {product_id} not found"}
-
-        if not confirmed:
-            return {
-                "preview": True,
-                "product_id": product.id,
-                "current_is_active": product.is_active,
-                "new_is_active": is_active,
-                "instructions": HITL_CONFIRM_INSTRUCTION,
-            }
 
         product.is_active = is_active
         product.updated_at = now()
@@ -46,7 +41,7 @@ async def update_product_status(product_id: int, is_active: bool, confirmed: boo
 
 
 @mcp.tool
-async def update_product_details(
+async def sales_update_product_details_hitl(
     product_id: int,
     name: str | None = None,
     description: str | None = None,
@@ -55,13 +50,23 @@ async def update_product_details(
     brand: str | None = None,
     price: float | None = None,
     cost_price: float | None = None,
-    confirmed: bool = False,
 ) -> dict:
     """
-    HITL tool to update product details.
+    Update product details (name, description, category, brand, price, etc.).
 
-    Step 1: call with confirmed=False to preview.
-    Step 2: call with confirmed=True to apply update.
+    Requires human approval before executing — the HITL middleware intercepts
+    this call and raises a LangGraph interrupt. Only supplied (non-None) fields
+    are updated.
+
+    Args:
+        product_id:   ID of the product to update.
+        name:         New product name, or None to leave unchanged.
+        description:  New description, or None to leave unchanged.
+        category:     New category, or None to leave unchanged.
+        sub_category: New sub-category, or None to leave unchanged.
+        brand:        New brand, or None to leave unchanged.
+        price:        New price, or None to leave unchanged.
+        cost_price:   New cost price, or None to leave unchanged.
     """
     updates = {
         "name": name,
@@ -82,25 +87,6 @@ async def update_product_details(
         if not product:
             return {"error": f"Product {product_id} not found"}
 
-        if not confirmed:
-            return {
-                "preview": True,
-                "product_id": product.id,
-                "current": {
-                    "name": product.name,
-                    "description": product.description,
-                    "category": product.category,
-                    "sub_category": product.sub_category,
-                    "brand": product.brand,
-                    "price": float(product.price) if product.price is not None else None,
-                    "cost_price": float(product.cost_price)
-                    if product.cost_price is not None
-                    else None,
-                },
-                "updates": updates,
-                "instructions": HITL_CONFIRM_INSTRUCTION,
-            }
-
         for field, value in updates.items():
             setattr(product, field, value)
         product.updated_at = now()
@@ -114,12 +100,17 @@ async def update_product_details(
 
 
 @mcp.tool
-async def update_order_status(order_id: int, status: str, confirmed: bool = False) -> dict:
+async def sales_update_order_status_hitl(order_id: int, status: str) -> dict:
     """
-    HITL tool to update order status.
+    Update an order's status.
 
-    Step 1: call with confirmed=False to preview.
-    Step 2: call with confirmed=True to apply update.
+    Requires human approval before executing — the HITL middleware intercepts
+    this call and raises a LangGraph interrupt. The status change is only applied
+    after the operator approves.
+
+    Args:
+        order_id: ID of the order to update.
+        status:   New order status (e.g. 'shipped', 'cancelled', 'delivered').
     """
     try:
         new_status = _parse_order_status(status)
@@ -134,17 +125,6 @@ async def update_order_status(order_id: int, status: str, confirmed: bool = Fals
         if not order:
             return {"error": f"Order {order_id} not found"}
 
-        current_status = order.status.value if hasattr(order.status, "value") else str(order.status)
-
-        if not confirmed:
-            return {
-                "preview": True,
-                "order_id": order.id,
-                "current_status": current_status,
-                "new_status": new_status.value,
-                "instructions": HITL_CONFIRM_INSTRUCTION,
-            }
-
         order.status = new_status
 
         log.info(f"Updated order {order_id} status to {new_status.value}")
@@ -156,14 +136,17 @@ async def update_order_status(order_id: int, status: str, confirmed: bool = Fals
 
 
 @mcp.tool
-async def update_product_stock(
-    product_id: int, restock_quantity: int, confirmed: bool = False
-) -> dict:
+async def sales_update_product_stock_hitl(product_id: int, restock_quantity: int) -> dict:
     """
-    HITL tool for product restock.
+    Restock a product by adding to its current stock quantity.
 
-    Step 1: call with confirmed=False to preview.
-    Step 2: call with confirmed=True to apply stock increase and log inventory event.
+    Requires human approval before executing — the HITL middleware intercepts
+    this call and raises a LangGraph interrupt. The stock increase and inventory
+    event are only committed after the operator approves.
+
+    Args:
+        product_id:        ID of the product to restock.
+        restock_quantity:  Quantity to add (must be > 0).
     """
     if restock_quantity <= 0:
         return {"error": "restock_quantity must be greater than 0"}
@@ -176,16 +159,6 @@ async def update_product_stock(
         old_stock = int(product.stock_quantity or 0)
         new_stock = old_stock + restock_quantity
 
-        if not confirmed:
-            return {
-                "preview": True,
-                "product_id": product.id,
-                "current_stock": old_stock,
-                "restock_quantity": restock_quantity,
-                "new_stock": new_stock,
-                "instructions": HITL_CONFIRM_INSTRUCTION,
-            }
-
         product.stock_quantity = new_stock
         product.updated_at = now()
         event = InventoryEvent(
@@ -194,7 +167,7 @@ async def update_product_stock(
             quantity_change=restock_quantity,
             new_stock_level=new_stock,
             event_date=now(),
-            notes="HITL restock update_product_stock",
+            notes="HITL restock sales_update_product_stock_hitl",
         )
         session.add(event)
 
@@ -207,3 +180,4 @@ async def update_product_stock(
             "new_stock": new_stock,
             "inventory_event_type": "restock",
         }
+

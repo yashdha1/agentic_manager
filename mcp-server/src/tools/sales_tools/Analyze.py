@@ -383,7 +383,7 @@ async def sales_analyze_products_stats() -> dict:
 
 
 @mcp.tool
-async def sales_analyze_anamoly(lookback_days: int = 30) -> dict:
+async def sales_analyze_anomaly(lookback_days: int = 30) -> dict:
     """
     Return simple daily anomaly detection for order volume and revenue.
 
@@ -497,7 +497,7 @@ async def sales_analyze_anamoly(lookback_days: int = 30) -> dict:
                 "anomalies": anomalies,
             }
     except Exception as e:
-        log.exception(f"Error in sales_analyze_anamoly: {e}")
+        log.exception(f"Error in sales_analyze_anomaly: {e}")
         return {"error": str(e)}
 
 

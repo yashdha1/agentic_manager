@@ -11,7 +11,8 @@ class Settings(BaseSettings):
 
     azure_api_key: SecretStr | None = Field(default=None, alias="AZURE_API_KEY")
     azure_api_version: str | None = Field(default=None, alias="AZURE_API_VERSION")
-    azure_chat_model: str | None = Field(default=None, alias="AZURE_CHAT_MODEL")
+    azure_chat_flag_model: str | None = Field(default=None, alias="AZURE_CHAT_FLAG_MODEL")
+    azure_chat_light_model: str | None = Field(default=None, alias="AZURE_CHAT_LIGHT_MODEL")
     azure_endpoint: str | None = Field(default=None, alias="AZURE_ENDPOINT")
     azure_embedding_model: str | None = Field(default=None, alias="AZURE_EMBEDDING_MODEL")
     azure_embedding_dimensions: int | None = Field(default=None, alias="AZURE_EMBEDDING_DIMENSIONS")
@@ -24,6 +25,9 @@ class Settings(BaseSettings):
     qdrant_host: str = Field(default="http://localhost", alias="QDRANT_HOST")
     qdrant_port: int = Field(default=6333, alias="QDRANT_PORT")
     langgraph_api_url: str = Field(default="http://localhost:2024", alias="LANGGRAPH_API_URL")
+
+    redis_host: str = Field(default="localhost", alias="REDIS_HOST")
+    redis_port: int = Field(default=6379, alias="REDIS_PORT")
 
     mcp_server_url: str = Field(default="http://localhost:9000", alias="MCP_SERVER_URL")
 

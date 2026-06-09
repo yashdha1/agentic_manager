@@ -16,6 +16,16 @@ class ChatResponse(BaseModel):
     thread_id: str | None = None
 
 
+class StreamChatRequest(BaseModel):
+    message: str
+    thread_id: str | None = None
+
+
+class ResumeChatRequest(BaseModel):
+    thread_id: str
+    decisions: list[dict]
+
+
 class ThreadResponse(BaseModel):
     thread_id: str
 

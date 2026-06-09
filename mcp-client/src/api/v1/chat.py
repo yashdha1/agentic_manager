@@ -1,15 +1,109 @@
-from fastapi import APIRouter
+import json
+from uuid import uuid4
 
-from src.api.v1.schemas import ChatRequest, ChatResponse
+from fastapi import APIRouter
+from fastapi.responses import StreamingResponse
+from langgraph.types import Command
+
+from src.api.v1.schemas import ChatRequest, ChatResponse, ResumeChatRequest, StreamChatRequest
+from src.api.v1.state import THREAD_MESSAGES
 from src.declarative import workflow as workflow_module
 
 router = APIRouter(prefix="/chat", tags=["chat"])
 
+AGENT_NODES = {"orchestrator", "sales", "customers", "inventory", "knowledge", "aggregator"}
 
 @router.post("")
 async def chat(request: ChatRequest) -> ChatResponse:
-    result = await workflow_module.graph.ainvoke({"query": request.message})
-    return ChatResponse(
-        response=result["final_response"],
-        thread_id=request.thread_id,
-    )
+    thread_id = request.thread_id or str(uuid4())
+    config = {"configurable": {"thread_id": thread_id}}
+    result = await workflow_module.graph.ainvoke({"query": request.message}, config)
+    return ChatResponse(response=result.get("final_response", ""), thread_id=thread_id)
+
+
+async def _sse_events(input_data, config: dict, thread_id: str, user_message: str | None):
+    """Shared SSE generator for /stream and /resume endpoints."""
+    total_usage: dict[str, int] = {"input_tokens": 0, "output_tokens": 0, "total_tokens": 0}
+
+    async for event in workflow_module.graph.astream_events(input_data, config, version="v2"):
+        kind: str = event["event"]
+        name: str = event.get("name", "")
+        node: str = event.get("metadata", {}).get("langgraph_node", "")
+
+        if kind == "on_chain_start" and name in AGENT_NODES:
+            yield f"data: {json.dumps({'type': 'agent_start', 'agent': name})}\n\n"
+
+        elif kind == "on_chain_end" and name in AGENT_NODES:
+            yield f"data: {json.dumps({'type': 'agent_end', 'agent': name})}\n\n"
+
+        elif kind == "on_chat_model_stream":
+            chunk = event["data"]["chunk"]
+            content = chunk.content
+            if isinstance(content, list):
+                text = "".join(c.get("text", "") for c in content if isinstance(c, dict))
+            else:
+                text = content or ""
+            if text:
+                yield f"data: {json.dumps({'type': 'token', 'agent': node, 'content': text})}\n\n"
+
+        elif kind == "on_tool_start" and node in AGENT_NODES:
+            yield f"data: {json.dumps({'type': 'tool_call', 'agent': node, 'tool': name})}\n\n"
+
+        elif kind == "on_chat_model_end":
+            output = event.get("data", {}).get("output")
+            if output and hasattr(output, "usage_metadata") and output.usage_metadata:
+                um = output.usage_metadata
+                total_usage["input_tokens"] += um.get("input_tokens", 0)
+                total_usage["output_tokens"] += um.get("output_tokens", 0)
+                total_usage["total_tokens"] += um.get("total_tokens", 0)
+
+    # After stream exhausts — check if graph is paused (interrupted) or done
+    snap = await workflow_module.graph.aget_state(config)
+
+    if snap.next:  # graph is paused at human_approval
+        interrupt_val: dict = {}
+        for task in snap.tasks:
+            if task.interrupts:
+                interrupt_val = task.interrupts[0].value
+                break
+        # Persist user message now (before user decides)
+        if user_message is not None:
+            THREAD_MESSAGES.setdefault(thread_id, [])
+            THREAD_MESSAGES[thread_id].append({"role": "user", "content": user_message})
+        yield f"data: {json.dumps({'type': 'interrupt', 'data': interrupt_val}, default=str)}\n\n"
+    else:
+        final_response = snap.values.get("final_response", "")
+        THREAD_MESSAGES.setdefault(thread_id, [])
+        if user_message is not None:
+            THREAD_MESSAGES[thread_id].append({"role": "user", "content": user_message})
+        THREAD_MESSAGES[thread_id].append({"role": "assistant", "content": final_response})
+        yield f"data: {json.dumps({'type': 'token_usage', 'data': total_usage})}\n\n"
+        yield f"data: {json.dumps({'type': 'done', 'final_response': final_response})}\n\n"
+
+
+@router.post("/stream")
+async def stream_chat(request: StreamChatRequest):
+    thread_id = request.thread_id or str(uuid4())
+    config = {"configurable": {"thread_id": thread_id}}
+
+    async def generator():
+        yield f"data: {json.dumps({'type': 'thread_id', 'data': thread_id})}\n\n"
+        async for chunk in _sse_events({"query": request.message},config,thread_id,request.message):
+            yield chunk
+
+    return StreamingResponse(generator(), media_type="text/event-stream")
+
+
+@router.post("/resume")
+async def resume_chat(request: ResumeChatRequest):
+    config = {"configurable": {"thread_id": request.thread_id}}
+
+    # HumanInTheLoopMiddleware.after_model does: decisions = interrupt(hitl_request)["decisions"]
+    # so the resume value must be {"decisions": [Decision]} — not a bare string.
+    resume_value = {"decisions": request.decisions}
+
+    async def generator():
+        async for chunk in _sse_events(Command(resume=resume_value), config, request.thread_id, None):
+            yield chunk
+
+    return StreamingResponse(generator(), media_type="text/event-stream")

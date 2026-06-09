@@ -16,6 +16,12 @@ services:
       - "127.0.0.1:6334:6334"
     volumes:
       - qdrant_storage:/qdrant/storage
+  
+  redis:
+    image: redis:latest
+    ports:
+      - "127.0.0.1:6379:6379"
+  
 
   # mcp-server:
   #   build:

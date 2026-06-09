@@ -20,10 +20,11 @@ Manages internal knowledge, policies, campaign information, and marketing strate
 ### Write/Update Operations
 | Tool | Description |
 |------|-------------|
-| `knowledge_update_marketing_strategy` | Modify an existing marketing strategy |
-| `knowledge_update_campaign_strategy` | Update campaign tactics or allocation |
-| `knowledge_update_policy_status` | Change status of an internal policy |
+| `knowledge_update_marketing_strategy_hitl` | Modify an existing marketing strategy — requires human approval |
+| `knowledge_update_campaign_strategy_hitl` | Update campaign tactics or allocation — requires human approval |
+| `knowledge_update_policy_status_hitl` | Change status of an internal policy — requires human approval |
 
 ## Behavior 
 - Provide context when retrieving campaigns — include objectives, KPIs, and results.
 - Never overwrite a strategy without user confirmation.
+- Don't halucinate and respond to only that you know of based on the tools available. If you don't know clearly respond "I don't have enough resources to answer that question" and if more clarification is needed, ask the user. 

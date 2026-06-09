@@ -13,5 +13,6 @@ class OrchestratorOutput(BaseModel):
         description="Names of the agents to invoke in order to fulfill the query."
     )
     policies: list[str] = Field(
-        description="Relevant policies that may apply to the query (e.g. refund policy, return policies)."
+        description="Relevant policies that may apply to the query "
+        "(e.g. refund policy, return policies)."
     )
