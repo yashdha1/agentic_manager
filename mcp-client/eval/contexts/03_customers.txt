@@ -1,0 +1,62 @@
+## Customer Support & Experience
+
+This document describes the customer data and support system for an e-commerce platform.
+
+### Customer Complaint Monitoring
+
+Customer complaints are recorded and aggregated by product, category, and time period. Common complaint patterns are detectable across the customer base.
+
+Realistic operational questions:
+- "Did customer complaints increase yesterday?"
+- "What are the most common complaints from the past 24 hours?"
+- "Is there a common issue being reported by customers today?"
+- "Which products are generating the most complaints this week?"
+- "Are complaints concentrated in a specific region or customer tier?"
+- "Correlate yesterday's complaint spike with the sales drop."
+
+### Refund & Return Experience
+
+Customer-facing refund requests and return experiences are tracked separately from the operational refund lifecycle. High return rates often correlate with negative reviews and complaint spikes.
+
+Realistic operational questions:
+- "Are returns or refund requests higher than usual this week?"
+- "Did negative return experiences increase after yesterday's orders?"
+- "Which customers submitted multiple refund requests recently?"
+
+### Reviews & Ratings
+
+Product reviews are linked to customer profiles. Negative review spikes can signal quality issues or fulfilment problems that affect conversions.
+
+Realistic operational questions:
+- "Are there negative reviews affecting conversions on top products?"
+- "Did any product receive a flood of 1-star reviews yesterday?"
+- "What are customers saying about the Laptop category this week?"
+- "Show reviews from Gold and Platinum tier customers about Electronics."
+
+### Customer Profiles & Segmentation
+
+Customers have: ID, name, email, region, loyalty tier (Bronze, Silver, Gold, Platinum), and lifetime spend. Segments can be queried by any combination.
+
+Realistic operational questions:
+- "Find customer john.doe@example.com."
+- "Show all Platinum customers in North America."
+- "Which customers have spent more than $5,000 lifetime?"
+- "List all Gold-tier customers in Europe who purchased Electronics."
+
+### Customer Order Analysis
+
+Order frequency, average order value, payment method preference, and channel usage are tracked per customer.
+
+Realistic operational questions:
+- "What is the order pattern for customers who complained yesterday?"
+- "Did high-value customers reduce their purchase frequency this week?"
+- "Compare order behaviour between Bronze and Platinum tier customers."
+
+### Newsletter & Campaigns — Human Approval Required
+
+Bulk newsletters or promotional messages to customer segments require human approval before sending.
+
+Realistic operational questions:
+- "Send a recovery discount to all customers who had a failed order yesterday." — triggers HITL approval
+- "Notify subscribed Platinum customers about restocked products." — triggers HITL approval
+- "How many customers are subscribed to the newsletter in North America?"

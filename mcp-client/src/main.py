@@ -8,6 +8,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from langgraph.checkpoint.memory import MemorySaver
 
+
 # ── Patch JsonPlusRedisSerializer to handle Pydantic models ──────────────────
 # The bundled serializer calls self._encode_constructor_args() which does not
 # exist on the class, causing a crash whenever a Pydantic BaseModel (e.g. the
@@ -15,8 +16,8 @@ from langgraph.checkpoint.memory import MemorySaver
 # Pydantic objects to plain dicts makes them fully JSON-serialisable.
 def _patch_redis_serializer() -> None:
     try:
-        from pydantic import BaseModel
         from langgraph.checkpoint.redis.jsonplus_redis import JsonPlusRedisSerializer
+        from pydantic import BaseModel
 
         _orig_default = JsonPlusRedisSerializer._default_handler
         _orig_preprocess = JsonPlusRedisSerializer._preprocess_interrupts
@@ -42,15 +43,16 @@ _patch_redis_serializer()
 from src.api.v1 import router as api_router
 from src.core.config import settings
 from src.core.logger import logger
+from src.core.stm import InMemorySTM, RedisSTM
 from src.core.tracing import configure_langsmith_tracing
 from src.declarative.AgentSpec import _all_tools
 from src.declarative.mcp_tools import prepare_workflow
-
+from src.api.v1 import state as api_state
 
 async def _make_checkpointer(stack: AsyncExitStack):
     """Try Redis; fall back to in-memory if Redis is unavailable."""
-    from langgraph.checkpoint.redis.aio import AsyncRedisSaver
     import redis.asyncio as aioredis
+    from langgraph.checkpoint.redis.aio import AsyncRedisSaver
 
     redis_url = f"redis://{settings.redis_host}:{settings.redis_port}"
     try:
@@ -62,21 +64,34 @@ async def _make_checkpointer(stack: AsyncExitStack):
             AsyncRedisSaver.from_conn_string(redis_url)
         )
         logger.info(f"Using Redis checkpointer at {redis_url}")
-        return checkpointer
+        return checkpointer, redis_url
     except Exception as exc:
         logger.warning(f"Redis unavailable ({exc}). Falling back to in-memory checkpointer.")
-        return MemorySaver()
+        return MemorySaver(), None
 
 
 @asynccontextmanager
-async def lifespan(_: FastAPI) -> AsyncIterator[None]:
+async def lifespan(_: FastAPI) -> AsyncIterator[None]: 
+
     configure_langsmith_tracing()
     logger.info("Starting up — connecting to MCP server...")
     async with AsyncExitStack() as stack:
-        checkpointer = await _make_checkpointer(stack)
+        checkpointer, redis_url = await _make_checkpointer(stack)
+
+        # ── Short-Term Memory (STM) ──────────────────────────────────────────
+        # Thread message history is stored in Redis so it survives restarts.
+        # Falls back to in-process memory when Redis is unavailable.
+        if redis_url:
+            api_state.stm = RedisSTM(redis_url, ttl=settings.redis_stm_ttl)
+            logger.info("Using Redis STM (ttl=%s s)", settings.redis_stm_ttl)
+        else:
+            api_state.stm = InMemorySTM()
+            logger.warning("Using in-memory STM (data will be lost on restart).")
+
         await prepare_workflow(checkpointer)
         logger.info(f"MCP client is ready to serve requests. {len(_all_tools)} tools loaded.")
         yield
+    await api_state.stm.close()
     logger.info("Shutting down the MCP client...")
 
 

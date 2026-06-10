@@ -1,0 +1,63 @@
+## Sales & Revenue Operations
+
+This document describes sales and revenue data for an e-commerce platform selling consumer electronics, home appliances, sports equipment, and lifestyle products.
+
+### Daily Sales Monitoring
+
+The platform tracks daily revenue, order count, and average order value. Data is available by day, week, and month for comparison.
+
+Realistic operational questions:
+- "Why did sales drop yesterday?"
+- "Compare yesterday's sales with the same day last week."
+- "Is today's revenue tracking above or below yesterday?"
+- "Was the drop caused by fewer orders or lower average order value?"
+- "Did sales recover today or is the downward trend continuing?"
+- "Is this drop a normal fluctuation or a statistical anomaly?"
+
+### Product-Level Sales
+
+Each product has daily and cumulative sales figures, margin data, and a health score combining return rate, rating, and complaint volume.
+
+Realistic operational questions:
+- "Which products contributed most to yesterday's revenue drop?"
+- "Which product categories are underperforming this week?"
+- "Show me the top 5 products by sales margin today."
+- "Which products had zero sales yesterday but were active?"
+- "Are there products with declining sales over the past 7 days?"
+
+### Regional & Channel Performance
+
+Orders are segmented by region (North America, Europe, Asia-Pacific, Middle East) and channel (web, mobile app, in-store).
+
+Realistic operational questions:
+- "Did any region perform worse than usual yesterday?"
+- "Which channel had the steepest sales drop?"
+- "Compare mobile vs desktop order volume this week."
+- "Is the Asia-Pacific region recovering or still declining?"
+
+### Order Analysis
+
+Orders carry: channel, payment method (credit card, UPI, PayPal, COD), payment status (paid, pending, failed), device type, and amount.
+
+Realistic operational questions:
+- "How many orders are stuck in pending payment status?"
+- "Did failed payments increase yesterday?"
+- "Show high-value orders above $500 that were placed but not paid."
+
+### Anomaly Detection
+
+The system can flag statistical anomalies in sales volume, revenue, or order count relative to historical baselines.
+
+Realistic operational questions:
+- "Is the sales drop yesterday an anomaly or within normal variance?"
+- "Flag any products with an unusual spike or drop in orders."
+- "Were there any anomalies in sales across all categories yesterday?"
+
+### Product Updates — Human Approval Required
+
+Changes to product status (active/inactive), stock quantity, order status, or product details pause for human approval before executing.
+
+Realistic operational questions:
+- "Restock the top 3 affected products." — triggers HITL approval
+- "Mark out-of-stock products as inactive temporarily." — triggers HITL approval
+- "Update the order status for stuck pending orders." — triggers HITL approval

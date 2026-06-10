@@ -1,0 +1,62 @@
+## Marketing, Campaigns & Policy
+
+This document describes the internal knowledge base covering marketing campaigns, strategies, and business policies.
+
+### Campaign Performance Monitoring
+
+Each campaign has: name, objective, start/end dates, channels (email, paid search, social, influencer), budget, ROI, and current status (active, paused, completed).
+
+Realistic operational questions:
+- "Were any campaigns paused or underperforming yesterday?"
+- "Did campaign performance drop compared to last week?"
+- "Did we miss any scheduled promotions yesterday?"
+- "Which marketing channel performed the worst yesterday?"
+- "What was the ROI of the Black Friday 2024 campaign?"
+- "Are there any active campaigns running on out-of-stock products?"
+- "Which campaigns are currently active and what are their daily spend levels?"
+
+### Campaign Strategy Updates — Human Approval Required
+
+Modifying campaign tactics, budget allocation, or channel mix requires human approval.
+
+Realistic operational questions:
+- "Pause the worst-performing campaign." — triggers HITL approval
+- "Shift budget from the underperforming paid search campaign to social." — triggers HITL approval
+- "Update the Summer Sale campaign to exclude out-of-stock products." — triggers HITL approval
+
+### Discount & Promotional Strategy
+
+The platform uses targeted discounts to recover sales during downturns. Discounts above 25% require manager-level approval.
+
+Realistic operational questions:
+- "Should we run a discount to recover yesterday's sales drop?"
+- "Run a 10% discount on the top 3 underperforming products." — triggers HITL approval
+- "Is a 30% discount on Smartphones compliant with our discount policy?"
+- "Did discounts help recover sales in previous downturns?"
+- "Which discount level has historically worked best for Electronics?"
+
+### Business Policies
+
+Key policies include:
+- Refund policy: 30-day window for defective items; condition assessed before approval.
+- Discount policy: promotions above 25% require manager approval; seasonal schedules apply.
+- Shipping policy: free shipping on domestic orders above $50; international orders have a flat fee.
+- Return policy: physical condition of returned items assessed before refund approval.
+
+Policy statuses: active, archived, draft. Status changes require human approval.
+
+Realistic operational questions:
+- "What is our current refund policy?"
+- "Does the discount policy allow 30% off on Electronics?"
+- "What are the shipping rules for international orders?"
+- "Archive the old free-returns policy." — triggers HITL approval
+- "Activate the updated discount policy draft." — triggers HITL approval
+
+### Marketing Strategy
+
+The knowledge base stores strategic documents covering channel mix, budget allocation, target audiences, and performance benchmarks.
+
+Realistic operational questions:
+- "What is our current digital marketing strategy?"
+- "What KPIs are we tracking for the Q3 marketing strategy?"
+- "Should we adjust strategy given this week's sales performance?"

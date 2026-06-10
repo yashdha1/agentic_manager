@@ -3,10 +3,11 @@ from uuid import uuid4
 
 from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
+from langchain_core.messages import HumanMessage
 from langgraph.types import Command
 
+from src.api.v1 import state as api_state
 from src.api.v1.schemas import ChatRequest, ChatResponse, ResumeChatRequest, StreamChatRequest
-from src.api.v1.state import THREAD_MESSAGES
 from src.declarative import workflow as workflow_module
 
 router = APIRouter(prefix="/chat", tags=["chat"])
@@ -17,7 +18,10 @@ AGENT_NODES = {"orchestrator", "sales", "customers", "inventory", "knowledge", "
 async def chat(request: ChatRequest) -> ChatResponse:
     thread_id = request.thread_id or str(uuid4())
     config = {"configurable": {"thread_id": thread_id}}
-    result = await workflow_module.graph.ainvoke({"query": request.message}, config)
+    result = await workflow_module.graph.ainvoke(
+        {"query": request.message, "messages": [HumanMessage(content=request.message)]},
+        config,
+    )
     return ChatResponse(response=result.get("final_response", ""), thread_id=thread_id)
 
 
@@ -68,15 +72,13 @@ async def _sse_events(input_data, config: dict, thread_id: str, user_message: st
                 break
         # Persist user message now (before user decides)
         if user_message is not None:
-            THREAD_MESSAGES.setdefault(thread_id, [])
-            THREAD_MESSAGES[thread_id].append({"role": "user", "content": user_message})
+            await api_state.stm.append_message(thread_id, "user", user_message)
         yield f"data: {json.dumps({'type': 'interrupt', 'data': interrupt_val}, default=str)}\n\n"
     else:
         final_response = snap.values.get("final_response", "")
-        THREAD_MESSAGES.setdefault(thread_id, [])
         if user_message is not None:
-            THREAD_MESSAGES[thread_id].append({"role": "user", "content": user_message})
-        THREAD_MESSAGES[thread_id].append({"role": "assistant", "content": final_response})
+            await api_state.stm.append_message(thread_id, "user", user_message)
+        await api_state.stm.append_message(thread_id, "assistant", final_response)
         yield f"data: {json.dumps({'type': 'token_usage', 'data': total_usage})}\n\n"
         yield f"data: {json.dumps({'type': 'done', 'final_response': final_response})}\n\n"
 
@@ -88,7 +90,12 @@ async def stream_chat(request: StreamChatRequest):
 
     async def generator():
         yield f"data: {json.dumps({'type': 'thread_id', 'data': thread_id})}\n\n"
-        async for chunk in _sse_events({"query": request.message},config,thread_id,request.message):
+        async for chunk in _sse_events(
+            {"query": request.message, "messages": [HumanMessage(content=request.message)]},
+            config,
+            thread_id,
+            request.message,
+        ):
             yield chunk
 
     return StreamingResponse(generator(), media_type="text/event-stream")

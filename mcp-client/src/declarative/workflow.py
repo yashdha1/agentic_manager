@@ -2,9 +2,10 @@ from __future__ import annotations
 
 from typing import Annotated, TypedDict
 
-from langchain_core.messages import HumanMessage
+from langchain_core.messages import AIMessage, BaseMessage, HumanMessage
 from langgraph.constants import Send
 from langgraph.graph import END, START, StateGraph
+from langgraph.graph.message import add_messages
 
 import src.declarative.agent_static as agent_static
 from src.models.AgentOutput import AgentName, OrchestratorOutput
@@ -50,6 +51,8 @@ class State(TypedDict):
     # Accumulated by all parallel sub-agent nodes before aggregator runs.
     agent_responses: Annotated[dict[str, str], _merge_dicts]
     final_response: str
+    # Conversation history — persisted in Redis per thread_id via the checkpointer.
+    messages: Annotated[list[BaseMessage], add_messages]
 
 async def _orchestrator_node(state: State) -> dict:
     # Pass an explicit empty-configurable config so the orchestrator sub-graph
@@ -67,10 +70,30 @@ async def _orchestrator_node(state: State) -> dict:
 
 _SUB_AGENT_CONFIG = {"configurable": {}, "recursion_limit": 25}
 
+# Maximum number of prior messages forwarded to each sub-agent for context.
+_SUB_AGENT_HISTORY_LIMIT = 10
+
+
+def _build_sub_agent_messages(state: State) -> list[BaseMessage]:
+    """Return the conversation history plus the current query as a HumanMessage.
+
+    The last N messages from the thread are forwarded to sub-agents so that
+    follow-up questions (e.g. user providing a missing order_id after the agent
+    asked for it) are visible within the same execution context.  The current
+    query is always appended last so it is the agent's primary instruction.
+    """
+    history: list[BaseMessage] = list(state.get("messages", []) or [])
+    # Drop the last message if it is already the current HumanMessage we are
+    # about to append (avoids duplication when history was built by chat.py).
+    if history and isinstance(history[-1], HumanMessage) and history[-1].content == state["query"]:
+        history = history[:-1]
+    prior = history[-_SUB_AGENT_HISTORY_LIMIT:] if len(history) > _SUB_AGENT_HISTORY_LIMIT else history
+    return prior + [HumanMessage(content=state["query"])]
+
 
 async def _sales_node(state: State) -> dict:
     response = await agent_static.sales_agent.ainvoke(
-        {"messages": [HumanMessage(content=state["query"])]},
+        {"messages": _build_sub_agent_messages(state)},
         _SUB_AGENT_CONFIG,
     )
     return {"agent_responses": {"sales": _msg_content(response)}}
@@ -78,7 +101,7 @@ async def _sales_node(state: State) -> dict:
 
 async def _customers_node(state: State) -> dict:
     response = await agent_static.customer_agent.ainvoke(
-        {"messages": [HumanMessage(content=state["query"])]},
+        {"messages": _build_sub_agent_messages(state)},
         _SUB_AGENT_CONFIG,
     )
     return {"agent_responses": {"customers": _msg_content(response)}}
@@ -86,7 +109,7 @@ async def _customers_node(state: State) -> dict:
 
 async def _inventory_node(state: State) -> dict:
     response = await agent_static.inventory_agent.ainvoke(
-        {"messages": [HumanMessage(content=state["query"])]},
+        {"messages": _build_sub_agent_messages(state)},
         _SUB_AGENT_CONFIG,
     )
     return {"agent_responses": {"inventory": _msg_content(response)}}
@@ -94,7 +117,7 @@ async def _inventory_node(state: State) -> dict:
 
 async def _knowledge_node(state: State) -> dict:
     response = await agent_static.knowledge_agent.ainvoke(
-        {"messages": [HumanMessage(content=state["query"])]},
+        {"messages": _build_sub_agent_messages(state)},
         _SUB_AGENT_CONFIG,
     )
     return {"agent_responses": {"knowledge": _msg_content(response)}}
@@ -106,15 +129,29 @@ async def _aggregator_node(state: State) -> dict:
         f"### {name.capitalize()} Agent:\n{resp}"
         for name, resp in state.get("agent_responses", {}).items()
     )
+    # Enrich the current turn with gathered agent data.
     context = (
         f"User Query: {state['query']}\n\n"
         f"Policies:\n{policies_text}\n\n"
         f"Agent Responses:\n{agent_sections}"
     )
+    # Build messages: prior conversation history (all messages except the latest
+    # raw HumanMessage which we replace with the enriched context), so the
+    # aggregator sees the full thread history and can answer follow-up questions.
+    history: list[BaseMessage] = state.get("messages", [])  # type: ignore[assignment]
+    if history and isinstance(history[-1], HumanMessage):
+        messages_for_agg = list(history[:-1]) + [HumanMessage(content=context)]
+    else:
+        messages_for_agg = list(history) + [HumanMessage(content=context)]
     response = await agent_static.aggregator_agent.ainvoke(
-        {"messages": [HumanMessage(content=context)]}
+        {"messages": messages_for_agg}
     )
-    return {"final_response": _msg_content(response)}
+    final = _msg_content(response)
+    return {
+        "final_response": final,
+        # Append the AI response to the persisted message history.
+        "messages": [AIMessage(content=final)],
+    }
 
 
 def _route_to_agents(state: State):

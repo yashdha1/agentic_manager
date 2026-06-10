@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from langchain.agents import create_agent
-from langchain_openai import AzureChatOpenAI 
+from langchain_openai import AzureChatOpenAI
 
 from src.core.config import settings
 from src.declarative.AgentSpec import AgentsTool, get_tools_for

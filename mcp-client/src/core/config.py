@@ -28,6 +28,8 @@ class Settings(BaseSettings):
 
     redis_host: str = Field(default="localhost", alias="REDIS_HOST")
     redis_port: int = Field(default=6379, alias="REDIS_PORT")
+    # STM TTL in seconds (None = no expiry).  Default: 86400 s = 24 h.
+    redis_stm_ttl: int | None = Field(default=86400, alias="REDIS_STM_TTL")
 
     mcp_server_url: str = Field(default="http://localhost:9000", alias="MCP_SERVER_URL")
 

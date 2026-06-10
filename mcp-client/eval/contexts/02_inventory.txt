@@ -1,0 +1,57 @@
+## Inventory & Supply Operations
+
+This document describes inventory management for an e-commerce platform with real-time stock tracking and a refund lifecycle system.
+
+### Stock Levels & Stock-Out Detection
+
+Every product has a real-time stock count and availability status. Inventory events (restock, return, damage, sale) are timestamped and queryable by type or date range.
+
+Realistic operational questions:
+- "Were any top-selling products out of stock yesterday?"
+- "Which products are close to stock-out right now?"
+- "Show all products with fewer than 20 units remaining."
+- "Which items were active in the catalog but had zero stock yesterday?"
+- "Did inventory issues reduce conversions yesterday?"
+- "Which products were viewed but likely not purchased due to stock issues?"
+
+### Restock Decisions — Human Approval Required
+
+Restocking a product requires human approval before it is committed to prevent over-ordering or restocking discontinued items.
+
+Realistic operational questions:
+- "Should we restock any product immediately?" — system recommends, then pauses for approval
+- "Restock the top 3 out-of-stock products to 500 units each." — triggers HITL approval
+- "Which products need urgent restocking based on yesterday's sell-through rate?"
+
+### Refund Lifecycle
+
+Refunds are tied to specific orders. Each refund has a status: pending, approved, or rejected. The full history is available per user or per product.
+
+Refund creation requires human approval to prevent fraudulent or accidental refunds.
+
+Realistic operational questions:
+- "Are refund requests higher than usual this week?"
+- "Show all pending refunds from the last 48 hours."
+- "Create a refund for order #10045." — triggers HITL approval
+- "What is the refund history for customer ID 789?"
+- "Which products have the highest refund rate this month?"
+- "Show rejected refunds from last quarter."
+
+### Refund Rate Trends
+
+The system computes refund rates over time and flags spikes.
+
+Realistic operational questions:
+- "Is the refund rate trending up or down over the past 30 days?"
+- "Did the refund rate increase after yesterday's sales drop?"
+- "Which product category has the worst refund rate this week?"
+- "Show a breakdown of refund rates by category."
+- "Did the updated return policy reduce overall refund volume?"
+
+### Inventory Impact on Business
+
+High refund rates (above 15% for a single product) are automatically flagged. Stock-outs on high-demand products are correlated with lost revenue.
+
+Realistic operational questions:
+- "How much revenue did we lose yesterday due to stock-outs?"
+- "Which out-of-stock products had active campaigns running?"
