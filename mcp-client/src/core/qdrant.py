@@ -41,3 +41,36 @@ async def upsert_ltm(thread_id: str, summary: str, metadata: dict) -> None:
             )
         ],
     )
+
+
+async def upsert_resolver(
+    thread_id: str,
+    tool_name: str,
+    original_args: dict,
+    decisions: list,
+    timestamp: str,
+) -> None:
+    """Embed a HITL resolution record and upsert into the resolver_memory collection."""
+    text = (
+        f"HITL Resolution — Tool: {tool_name} | "
+        f"Args: {original_args} | "
+        f"Decision: {decisions} | "
+        f"Thread: {thread_id}"
+    )
+    vector = await _embeddings().aembed_query(text)
+    _qdrant().upsert(
+        collection_name=settings.qdrant_resolver_collection,
+        points=[
+            PointStruct(
+                id=str(uuid.uuid4()),
+                vector=vector,
+                payload={
+                    "thread_id": thread_id,
+                    "tool_name": tool_name,
+                    "original_args": original_args,
+                    "decisions": decisions,
+                    "timestamp": timestamp,
+                },
+            )
+        ],
+    )

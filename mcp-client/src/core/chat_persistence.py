@@ -93,3 +93,14 @@ async def mark_ltm_saved(thread_id: str) -> None:
             .values(ltm_saved=True)
         )
         await session.commit()
+
+
+async def get_unsaved_thread_ids() -> list[str]:
+    """Return thread_ids that have not yet been saved to LTM."""
+    async with AsyncSessionLocal() as session:
+        rows = (
+            await session.scalars(
+                select(Threads).where(Threads.ltm_saved == False)  # noqa: E712
+            )
+        ).all()
+    return [r.thread_id for r in rows]

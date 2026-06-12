@@ -1,4 +1,6 @@
+import asyncio
 import json
+from datetime import UTC, datetime
 from uuid import uuid4
 
 from fastapi import APIRouter
@@ -13,6 +15,16 @@ from src.declarative import workflow as workflow_module
 router = APIRouter(prefix="/chat", tags=["chat"])
 
 AGENT_NODES = {"orchestrator", "sales", "customers", "inventory", "knowledge", "aggregator"}
+
+# Background tasks — keeps references so they are not garbage-collected.
+_bg_tasks: set[asyncio.Task] = set()
+
+
+def _fire(coro) -> None:
+    """Schedule *coro* as a tracked background task."""
+    t = asyncio.create_task(coro)
+    _bg_tasks.add(t)
+    t.add_done_callback(_bg_tasks.discard)
 
 @router.post("")
 async def chat(request: ChatRequest) -> ChatResponse:
@@ -104,13 +116,35 @@ async def stream_chat(request: StreamChatRequest):
 @router.post("/resume")
 async def resume_chat(request: ResumeChatRequest):
     config = {"configurable": {"thread_id": request.thread_id}}
-
-    # HumanInTheLoopMiddleware.after_model does: decisions = interrupt(hitl_request)["decisions"]
-    # so the resume value must be {"decisions": [Decision]} — not a bare string.
     resume_value = {"decisions": request.decisions}
+
+    # Capture interrupted tool info BEFORE resuming so we can save it to
+    # resolver_memory after the tool executes.
+    snap_before = await workflow_module.graph.aget_state(config)
+    interrupt_info: dict = {}
+    for task in snap_before.tasks:
+        if task.interrupts:
+            hitl_req = task.interrupts[0].value
+            action_requests = hitl_req.get("action_requests", [])
+            if action_requests:
+                interrupt_info = {
+                    "tool_name": action_requests[0].get("name", ""),
+                    "original_args": action_requests[0].get("args", {}),
+                }
+            break
 
     async def generator():
         async for chunk in _sse_events(Command(resume=resume_value), config, request.thread_id, None):
             yield chunk
+        # After stream completes — if we had interrupt info, save resolution to Qdrant.
+        if interrupt_info:
+            from src.core.qdrant import upsert_resolver
+            _fire(upsert_resolver(
+                thread_id=request.thread_id,
+                tool_name=interrupt_info["tool_name"],
+                original_args=interrupt_info["original_args"],
+                decisions=request.decisions,
+                timestamp=datetime.now(UTC).isoformat(),
+            ))
 
     return StreamingResponse(generator(), media_type="text/event-stream")

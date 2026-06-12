@@ -42,6 +42,8 @@ class Settings(BaseSettings):
 
     # Qdrant thread collection (must match mcp-server THREAD_COLLECTION)
     qdrant_thread_collection: str = Field(default="thread_collection", alias="THREAD_COLLECTION")
+    # Qdrant resolver collection (must match mcp-server RESOLVER_COLLECTION)
+    qdrant_resolver_collection: str = Field(default="resolver_memory", alias="RESOLVER_COLLECTION")
 
 
 settings = Settings()

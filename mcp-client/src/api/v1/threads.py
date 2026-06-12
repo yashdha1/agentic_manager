@@ -1,3 +1,4 @@
+import asyncio
 from uuid import uuid4
 
 from fastapi import APIRouter, HTTPException
@@ -7,6 +8,9 @@ from src.api.v1.schemas import Message, ThreadDetailResponse, ThreadResponse
 from src.core import chat_persistence
 
 router = APIRouter(prefix="/threads", tags=["threads"])
+
+# Keeps references to background tasks so they are not garbage-collected.
+_bg_tasks: set[asyncio.Task] = set()
 
 
 @router.get("")
@@ -26,6 +30,13 @@ async def create_thread() -> ThreadResponse:
         await chat_persistence.ensure_thread(thread_id, "New Thread")
     except Exception:
         pass
+
+    # Sweep all unsaved threads to LTM now that a new thread is being started.
+    from src.core import ltm
+    _t = asyncio.create_task(ltm.sweep_unsaved_threads(exclude_thread_id=thread_id))
+    _bg_tasks.add(_t)
+    _t.add_done_callback(_bg_tasks.discard)
+
     return ThreadResponse(thread_id=thread_id)
 
 

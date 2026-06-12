@@ -3,6 +3,7 @@ import uuid
 from core.db.pg_engine import get_async_session
 from core.db.schemas import Email, User
 from core.time_utils import now
+from core.logger import logger as log
 from fastmcp import FastMCP
 from sqlalchemy import select
 
@@ -50,6 +51,7 @@ async def customers_send_subscribed_users_newsletter_hitl(
         )
         session.add(record)
         await session.commit()
+        log.info(f"Sent newsletter to {len(subscriber_emails)} subscribers with subject: '{subject}'")
 
         return {
             "status": "sent",

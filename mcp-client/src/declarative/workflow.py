@@ -1,17 +1,20 @@
 from __future__ import annotations
 
 import json as _json
+from pathlib import Path
 from typing import Annotated, TypedDict
 
-from langchain_core.messages import AIMessage, BaseMessage, HumanMessage
+from langchain_core.messages import AIMessage, BaseMessage, HumanMessage, SystemMessage, ToolMessage
 from langchain_core.runnables import RunnableConfig
 from langgraph.constants import Send
 from langgraph.graph import END, START, StateGraph
 from langgraph.graph.message import add_messages
+from langgraph.types import interrupt as _lg_interrupt
 
 import src.declarative.agent_static as agent_static
 from src.core import chat_persistence
 from src.core.logger import logger
+from src.declarative.AgentSpec import AgentsTool, get_tools_for
 from src.models.AgentOutput import AgentName, OrchestratorOutput
 
 graph = None # OBJ
@@ -73,8 +76,6 @@ async def _orchestrator_node(state: State) -> dict:
     }
 
 
-_SUB_AGENT_CONFIG = {"configurable": {}, "recursion_limit": 25}
-
 # Maximum number of prior messages forwarded to each sub-agent for context.
 _SUB_AGENT_HISTORY_LIMIT = 10
 
@@ -96,38 +97,175 @@ def _build_sub_agent_messages(state: State) -> list[BaseMessage]:
     return prior + [HumanMessage(content=state["query"])]
 
 
-async def _sales_node(state: State) -> dict:
-    response = await agent_static.sales_agent.ainvoke(
-        {"messages": _build_sub_agent_messages(state)},
-        _SUB_AGENT_CONFIG,
-    )
-    return {"agent_responses": {"sales": _msg_content(response)}}
+# ── Per-agent prompt directory ────────────────────────────────────────────────
+_AGENTS_DIR = Path(__file__).parent / "agents"
+
+
+def _load_md(filename: str) -> str:
+    return (_AGENTS_DIR / filename).read_text(encoding="utf-8")
+
+
+def _ensure_tool_str(v) -> str:
+    """Coerce a tool result to a plain string for ToolMessage content."""
+    if isinstance(v, str):
+        return v
+    try:
+        return _json.dumps(v, default=str)
+    except Exception:
+        return str(v)
+
+
+async def _run_agent_loop(
+    model,
+    tools_by_name: dict,
+    hitl_tool_names: set[str],
+    messages: list,
+) -> str:
+    """Run an agent tool-call loop with direct interrupt() for HITL tools.
+
+    HITL tools are intercepted and surfaced via langgraph's interrupt() called
+    directly inside this function (which executes within an outer workflow node).
+    This ensures the outer graph's checkpointer handles pause/resume — compiled
+    sub-graphs invoked via ainvoke() swallow GraphInterrupt internally and their
+    scratchpad never carries resume values, so HITL can never properly resume.
+    """
+    while True:
+        response: AIMessage = await model.ainvoke(messages)
+        messages = [*messages, response]
+
+        if not response.tool_calls:
+            content = response.content
+            if isinstance(content, list):
+                return "".join(
+                    b.get("text", "")
+                    for b in content
+                    if isinstance(b, dict) and b.get("type") == "text"
+                )
+            return content or ""
+
+        # ── Separate HITL vs. auto-approved tool calls ────────────────────────
+        hitl_calls = [tc for tc in response.tool_calls if tc["name"] in hitl_tool_names]
+        auto_calls = [tc for tc in response.tool_calls if tc["name"] not in hitl_tool_names]
+
+        tool_results: list[ToolMessage] = []
+
+        # ── Execute auto-approved tools immediately ───────────────────────────
+        for tc in auto_calls:
+            tool = tools_by_name.get(tc["name"])
+            if tool is None:
+                outcome = _ensure_tool_str({"error": f"Tool '{tc['name']}' not found"})
+            else:
+                try:
+                    raw = await tool.ainvoke(tc["args"])
+                    outcome = _ensure_tool_str(raw)
+                except Exception as exc:
+                    outcome = _ensure_tool_str({"error": str(exc)})
+            tool_results.append(
+                ToolMessage(content=outcome, name=tc["name"], tool_call_id=tc["id"])
+            )
+
+        # ── HITL tools: single interrupt() call for the whole batch ───────────
+        if hitl_calls:
+            hitl_request = {
+                "action_requests": [
+                    {
+                        "name": tc["name"],
+                        "args": tc["args"],
+                        "description": (
+                            f"Tool execution requires approval\n\n"
+                            f"Tool: {tc['name']}\nArgs: {tc['args']}"
+                        ),
+                    }
+                    for tc in hitl_calls
+                ],
+                "review_configs": [
+                    {
+                        "action_name": tc["name"],
+                        "allowed_decisions": ["approve", "edit", "reject"],
+                    }
+                    for tc in hitl_calls
+                ],
+            }
+            result = _lg_interrupt(hitl_request)
+            decisions: list[dict] = result["decisions"]
+
+            for i, tc in enumerate(hitl_calls):
+                decision = decisions[i] if i < len(decisions) else {"type": "approve"}
+                dtype = decision.get("type", "approve")
+
+                if dtype == "reject":
+                    outcome = _ensure_tool_str(
+                        {"status": "rejected", "message": decision.get("message", "")}
+                    )
+                elif dtype == "edit":
+                    edited = decision.get("edited_action", {})
+                    exec_name = edited.get("name", tc["name"])
+                    exec_args = edited.get("args", tc["args"])
+                    tool = tools_by_name.get(exec_name)
+                    if tool is None:
+                        outcome = _ensure_tool_str({"error": f"Tool '{exec_name}' not found"})
+                    else:
+                        try:
+                            raw = await tool.ainvoke(exec_args)
+                            outcome = _ensure_tool_str(raw)
+                        except Exception as exc:
+                            outcome = _ensure_tool_str({"error": str(exc)})
+                else:  # approve
+                    tool = tools_by_name.get(tc["name"])
+                    if tool is None:
+                        outcome = _ensure_tool_str({"error": f"Tool '{tc['name']}' not found"})
+                    else:
+                        try:
+                            raw = await tool.ainvoke(tc["args"])
+                            outcome = _ensure_tool_str(raw)
+                        except Exception as exc:
+                            outcome = _ensure_tool_str({"error": str(exc)})
+
+                tool_results.append(
+                    ToolMessage(content=outcome, name=tc["name"], tool_call_id=tc["id"])
+                )
+
+        messages = [*messages, *tool_results]
+
+
+async def _sales_node(state: State, config: RunnableConfig) -> dict:
+    tools = get_tools_for(AgentsTool.SALES)
+    tools_by_name = {t.name: t for t in tools}
+    hitl_tools = {t.name for t in tools if t.name.endswith("_hitl")}
+    model = agent_static._model_light.bind_tools(tools)
+    msgs = [SystemMessage(content=_load_md("sales.md"))] + _build_sub_agent_messages(state)
+    result = await _run_agent_loop(model, tools_by_name, hitl_tools, msgs)
+    return {"agent_responses": {"sales": result}}
 
 
 async def _customers_node(state: State, config: RunnableConfig) -> dict:
-    # Forward the outer graph's config (thread_id + checkpointer) so that
-    # HumanInTheLoopMiddleware's interrupt() call surfaces through the outer graph.
-    response = await agent_static.customer_agent.ainvoke(
-        {"messages": _build_sub_agent_messages(state)},
-        config,
-    )
-    return {"agent_responses": {"customers": _msg_content(response)}}
+    tools = get_tools_for(AgentsTool.CUSTOMER)
+    tools_by_name = {t.name: t for t in tools}
+    hitl_tools = {t.name for t in tools if t.name.endswith("_hitl")}
+    model = agent_static._model_light.bind_tools(tools)
+    msgs = [SystemMessage(content=_load_md("customer_support.md"))] + _build_sub_agent_messages(state)
+    result = await _run_agent_loop(model, tools_by_name, hitl_tools, msgs)
+    return {"agent_responses": {"customers": result}}
 
 
-async def _inventory_node(state: State) -> dict:
-    response = await agent_static.inventory_agent.ainvoke(
-        {"messages": _build_sub_agent_messages(state)},
-        _SUB_AGENT_CONFIG,
-    )
-    return {"agent_responses": {"inventory": _msg_content(response)}}
+async def _inventory_node(state: State, config: RunnableConfig) -> dict:
+    tools = get_tools_for(AgentsTool.INVENTORY)
+    tools_by_name = {t.name: t for t in tools}
+    hitl_tools = {t.name for t in tools if t.name.endswith("_hitl")}
+    model = agent_static._model_light.bind_tools(tools)
+    msgs = [SystemMessage(content=_load_md("inventory.md"))] + _build_sub_agent_messages(state)
+    result = await _run_agent_loop(model, tools_by_name, hitl_tools, msgs)
+    return {"agent_responses": {"inventory": result}}
 
 
-async def _knowledge_node(state: State) -> dict:
-    response = await agent_static.knowledge_agent.ainvoke(
-        {"messages": _build_sub_agent_messages(state)},
-        _SUB_AGENT_CONFIG,
-    )
-    return {"agent_responses": {"knowledge": _msg_content(response)}}
+async def _knowledge_node(state: State, config: RunnableConfig) -> dict:
+    tools = get_tools_for(AgentsTool.KNOWLEDGE)
+    tools_by_name = {t.name: t for t in tools}
+    hitl_tools = {t.name for t in tools if t.name.endswith("_hitl")}
+    model = agent_static._model_light.bind_tools(tools)
+    msgs = [SystemMessage(content=_load_md("knowledge.md"))] + _build_sub_agent_messages(state)
+    result = await _run_agent_loop(model, tools_by_name, hitl_tools, msgs)
+    return {"agent_responses": {"knowledge": result}}
 
 
 async def _aggregator_node(state: State) -> dict:
@@ -194,7 +332,6 @@ def init_workflow(checkpointer) -> None:
 
     builder.add_edge(START, "orchestrator")
     builder.add_conditional_edges("orchestrator", _route_to_agents)
-    builder.add_edge("orchestrator", "aggregator") 
 
     # Each sub-agent feeds into the aggregator.
     builder.add_edge("sales", "aggregator")
