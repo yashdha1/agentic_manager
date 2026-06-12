@@ -1,16 +1,20 @@
 from __future__ import annotations
 
+import json as _json
 from typing import Annotated, TypedDict
 
 from langchain_core.messages import AIMessage, BaseMessage, HumanMessage
+from langchain_core.runnables import RunnableConfig
 from langgraph.constants import Send
 from langgraph.graph import END, START, StateGraph
 from langgraph.graph.message import add_messages
 
 import src.declarative.agent_static as agent_static
+from src.core import chat_persistence
+from src.core.logger import logger
 from src.models.AgentOutput import AgentName, OrchestratorOutput
 
-graph = None
+graph = None # OBJ
 
 
 def _msg_content(response: dict) -> str:
@@ -46,6 +50,7 @@ def _merge_dicts(a: dict, b: dict) -> dict:
 
 class State(TypedDict):
     query: str
+    thread_id: str
     selected_agents: list[AgentName]
     policies: list[str]
     # Accumulated by all parallel sub-agent nodes before aggregator runs.
@@ -99,10 +104,12 @@ async def _sales_node(state: State) -> dict:
     return {"agent_responses": {"sales": _msg_content(response)}}
 
 
-async def _customers_node(state: State) -> dict:
+async def _customers_node(state: State, config: RunnableConfig) -> dict:
+    # Forward the outer graph's config (thread_id + checkpointer) so that
+    # HumanInTheLoopMiddleware's interrupt() call surfaces through the outer graph.
     response = await agent_static.customer_agent.ainvoke(
         {"messages": _build_sub_agent_messages(state)},
-        _SUB_AGENT_CONFIG,
+        config,
     )
     return {"agent_responses": {"customers": _msg_content(response)}}
 
@@ -147,6 +154,20 @@ async def _aggregator_node(state: State) -> dict:
         {"messages": messages_for_agg}
     )
     final = _msg_content(response)
+    # Persist to PostgreSQL (durable chat history).
+    _thread_id = state.get("thread_id", "")
+    if _thread_id:
+        try: 
+            await chat_persistence.ensure_thread(_thread_id, state["query"][:100])
+            await chat_persistence.save_conversation(
+                thread_id=_thread_id,
+                human_msg=state["query"],
+                ai_msg=final,
+                tool_calls=_json.dumps(state.get("agent_responses", {})),
+            )
+        except Exception as _exc:
+            logger.error("PG persist failed for thread {}: {}", _thread_id, _exc)
+
     return {
         "final_response": final,
         # Append the AI response to the persisted message history.

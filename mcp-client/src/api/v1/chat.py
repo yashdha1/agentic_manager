@@ -19,7 +19,7 @@ async def chat(request: ChatRequest) -> ChatResponse:
     thread_id = request.thread_id or str(uuid4())
     config = {"configurable": {"thread_id": thread_id}}
     result = await workflow_module.graph.ainvoke(
-        {"query": request.message, "messages": [HumanMessage(content=request.message)]},
+        {"query": request.message, "thread_id": thread_id, "messages": [HumanMessage(content=request.message)]},
         config,
     )
     return ChatResponse(response=result.get("final_response", ""), thread_id=thread_id)
@@ -91,7 +91,7 @@ async def stream_chat(request: StreamChatRequest):
     async def generator():
         yield f"data: {json.dumps({'type': 'thread_id', 'data': thread_id})}\n\n"
         async for chunk in _sse_events(
-            {"query": request.message, "messages": [HumanMessage(content=request.message)]},
+            {"query": request.message, "thread_id": thread_id, "messages": [HumanMessage(content=request.message)]},
             config,
             thread_id,
             request.message,

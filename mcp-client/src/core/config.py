@@ -33,5 +33,15 @@ class Settings(BaseSettings):
 
     mcp_server_url: str = Field(default="http://localhost:9000", alias="MCP_SERVER_URL")
 
+    # PostgreSQL (same DB as mcp-server)
+    postgres_user: str = Field(default="postgres", alias="POSTGRES_USER")
+    postgres_password: str = Field(default="", alias="POSTGRES_PASSWORD")
+    postgres_db: str = Field(default="postgres", alias="POSTGRES_DB")
+    postgres_host: str = Field(default="localhost", alias="POSTGRES_HOST")
+    postgres_port: int = Field(default=5432, alias="POSTGRES_PORT")
+
+    # Qdrant thread collection (must match mcp-server THREAD_COLLECTION)
+    qdrant_thread_collection: str = Field(default="thread_collection", alias="THREAD_COLLECTION")
+
 
 settings = Settings()

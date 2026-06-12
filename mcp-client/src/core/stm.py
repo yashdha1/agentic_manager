@@ -63,7 +63,7 @@ class RedisSTM:
         if self._ttl is not None:
             pipe.expire(key, self._ttl)
         await pipe.execute()
-        logger.debug("STM append [%s] %s", thread_id, role)
+        logger.debug("STM append [{}] {}", thread_id, role)
 
     async def get_messages(self, thread_id: str) -> list[dict]:
         """Return all messages for a thread in insertion order."""
@@ -72,6 +72,32 @@ class RedisSTM:
 
     async def close(self) -> None:
         await self._client.aclose()
+
+    # ── LTM expiry hooks ─────────────────────────────────────────────────────
+
+    async def enable_keyspace_notifications(self) -> None:
+        """Enable Redis keyspace notifications for expired events (required for LTM)."""
+        await self._client.config_set("notify-keyspace-events", "Kx")
+        logger.info("Redis keyspace notifications enabled (expired events).")
+
+    async def subscribe_expiry_events(self, callback) -> None:
+        """Listen for STM key expiry events and invoke *callback(thread_id)* for each.
+
+        Runs indefinitely; cancel the wrapping asyncio.Task to stop.
+        """
+        channel = "__keyevent@0__:expired"
+        pubsub = self._client.pubsub()
+        await pubsub.subscribe(channel)
+        logger.info("Subscribed to Redis expiry channel for LTM processing.")
+        async for message in pubsub.listen():
+            if message["type"] == "message":
+                key: str = message["data"]
+                if key.startswith(_MSG_KEY_PREFIX):
+                    thread_id = key[len(_MSG_KEY_PREFIX):]
+                    try:
+                        await callback(thread_id)
+                    except Exception as exc:
+                        logger.error("LTM callback failed for thread {}: {}", thread_id, exc)
 
 
 class InMemorySTM:

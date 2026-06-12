@@ -533,9 +533,13 @@ export default function DemoPage(): React.ReactNode {
 
   useEffect(() => {
     async function init() {
-      const allThreads = await listThreads();
-      setThreads(allThreads);
-      if (allThreads.length > 0) await loadThread(allThreads[0]);
+      try {
+        const allThreads = await listThreads();
+        setThreads(allThreads);
+        if (allThreads.length > 0) await loadThread(allThreads[0]);
+      } catch {
+        // Backend unreachable — start with an empty state so the UI still loads
+      }
     }
     void init();
   }, [loadThread]);

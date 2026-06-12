@@ -180,4 +180,3 @@ async def sales_update_product_stock_hitl(product_id: int, restock_quantity: int
             "new_stock": new_stock,
             "inventory_event_type": "restock",
         }
-

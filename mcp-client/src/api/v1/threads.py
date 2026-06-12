@@ -2,15 +2,19 @@ from uuid import uuid4
 
 from fastapi import APIRouter, HTTPException
 
-from src.api.v1.schemas import Message, ThreadDetailResponse, ThreadResponse
 from src.api.v1 import state as api_state
+from src.api.v1.schemas import Message, ThreadDetailResponse, ThreadResponse
+from src.core import chat_persistence
 
 router = APIRouter(prefix="/threads", tags=["threads"])
 
 
 @router.get("")
 async def list_threads() -> list[ThreadResponse]:
-    thread_ids = await api_state.stm.list_threads()
+    try:
+        thread_ids = await chat_persistence.list_all_threads()
+    except Exception:
+        thread_ids = await api_state.stm.list_threads()
     return [ThreadResponse(thread_id=t) for t in thread_ids]
 
 
@@ -18,16 +22,34 @@ async def list_threads() -> list[ThreadResponse]:
 async def create_thread() -> ThreadResponse:
     thread_id = str(uuid4())
     await api_state.stm.create_thread(thread_id)
+    try:
+        await chat_persistence.ensure_thread(thread_id, "New Thread")
+    except Exception:
+        pass
     return ThreadResponse(thread_id=thread_id)
 
 
 @router.get("/{thread_id}", responses={404: {"description": "Thread not found"}})
 async def get_thread(thread_id: str) -> ThreadDetailResponse:
-    if not await api_state.stm.thread_exists(thread_id):
-        raise HTTPException(status_code=404, detail="Thread not found")
-    messages = [
-        Message(role=m["role"], content=m["content"])
-        for m in await api_state.stm.get_messages(thread_id)
-    ]
-    return ThreadDetailResponse(thread_id=thread_id, messages=messages)
+    # Fast path: STM still alive
+    if await api_state.stm.thread_exists(thread_id):
+        msgs = await api_state.stm.get_messages(thread_id)
+        return ThreadDetailResponse(
+            thread_id=thread_id,
+            messages=[Message(role=m["role"], content=m["content"]) for m in msgs],
+        )
+
+    # Fallback: read from PostgreSQL (STM expired or empty)
+    try:
+        conversations = await chat_persistence.get_conversations(thread_id)
+        if conversations:
+            messages = []
+            for c in conversations:
+                messages.append(Message(role="user", content=c["human_message"]))
+                messages.append(Message(role="assistant", content=c["ai_message"]))
+            return ThreadDetailResponse(thread_id=thread_id, messages=messages)
+    except Exception:
+        pass
+
+    raise HTTPException(status_code=404, detail="Thread not found")
 

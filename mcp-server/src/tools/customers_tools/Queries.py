@@ -12,19 +12,21 @@ mcp = FastMCP("ecomm_mcp_customer_commands")
 @mcp.tool
 async def customers_send_subscribed_users_newsletter_hitl(
     subject: str,
-    body: str,
-    html_body: str | None = None,
+    body: str
 ) -> dict:
     """
-    Send a newsletter email to all users with newsletter subscription enabled.
+    Send a newsletter to every user who has opted in to the newsletter.
 
-    Requires human approval before executing — the HITL middleware intercepts
-    this call and raises a LangGraph interrupt. The email record is only inserted
-    after the operator approves.
+    Call this tool with ONLY the subject and body — it looks up all
+    subscribed users internally. Do NOT ask for or collect subscriber
+    emails before calling this tool.
+
+    Note: a human-approval step is automatically triggered before
+    dispatch; you do not need to handle that — just call the tool.
 
     Args:
         subject:   Email subject line.
-        body:      Plain-text email body. 
+        body:      Plain-text email body.
     """
     async with get_async_session() as session:
         stmt = select(User.email).where(User.has_newsletter.is_(True))

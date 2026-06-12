@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 from collections.abc import AsyncIterator
 from contextlib import AsyncExitStack, asynccontextmanager
 from typing import Any
@@ -41,13 +42,15 @@ def _patch_redis_serializer() -> None:
 _patch_redis_serializer()
 
 from src.api.v1 import router as api_router
+from src.api.v1 import state as api_state
 from src.core.config import settings
 from src.core.logger import logger
+from src.core.pg import close_pool, ensure_pg_ready
 from src.core.stm import InMemorySTM, RedisSTM
 from src.core.tracing import configure_langsmith_tracing
 from src.declarative.AgentSpec import _all_tools
 from src.declarative.mcp_tools import prepare_workflow
-from src.api.v1 import state as api_state
+
 
 async def _make_checkpointer(stack: AsyncExitStack):
     """Try Redis; fall back to in-memory if Redis is unavailable."""
@@ -83,15 +86,38 @@ async def lifespan(_: FastAPI) -> AsyncIterator[None]:
         # Falls back to in-process memory when Redis is unavailable.
         if redis_url:
             api_state.stm = RedisSTM(redis_url, ttl=settings.redis_stm_ttl)
-            logger.info("Using Redis STM (ttl=%s s)", settings.redis_stm_ttl)
+            logger.info("Using Redis STM (ttl={} s)", settings.redis_stm_ttl)
         else:
             api_state.stm = InMemorySTM()
             logger.warning("Using in-memory STM (data will be lost on restart).")
 
+        # ── PostgreSQL (durable chat history) ───────────────────────────────
+        try:
+            await ensure_pg_ready()
+        except Exception as exc:
+            logger.warning("PostgreSQL unavailable ({}). Chat turns will not be persisted.", exc)
+
+        # ── LTM expiry subscriber ────────────────────────────────────────────
+        _ltm_task = None
+        if isinstance(api_state.stm, RedisSTM):
+            from src.core import ltm
+            try:
+                await api_state.stm.enable_keyspace_notifications()
+                _ltm_task = asyncio.create_task(
+                    api_state.stm.subscribe_expiry_events(ltm.process_thread_expiry)
+                )
+            except Exception as exc:
+                logger.warning("LTM subscriber could not start: {}", exc)
+
         await prepare_workflow(checkpointer)
         logger.info(f"MCP client is ready to serve requests. {len(_all_tools)} tools loaded.")
         yield
+
+        if _ltm_task is not None:
+            _ltm_task.cancel()
+
     await api_state.stm.close()
+    await close_pool()
     logger.info("Shutting down the MCP client...")
 
 

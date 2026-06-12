@@ -23,5 +23,8 @@ dependencies = [
     "chromadb>=1.5.9",
     "langchain-text-splitters>=1.1.2",
     "langchain-community>=0.4.2",
+    "asyncpg>=0.29",
+    "sqlalchemy[asyncio]>=2.0",
+    "qdrant-client>=1.7",
 ]
  
