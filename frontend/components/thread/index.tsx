@@ -45,6 +45,7 @@ import {
   ArtifactTitle,
   useArtifactContext,
 } from "./artifact";
+import { getThreadMessages, ChatMessage } from "@/lib/api";
 
 function StickyToBottomContent(props: {
   content: ReactNode;
@@ -91,6 +92,58 @@ function ScrollToBottom(props: { className?: string }) {
   );
 }
 
+/**
+ * Convert REST API ChatMessage to LangGraph SDK Message format
+ */
+function convertAPIMessageToSDKMessage(
+  apiMessage: ChatMessage,
+  index: number,
+): Message {
+  if (apiMessage.role === "user") {
+    return {
+      type: "human",
+      content: apiMessage.content,
+      id: `persistent-msg-${index}`,
+    } as Message;
+  } else {
+    const toolCalls: Message["tool_calls"] =
+      apiMessage.tool_calls && typeof apiMessage.tool_calls === "string"
+        ? (() => {
+            try {
+              const parsed = JSON.parse(apiMessage.tool_calls);
+              // If it's an object (from agent_responses dict), convert to array
+              if (typeof parsed === "object" && !Array.isArray(parsed)) {
+                return Object.entries(parsed).map(([name, args], i) => ({
+                  name,
+                  args: args as Record<string, any>,
+                  id: `tool-${index}-${i}`,
+                  type: "tool_call" as const,
+                }));
+              }
+              // If it's already an array, use as-is
+              if (Array.isArray(parsed)) {
+                return parsed.map((tc: any, i) => ({
+                  ...tc,
+                  id: tc.id || `tool-${index}-${i}`,
+                  type: "tool_call" as const,
+                }));
+              }
+            } catch {
+              // Invalid JSON, ignore
+            }
+            return undefined;
+          })()
+        : undefined;
+
+    return {
+      type: "ai",
+      content: apiMessage.content,
+      id: `persistent-msg-${index}`,
+      tool_calls: toolCalls,
+    } as Message;
+  }
+}
+
 export function Thread() {
   const [artifactContext, setArtifactContext] = useArtifactContext();
   const [artifactOpen, closeArtifact] = useArtifactOpen();
@@ -105,6 +158,7 @@ export function Thread() {
     parseAsBoolean.withDefault(false),
   );
   const [input, setInput] = useState("");
+  const [historicalMessages, setHistoricalMessages] = useState<Message[]>([]);
   const {
     contentBlocks,
     setContentBlocks,
@@ -153,6 +207,34 @@ export function Thread() {
       // no-op
     }
   }, [stream.error]);
+
+  // Load persisted message history from REST API when thread changes
+  useEffect(() => {
+    if (!threadId) {
+      setHistoricalMessages([]);
+      return;
+    }
+
+    const loadHistoricalMessages = async () => {
+      try {
+        const apiMessages = await getThreadMessages(threadId);
+        if (apiMessages && apiMessages.length > 0) {
+          // Convert API messages to SDK format
+          const sdkMessages = apiMessages.map((msg, idx) =>
+            convertAPIMessageToSDKMessage(msg, idx),
+          );
+          setHistoricalMessages(sdkMessages);
+        } else {
+          setHistoricalMessages([]);
+        }
+      } catch (error) {
+        console.warn("Failed to load historical messages:", error);
+        setHistoricalMessages([]);
+      }
+    };
+
+    loadHistoricalMessages();
+  }, [threadId]);
 
   const prevMessageLength = useRef(0);
   useEffect(() => {
@@ -352,24 +434,33 @@ export function Thread() {
               contentClassName="pt-8 pb-6 max-w-3xl mx-auto flex flex-col gap-5 w-full"
               content={
                 <>
-                  {messages
-                    .filter((m) => !m.id?.startsWith(DO_NOT_RENDER_ID_PREFIX))
-                    .map((message, index) =>
-                      message.type === "human" ? (
-                        <HumanMessage
-                          key={message.id || `${message.type}-${index}`}
-                          message={message}
-                          isLoading={isLoading}
-                        />
-                      ) : (
-                        <AssistantMessage
-                          key={message.id || `${message.type}-${index}`}
-                          message={message}
-                          isLoading={isLoading}
-                          handleRegenerate={handleRegenerate}
-                        />
-                      ),
-                    )}
+                  {/* Merge historical and stream messages intelligently */}
+                  {(() => {
+                    // If stream has messages, use only stream (live conversation)
+                    let displayMessages = messages;
+                    // If stream is empty but we have historical messages, show historical
+                    if (messages.length === 0 && historicalMessages.length > 0) {
+                      displayMessages = historicalMessages;
+                    }
+                    return displayMessages
+                      .filter((m) => !m.id?.startsWith(DO_NOT_RENDER_ID_PREFIX))
+                      .map((message, index) =>
+                        message.type === "human" ? (
+                          <HumanMessage
+                            key={message.id || `${message.type}-${index}`}
+                            message={message}
+                            isLoading={isLoading}
+                          />
+                        ) : (
+                          <AssistantMessage
+                            key={message.id || `${message.type}-${index}`}
+                            message={message}
+                            isLoading={isLoading}
+                            handleRegenerate={handleRegenerate}
+                          />
+                        ),
+                      );
+                  })()}
                   {hasNoAIOrToolMessages && !!stream.interrupt && (
                     <AssistantMessage
                       key="interrupt-msg"

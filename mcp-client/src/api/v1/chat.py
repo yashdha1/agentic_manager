@@ -77,11 +77,19 @@ async def _sse_events(input_data, config: dict, thread_id: str, user_message: st
     snap = await workflow_module.graph.aget_state(config)
 
     if snap.next:  # graph is paused at human_approval
-        interrupt_val: dict = {}
+        # Collect ALL interrupt requests from ALL parallel tasks so the frontend
+        # can present every pending HITL action in one review — not just the first.
+        all_action_requests: list[dict] = []
+        all_review_configs: list[dict] = []
         for task in snap.tasks:
-            if task.interrupts:
-                interrupt_val = task.interrupts[0].value
-                break
+            for intr in task.interrupts:
+                val = intr.value
+                all_action_requests.extend(val.get("action_requests", []))
+                all_review_configs.extend(val.get("review_configs", []))
+        interrupt_val = {
+            "action_requests": all_action_requests,
+            "review_configs": all_review_configs,
+        }
         # Persist user message now (before user decides)
         if user_message is not None:
             await api_state.stm.append_message(thread_id, "user", user_message)
@@ -110,41 +118,64 @@ async def stream_chat(request: StreamChatRequest):
         ):
             yield chunk
 
-    return StreamingResponse(generator(), media_type="text/event-stream")
+    return StreamingResponse(
+        generator(),
+        media_type="text/event-stream",
+        headers={"X-Accel-Buffering": "no", "Cache-Control": "no-cache"},
+    )
 
 
 @router.post("/resume")
 async def resume_chat(request: ResumeChatRequest):
     config = {"configurable": {"thread_id": request.thread_id}}
-    resume_value = {"decisions": request.decisions}
 
-    # Capture interrupted tool info BEFORE resuming so we can save it to
-    # resolver_memory after the tool executes.
+    # Capture ALL interrupted action requests in the same order the frontend
+    # presented them (matching all_action_requests built in _sse_events).
     snap_before = await workflow_module.graph.aget_state(config)
-    interrupt_info: dict = {}
+    ordered_requests: list[dict] = []
     for task in snap_before.tasks:
-        if task.interrupts:
-            hitl_req = task.interrupts[0].value
-            action_requests = hitl_req.get("action_requests", [])
-            if action_requests:
-                interrupt_info = {
-                    "tool_name": action_requests[0].get("name", ""),
-                    "original_args": action_requests[0].get("args", {}),
-                }
-            break
+        for intr in task.interrupts:
+            hitl_req = intr.value
+            agent_name = hitl_req.get("agent", "")
+            for ar in hitl_req.get("action_requests", []):
+                ordered_requests.append({
+                    "agent": ar.get("agent", agent_name),
+                    "tool_name": ar.get("name", ""),
+                    "original_args": ar.get("args", {}),
+                })
+
+    # Build per-agent decision slices so each parallel agent gets exactly its
+    # own decisions when it resumes from _lg_interrupt().
+    decisions_by_agent: dict[str, list] = {}
+    for i, req_info in enumerate(ordered_requests):
+        agent = req_info["agent"]
+        decision = request.decisions[i] if i < len(request.decisions) else {"type": "approve"}
+        decisions_by_agent.setdefault(agent, []).append(decision)
+
+    resume_value = {
+        "decisions_by_agent": decisions_by_agent,
+        "decisions": request.decisions,  # fallback for single-agent paths
+    }
 
     async def generator():
         async for chunk in _sse_events(Command(resume=resume_value), config, request.thread_id, None):
             yield chunk
-        # After stream completes — if we had interrupt info, save resolution to Qdrant.
-        if interrupt_info:
+        # Save every HITL resolution to Qdrant resolver memory.
+        if ordered_requests:
             from src.core.qdrant import upsert_resolver
-            _fire(upsert_resolver(
-                thread_id=request.thread_id,
-                tool_name=interrupt_info["tool_name"],
-                original_args=interrupt_info["original_args"],
-                decisions=request.decisions,
-                timestamp=datetime.now(UTC).isoformat(),
-            ))
+            ts = datetime.now(UTC).isoformat()
+            for i, req_info in enumerate(ordered_requests):
+                decision = request.decisions[i] if i < len(request.decisions) else {"type": "approve"}
+                _fire(upsert_resolver(
+                    thread_id=request.thread_id,
+                    tool_name=req_info["tool_name"],
+                    original_args=req_info["original_args"],
+                    decisions=[decision],
+                    timestamp=ts,
+                ))
 
-    return StreamingResponse(generator(), media_type="text/event-stream")
+    return StreamingResponse(
+        generator(),
+        media_type="text/event-stream",
+        headers={"X-Accel-Buffering": "no", "Cache-Control": "no-cache"},
+    )

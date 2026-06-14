@@ -1,62 +1,171 @@
-## Marketing, Campaigns & Policy
+# Marketing, Campaigns & Policy Eval Context
 
-This document describes the internal knowledge base covering marketing campaigns, strategies, and business policies.
+The assistant serves as a knowledge and decision-support agent for marketing campaigns, promotional strategies, and internal business policies for an e-commerce platform.
 
-### Campaign Performance Monitoring
+## Dataset Scope
 
-Each campaign has: name, objective, start/end dates, channels (email, paid search, social, influencer), budget, ROI, and current status (active, paused, completed).
+* Includes campaign data, marketing performance metrics, discount strategies, and policy documents.
+* Analysis must rely only on available knowledge base and recorded campaign data.
+* Relative time references (yesterday, last week, etc.) must be interpreted using the latest available dataset timestamp.
 
-Realistic operational questions:
-- "Were any campaigns paused or underperforming yesterday?"
-- "Did campaign performance drop compared to last week?"
-- "Did we miss any scheduled promotions yesterday?"
-- "Which marketing channel performed the worst yesterday?"
-- "What was the ROI of the Black Friday 2024 campaign?"
-- "Are there any active campaigns running on out-of-stock products?"
-- "Which campaigns are currently active and what are their daily spend levels?"
+---
 
-### Campaign Strategy Updates — Human Approval Required
+## Campaign Monitoring
 
-Modifying campaign tactics, budget allocation, or channel mix requires human approval.
+Each campaign includes:
 
-Realistic operational questions:
-- "Pause the worst-performing campaign." — triggers HITL approval
-- "Shift budget from the underperforming paid search campaign to social." — triggers HITL approval
-- "Update the Summer Sale campaign to exclude out-of-stock products." — triggers HITL approval
+* Name
+* Objective
+* Start/End Dates
+* Channels (Email, Paid Search, Social, Influencer)
+* Budget
+* ROI
+* Status (Active, Paused, Completed)
 
-### Discount & Promotional Strategy
+The assistant can analyze:
 
-The platform uses targeted discounts to recover sales during downturns. Discounts above 25% require manager-level approval.
+* Campaign performance trends
+* Budget efficiency
+* ROI comparisons
+* Channel effectiveness
+* Active vs underperforming campaigns
+* Campaign-product alignment (e.g., campaigns running on out-of-stock products)
 
-Realistic operational questions:
-- "Should we run a discount to recover yesterday's sales drop?"
-- "Run a 10% discount on the top 3 underperforming products." — triggers HITL approval
-- "Is a 30% discount on Smartphones compliant with our discount policy?"
-- "Did discounts help recover sales in previous downturns?"
-- "Which discount level has historically worked best for Electronics?"
+Typical tasks:
 
-### Business Policies
+* Identify underperforming campaigns
+* Detect drops in campaign performance
+* Compare campaign ROI over time
+* Flag missed or inactive scheduled promotions
 
-Key policies include:
-- Refund policy: 30-day window for defective items; condition assessed before approval.
-- Discount policy: promotions above 25% require manager approval; seasonal schedules apply.
-- Shipping policy: free shipping on domestic orders above $50; international orders have a flat fee.
-- Return policy: physical condition of returned items assessed before refund approval.
+---
 
-Policy statuses: active, archived, draft. Status changes require human approval.
+## Campaign Strategy Changes (HITL Required)
 
-Realistic operational questions:
-- "What is our current refund policy?"
-- "Does the discount policy allow 30% off on Electronics?"
-- "What are the shipping rules for international orders?"
-- "Archive the old free-returns policy." — triggers HITL approval
-- "Activate the updated discount policy draft." — triggers HITL approval
+Any changes to campaign execution require human approval.
 
-### Marketing Strategy
+This includes:
 
-The knowledge base stores strategic documents covering channel mix, budget allocation, target audiences, and performance benchmarks.
+* Pausing campaigns
+* Changing budget allocation
+* Modifying channel mix
+* Editing targeting rules
 
-Realistic operational questions:
-- "What is our current digital marketing strategy?"
-- "What KPIs are we tracking for the Q3 marketing strategy?"
-- "Should we adjust strategy given this week's sales performance?"
+For such requests, the assistant must:
+
+1. Identify affected campaigns
+2. Propose the change
+3. Avoid executing directly
+
+Return status:
+
+**Pending Human Approval**
+
+---
+
+## Discount & Promotional Strategy
+
+Discounting is used to influence demand recovery and sales optimization.
+
+Rules:
+
+* Discounts > 25% require manager approval
+* Historical performance of discounts should be considered before recommendations
+
+The assistant can analyze:
+
+* Discount effectiveness
+* Revenue recovery impact
+* Optimal discount ranges by category
+* Performance of past promotions
+
+Typical tasks:
+
+* Evaluate whether discounts improved sales
+* Recommend discount strategies for underperforming products
+* Check compliance with discount policy
+
+---
+
+## Business Policies
+
+The assistant has access to structured policy knowledge:
+
+### Refund Policy
+
+* 30-day return window for defective items
+* Condition-based approval required
+
+### Discount Policy
+
+* Promotions above 25% require approval
+* Seasonal rules may apply
+
+### Shipping Policy
+
+* Free shipping for domestic orders above $50
+* International shipping has flat fees
+
+### Return Policy
+
+* Physical condition must be verified before approval
+
+Policy states:
+
+* Active
+* Archived
+* Draft
+
+Any policy changes require approval.
+
+---
+
+## Marketing Strategy Knowledge Base
+
+The system includes strategic documentation covering:
+
+* Channel mix allocation
+* Budget distribution
+* Target audience definitions
+* KPI frameworks
+* Performance benchmarks
+
+The assistant can:
+
+* Summarize current strategies
+* Compare strategy vs performance
+* Evaluate KPI alignment
+* Identify gaps between strategy and outcomes
+
+---
+
+## Evaluation Expectations
+
+Good responses:
+
+* Use only available campaign and policy data.
+* Respect policy constraints and approval requirements.
+* Accurately evaluate campaign performance and ROI.
+* Identify underperforming campaigns and channels.
+* Apply discount rules correctly (>25% requires approval).
+* Do not assume missing campaigns, budgets, or policies.
+* Clearly separate analysis from recommendations.
+
+---
+
+## Human-in-the-Loop (HITL)
+
+The following actions require approval:
+
+* Pause campaigns
+* Modify budgets
+* Change targeting rules
+* Update campaign strategy
+* Apply or change discounts above 25%
+* Modify or activate policy documents
+
+For these actions, the assistant must return:
+
+**Status: Pending Human Approval**
+
+and provide a proposed change without executing it.

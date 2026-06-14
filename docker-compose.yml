@@ -50,8 +50,12 @@ services:
   #     - .env
   #   environment:
   #     MCP_SERVER_URL: "http://mcp-server:9000"
+  #     POSTGRES_HOST: "postgres"
+  #     REDIS_HOST: "redis"
   #   depends_on:
   #     - mcp-server
+  #     - postgres
+  #     - redis
 
   # frontend:
   #   build:

@@ -55,7 +55,7 @@ async def save_conversation(
 
 
 async def get_conversations(thread_id: str) -> list[dict]:
-    """Return all turns for *thread_id* ordered oldest-first."""
+    """Return all turns for *thread_id* ordered oldest-first, including tool calls."""
     async with AsyncSessionLocal() as session:
         rows = (
             await session.scalars(
@@ -68,21 +68,29 @@ async def get_conversations(thread_id: str) -> list[dict]:
         {
             "human_message": r.human_message,
             "ai_message": r.ai_message,
+            "tool_calls": r.tool_calls,
             "timestamp": r.timestamp,
         }
         for r in rows
     ]
 
 
-async def list_all_threads() -> list[str]:
-    """Return thread_ids ordered most-recent first."""
+async def list_all_threads() -> list[dict]:
+    """Return all threads ordered most-recent first, with metadata."""
     async with AsyncSessionLocal() as session:
         rows = (
             await session.scalars(
                 select(Threads).order_by(Threads.created_at.desc())
             )
         ).all()
-    return [r.thread_id for r in rows]
+    return [
+        {
+            "thread_id": r.thread_id,
+            "title": r.title,
+            "created_at": r.created_at,
+        }
+        for r in rows
+    ]
 
 
 async def mark_ltm_saved(thread_id: str) -> None:

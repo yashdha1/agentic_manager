@@ -1,9 +1,14 @@
+from datetime import datetime
+from typing import Any
+
 from pydantic import BaseModel
 
 
 class Message(BaseModel):
     role: str
     content: str
+    tool_calls: str | None = None  # JSON string of tool calls
+    timestamp: datetime | None = None
 
 
 class ChatRequest(BaseModel):
@@ -30,6 +35,15 @@ class ThreadResponse(BaseModel):
     thread_id: str
 
 
+class ThreadListItemResponse(BaseModel):
+    """Thread metadata for list view."""
+    thread_id: str
+    title: str
+    created_at: datetime | None = None
+
+
 class ThreadDetailResponse(BaseModel):
     thread_id: str
+    title: str
+    created_at: datetime | None = None
     messages: list[Message]

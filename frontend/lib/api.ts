@@ -1,7 +1,15 @@
 export type ChatMessage = {
   role: "user" | "assistant";
   content: string;
+  tool_calls?: string | null;
+  timestamp?: string;
   meta?: { agents: string[]; tools: string[] };
+};
+
+export type ThreadListItem = {
+  thread_id: string;
+  title: string;
+  created_at: string | null;
 };
 
 export type StreamEvent =
@@ -14,13 +22,16 @@ export type StreamEvent =
   | { type: "thread_id"; data: string }
   | { type: "token_usage"; data: { input_tokens: number; output_tokens: number; total_tokens: number } };
 
-const API_BASE = process.env.NEXT_PUBLIC_BACKEND_URL ?? "http://localhost:8000";
+// Empty string → relative URLs → routed through Next.js proxy at /api/[..._path]/route.ts
+// which forwards to BACKEND_URL_INTERNAL server-side, avoiding CORS entirely.
+// Set NEXT_PUBLIC_BACKEND_URL only if you need to override the proxy (e.g. direct LAN access).
+const API_BASE = process.env.NEXT_PUBLIC_BACKEND_URL ?? "";
 
-export async function listThreads(): Promise<string[]> {
+export async function listThreads(): Promise<ThreadListItem[]> {
   const response = await fetch(`${API_BASE}/api/v1/threads`, { cache: "no-store" });
   if (!response.ok) throw new Error("Failed to list threads");
-  const data: Array<{ thread_id: string }> = await response.json();
-  return data.map((item) => item.thread_id);
+  const data: ThreadListItem[] = await response.json();
+  return data;
 }
 
 export async function createThread(): Promise<string> {
@@ -38,7 +49,12 @@ export async function getThreadMessages(threadId: string): Promise<ChatMessage[]
     cache: "no-store",
   });
   if (!response.ok) throw new Error("Failed to load thread");
-  const data: { messages: ChatMessage[] } = await response.json();
+  const data: { 
+    thread_id: string; 
+    title: string; 
+    created_at?: string;
+    messages: ChatMessage[] 
+  } = await response.json();
   return data.messages;
 }
 

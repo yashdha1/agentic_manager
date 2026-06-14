@@ -8,6 +8,7 @@ import {
   resumeThread,
   type ChatMessage,
   type StreamEvent,
+  type ThreadListItem,
 } from "@/lib/api";
 import React, { useRef, useEffect, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
@@ -262,11 +263,13 @@ function UserMessage({ message, index }: { message: ChatMessage; index: number }
 /* ── Thread sidebar item ─────────────────────────────────── */
 function ThreadItem({
   threadId,
+  title,
   isActive,
   onClick,
   index,
 }: {
   threadId: string;
+  title: string;
   isActive: boolean;
   onClick: () => void;
   index: number;
@@ -284,7 +287,7 @@ function ThreadItem({
       }`}
     >
       <MessageSquare className={`size-3.5 shrink-0 transition-colors ${isActive ? "text-primary" : "text-muted-foreground group-hover:text-foreground"}`} />
-      <span className="truncate font-mono">{threadId.slice(0, 12)}…</span>
+      <span className="truncate">{title || threadId.slice(0, 12) + "…"}</span>
     </motion.button>
   );
 }
@@ -491,7 +494,7 @@ function EmptyState() {
 /* ── Main page ───────────────────────────────────────────── */
 export default function DemoPage(): React.ReactNode {
   const [mounted, setMounted] = useState(false);
-  const [threads, setThreads] = useState<string[]>([]);
+  const [threads, setThreads] = useState<ThreadListItem[]>([]);
   const [activeThreadId, setActiveThreadId] = useState<string | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [streamState, setStreamState] = useState<StreamState | null>(null);
@@ -515,13 +518,19 @@ export default function DemoPage(): React.ReactNode {
     setInterruptData(null);
     setInput("");
     if (textareaRef.current) textareaRef.current.style.height = "36px";
-    const data = await getThreadMessages(threadId);
-    setMessages(data);
+    try {
+      const data = await getThreadMessages(threadId);
+      setMessages(data);
+    } catch {
+      // Thread not found or unreachable — show empty state for this thread
+      setMessages([]);
+    }
   }, []);
 
   const handleNewChat = useCallback(async () => {
     const threadId = await createThread();
-    setThreads((prev) => [threadId, ...prev]);
+    const newThread: ThreadListItem = { thread_id: threadId, title: "New Chat", created_at: new Date().toISOString() };
+    setThreads((prev) => [newThread, ...prev]);
     setActiveThreadId(threadId);
     setMessages([]);
     setStreamState(null);
@@ -536,7 +545,7 @@ export default function DemoPage(): React.ReactNode {
       try {
         const allThreads = await listThreads();
         setThreads(allThreads);
-        if (allThreads.length > 0) await loadThread(allThreads[0]);
+        if (allThreads.length > 0) await loadThread(allThreads[0].thread_id);
       } catch {
         // Backend unreachable — start with an empty state so the UI still loads
       }
@@ -555,7 +564,8 @@ export default function DemoPage(): React.ReactNode {
     let threadId = activeThreadId;
     if (!threadId) {
       threadId = await createThread();
-      setThreads((prev) => [threadId as string, ...prev]);
+      const newThread: ThreadListItem = { thread_id: threadId as string, title: input.trim().slice(0, 80), created_at: new Date().toISOString() };
+      setThreads((prev) => [newThread, ...prev]);
       setActiveThreadId(threadId);
       setMessages([]);
     }
@@ -716,12 +726,13 @@ export default function DemoPage(): React.ReactNode {
 
             <div className="flex-1 overflow-y-auto px-2 py-1">
               <AnimatePresence>
-                {threads.map((threadId, index) => (
-                  <div key={threadId} className="mb-0.5">
+                {threads.map((t, index) => (
+                  <div key={t.thread_id} className="mb-0.5">
                     <ThreadItem
-                      threadId={threadId}
-                      isActive={activeThreadId === threadId}
-                      onClick={() => void loadThread(threadId)}
+                      threadId={t.thread_id}
+                      title={t.title}
+                      isActive={activeThreadId === t.thread_id}
+                      onClick={() => void loadThread(t.thread_id)}
                       index={index}
                     />
                   </div>

@@ -34,7 +34,7 @@ def _build_model() -> AzureOpenAIModel:
     api_key = os.getenv("AZURE_API_KEY") or os.getenv("AZURE_OPENAI_API_KEY")
     endpoint = os.getenv("AZURE_ENDPOINT") or os.getenv("AZURE_OPENAI_ENDPOINT")
     api_version = os.getenv("AZURE_API_VERSION", "2024-02-15-preview")
-    deployment = os.getenv("AZURE_CHAT_FLAG_MODEL", "gpt-4o")
+    deployment = os.getenv("AZURE_CHAT_LIGHT_MODEL", "gpt-4o")
 
     if not api_key:
         raise EnvironmentError(

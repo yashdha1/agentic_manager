@@ -32,6 +32,7 @@ async def sales_update_product_status_hitl(product_id: int, is_active: bool) -> 
         product.is_active = is_active
         product.updated_at = now()
 
+        await session.commit()
         log.info(f"Updated product {product_id} status is_active={is_active}")
         return {
             "status": "updated",
@@ -91,6 +92,7 @@ async def sales_update_product_details_hitl(
             setattr(product, field, value)
         product.updated_at = now()
 
+        await session.commit()
         log.info(f"Updated product {product_id} details fields={list(updates.keys())}")
         return {
             "status": "updated",
@@ -127,6 +129,7 @@ async def sales_update_order_status_hitl(order_id: int, status: str) -> dict:
 
         order.status = new_status
 
+        await session.commit()
         log.info(f"Updated order {order_id} status to {new_status.value}")
         return {
             "status": "updated",
@@ -171,6 +174,7 @@ async def sales_update_product_stock_hitl(product_id: int, restock_quantity: int
         )
         session.add(event)
 
+        await session.commit()
         log.info(f"Restocked product {product_id} by {restock_quantity} to {new_stock}")
         return {
             "status": "updated",

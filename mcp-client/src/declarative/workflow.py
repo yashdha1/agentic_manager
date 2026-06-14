@@ -5,7 +5,6 @@ from pathlib import Path
 from typing import Annotated, TypedDict
 
 from langchain_core.messages import AIMessage, BaseMessage, HumanMessage, SystemMessage, ToolMessage
-from langchain_core.runnables import RunnableConfig
 from langgraph.constants import Send
 from langgraph.graph import END, START, StateGraph
 from langgraph.graph.message import add_messages
@@ -120,6 +119,7 @@ async def _run_agent_loop(
     tools_by_name: dict,
     hitl_tool_names: set[str],
     messages: list,
+    agent_name: str = "",
 ) -> str:
     """Run an agent tool-call loop with direct interrupt() for HITL tools.
 
@@ -143,13 +143,11 @@ async def _run_agent_loop(
                 )
             return content or ""
 
-        # ── Separate HITL vs. auto-approved tool calls ────────────────────────
         hitl_calls = [tc for tc in response.tool_calls if tc["name"] in hitl_tool_names]
         auto_calls = [tc for tc in response.tool_calls if tc["name"] not in hitl_tool_names]
 
         tool_results: list[ToolMessage] = []
 
-        # ── Execute auto-approved tools immediately ───────────────────────────
         for tc in auto_calls:
             tool = tools_by_name.get(tc["name"])
             if tool is None:
@@ -167,8 +165,10 @@ async def _run_agent_loop(
         # ── HITL tools: single interrupt() call for the whole batch ───────────
         if hitl_calls:
             hitl_request = {
+                "agent": agent_name,
                 "action_requests": [
                     {
+                        "agent": agent_name,
                         "name": tc["name"],
                         "args": tc["args"],
                         "description": (
@@ -187,7 +187,15 @@ async def _run_agent_loop(
                 ],
             }
             result = _lg_interrupt(hitl_request)
-            decisions: list[dict] = result["decisions"]
+            if isinstance(result, dict):
+                # Multi-agent parallel HITL: each agent extracts its own slice.
+                # Single-agent fallback: plain "decisions" list still works.
+                decisions: list[dict] = (
+                    result.get("decisions_by_agent", {}).get(agent_name)
+                    or result.get("decisions", [])
+                )
+            else:
+                decisions = []
 
             for i, tc in enumerate(hitl_calls):
                 decision = decisions[i] if i < len(decisions) else {"type": "approve"}
@@ -228,44 +236,24 @@ async def _run_agent_loop(
         messages = [*messages, *tool_results]
 
 
-async def _sales_node(state: State, config: RunnableConfig) -> dict:
-    tools = get_tools_for(AgentsTool.SALES)
-    tools_by_name = {t.name: t for t in tools}
-    hitl_tools = {t.name for t in tools if t.name.endswith("_hitl")}
-    model = agent_static._model_light.bind_tools(tools)
-    msgs = [SystemMessage(content=_load_md("sales.md"))] + _build_sub_agent_messages(state)
-    result = await _run_agent_loop(model, tools_by_name, hitl_tools, msgs)
-    return {"agent_responses": {"sales": result}}
+def _make_node(agent_tool: AgentsTool, md_file: str, key: str):
+    """Factory that returns an agent node function for the given tool group."""
+    async def _node(state: State) -> dict:
+        tools = get_tools_for(agent_tool)
+        tools_by_name = {t.name: t for t in tools}
+        hitl_tools = {t.name for t in tools if t.name.endswith("_hitl")}
+        model = agent_static._model_light.bind_tools(tools)
+        msgs = [SystemMessage(content=_load_md(md_file))] + _build_sub_agent_messages(state)
+        result = await _run_agent_loop(model, tools_by_name, hitl_tools, msgs, agent_name=key)
+        return {"agent_responses": {key: result}}
+    _node.__name__ = f"_{key}_node"
+    return _node
 
 
-async def _customers_node(state: State, config: RunnableConfig) -> dict:
-    tools = get_tools_for(AgentsTool.CUSTOMER)
-    tools_by_name = {t.name: t for t in tools}
-    hitl_tools = {t.name for t in tools if t.name.endswith("_hitl")}
-    model = agent_static._model_light.bind_tools(tools)
-    msgs = [SystemMessage(content=_load_md("customer_support.md"))] + _build_sub_agent_messages(state)
-    result = await _run_agent_loop(model, tools_by_name, hitl_tools, msgs)
-    return {"agent_responses": {"customers": result}}
-
-
-async def _inventory_node(state: State, config: RunnableConfig) -> dict:
-    tools = get_tools_for(AgentsTool.INVENTORY)
-    tools_by_name = {t.name: t for t in tools}
-    hitl_tools = {t.name for t in tools if t.name.endswith("_hitl")}
-    model = agent_static._model_light.bind_tools(tools)
-    msgs = [SystemMessage(content=_load_md("inventory.md"))] + _build_sub_agent_messages(state)
-    result = await _run_agent_loop(model, tools_by_name, hitl_tools, msgs)
-    return {"agent_responses": {"inventory": result}}
-
-
-async def _knowledge_node(state: State, config: RunnableConfig) -> dict:
-    tools = get_tools_for(AgentsTool.KNOWLEDGE)
-    tools_by_name = {t.name: t for t in tools}
-    hitl_tools = {t.name for t in tools if t.name.endswith("_hitl")}
-    model = agent_static._model_light.bind_tools(tools)
-    msgs = [SystemMessage(content=_load_md("knowledge.md"))] + _build_sub_agent_messages(state)
-    result = await _run_agent_loop(model, tools_by_name, hitl_tools, msgs)
-    return {"agent_responses": {"knowledge": result}}
+_sales_node     = _make_node(AgentsTool.SALES,     "sales.md",            "sales")
+_customers_node = _make_node(AgentsTool.CUSTOMER,  "customer_support.md", "customers")
+_inventory_node = _make_node(AgentsTool.INVENTORY, "inventory.md",        "inventory")
+_knowledge_node = _make_node(AgentsTool.KNOWLEDGE, "knowledge.md",        "knowledge")
 
 
 async def _aggregator_node(state: State) -> dict:

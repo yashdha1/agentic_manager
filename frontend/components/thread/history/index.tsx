@@ -1,10 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { useThreads } from "@/providers/Thread";
-import { Thread } from "@langchain/langgraph-sdk";
+import { ThreadListItem } from "@/lib/api";
 import { useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 
-import { getContentString } from "../utils";
 import { useQueryState, parseAsBoolean } from "nuqs";
 import {
   Sheet,
@@ -23,22 +22,13 @@ function ThreadItem({
   onClick,
   index,
 }: {
-  thread: Thread;
+  thread: ThreadListItem;
   isActive: boolean;
   onClick: () => void;
   index: number;
 }) {
-  let itemText = thread.thread_id;
-  if (
-    typeof thread.values === "object" &&
-    thread.values &&
-    "messages" in thread.values &&
-    Array.isArray(thread.values.messages) &&
-    thread.values.messages?.length > 0
-  ) {
-    const firstMessage = thread.values.messages[0];
-    itemText = getContentString(firstMessage.content);
-  }
+  // Use title from backend, fall back to thread_id if title is empty
+  const itemText = thread.title || thread.thread_id;
 
   return (
     <motion.div
@@ -88,7 +78,7 @@ function ThreadList({
   threads,
   onThreadClick,
 }: {
-  threads: Thread[];
+  threads: ThreadListItem[];
   onThreadClick?: (threadId: string) => void;
 }) {
   const [threadId, setThreadId] = useQueryState("threadId");
