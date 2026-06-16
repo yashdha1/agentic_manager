@@ -22,5 +22,8 @@ logs/
 # envs 
 env/
 .env
-.log
+*.log
 opencode.json
+*.csv
+.deepeval
+eval/
