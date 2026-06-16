@@ -7,10 +7,8 @@ WORKDIR /app
 COPY pyproject.toml uv.lock README.md ./
 RUN uv sync --no-dev --frozen
 
-COPY langgraph.json ./
 COPY src/ ./src/
-COPY main.py ./
 
-EXPOSE 2024
+EXPOSE 8000
 
-CMD ["uv", "run", "langgraph", "dev", "--host", "0.0.0.0", "--port", "2024", "--no-browser"]
+CMD ["uv", "run", "uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]

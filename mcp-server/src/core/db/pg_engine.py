@@ -31,8 +31,9 @@ async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
             await session.rollback()
             raise
 
-async def ensure_schema_presence() -> None: 
-    try: 
+
+async def ensure_schema_presence() -> None:
+    try:
         async with engine.begin() as conn:
             await conn.run_sync(Base.metadata.create_all)
         print("Tables ensured.")

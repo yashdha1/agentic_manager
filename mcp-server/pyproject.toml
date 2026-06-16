@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "alembic>=1.18.4",
     "asyncpg>=0.29.0",
     "fastmcp>=3.3.1",
     "langchain-openai>=1.2.2",

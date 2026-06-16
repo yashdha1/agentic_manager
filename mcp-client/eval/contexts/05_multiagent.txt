@@ -1,0 +1,198 @@
+# Cross-Domain Root Cause Analysis & Corrective Actions (Multi-Agent Eval Context)
+
+This document defines evaluation scenarios requiring **coordinated reasoning across multiple business domains**: sales, inventory, customers, and marketing. No single-domain agent should be sufficient to answer these queries.
+
+---
+
+## Scope & Domains
+
+The system operates across four interacting domains:
+
+* **Sales & Revenue** (orders, revenue, AOV, conversion)
+* **Inventory & Supply** (stock levels, stock-outs, restocks)
+* **Customer Experience** (complaints, refunds, reviews, sentiment)
+* **Marketing & Campaigns** (campaigns, discounts, ROI, channel spend)
+
+All reasoning must integrate signals across these domains.
+
+---
+
+## Cross-Domain Root Cause Diagnosis
+
+The assistant must identify **why a business metric changed**, not just describe what changed.
+
+Typical questions:
+
+* Why did sales drop yesterday?
+* Was the drop caused by inventory, marketing, or customer issues?
+* Correlate complaint spikes with revenue decline.
+* Did stock-outs coincide with campaign activity?
+* Did refund spikes contribute to revenue loss?
+* Was a regional drop caused by demand, stock, or marketing changes?
+
+Expected behavior:
+
+* Identify primary driver(s)
+* Rank contributing factors
+* Use evidence across multiple domains
+* Avoid single-cause assumptions unless strongly supported
+
+---
+
+## Cross-Domain Correlation Analysis
+
+The system must detect relationships between domains:
+
+* Campaign performance vs inventory availability
+* Complaint volume vs sales decline
+* Refund rates vs product quality or policy changes
+* Discounts vs conversion uplift
+* Regional performance vs campaign targeting or stock availability
+
+Typical questions:
+
+* Did campaign drop correlate with stock-outs?
+* Which products had both high complaints and declining sales?
+* Were high refund products also heavily discounted?
+* Did campaigns drive uplift in specific categories?
+* Did customer segments change behavior after stock issues?
+
+---
+
+## Historical Memory & Pattern Matching
+
+The system should compare current events with historical patterns in the dataset.
+
+Typical questions:
+
+* Has this type of sales drop happened before?
+* What caused similar downturns previously?
+* Did discounts work in past recoveries?
+* What actions previously improved performance?
+* Did stock-outs occur in similar past incidents?
+
+Expected behavior:
+
+* Retrieve similar historical scenarios
+* Compare outcomes
+* Identify effective past interventions
+* Avoid assuming external-world knowledge
+
+---
+
+## Multi-Step Corrective Action Planning (HITL Required)
+
+When issues are diagnosed, the system proposes corrective actions across domains.
+
+### Key Rule
+
+No corrective action is executed automatically.
+
+All actions require human approval.
+
+---
+
+### Example Action Chains
+
+#### 1. Sales Drop Investigation
+
+User: "Fix the issue."
+
+System may propose:
+
+* Restock low-availability products (Inventory)
+* Pause campaigns on out-of-stock items (Marketing)
+* Trigger discount on underperforming products (Sales)
+* Notify affected customers (Customer Support)
+
+Each step must be individually approved.
+
+**Status: Pending Human Approval per step**
+
+---
+
+#### 2. Inventory-Led Issue
+
+User: "Restock affected products."
+
+System:
+
+* Identify impacted SKUs
+* Estimate required quantities
+* Rank by revenue impact
+
+**Status: Pending Human Approval**
+
+---
+
+#### 3. Marketing Adjustment
+
+User: "Pause worst-performing campaigns."
+
+System:
+
+* Identify underperforming campaigns
+* Provide ROI and performance evidence
+* Suggest pause or budget shift
+
+**Status: Pending Human Approval**
+
+---
+
+#### 4. Customer Recovery Action
+
+User: "Send recovery message to affected customers."
+
+System:
+
+* Identify impacted customers (failed orders, complaints, refunds)
+* Define segmentation
+* Propose communication strategy
+
+**Status: Pending Human Approval**
+
+---
+
+## Unified Business Health Analysis
+
+The system must support a consolidated view across all domains:
+
+Typical questions:
+
+* What went wrong yesterday across the business?
+* Summarize sales, inventory, marketing, and customer sentiment together.
+* Is the business recovering today compared to yesterday?
+
+Expected output:
+
+* Sales impact
+* Inventory constraints
+* Marketing contribution
+* Customer sentiment signals
+* Combined root cause explanation
+
+---
+
+## Evaluation Expectations
+
+A correct response must:
+
+* Integrate multiple domains when required
+* Avoid single-factor explanations for cross-domain problems
+* Correctly identify causal chains (e.g., stock-out → lost sales → complaint increase)
+* Use historical comparisons when relevant
+* Propose structured corrective actions
+* Enforce HITL for all execution steps
+* Clearly separate diagnosis vs action planning
+
+---
+
+## Failure Conditions
+
+A response is invalid if it:
+
+* Attributes business changes to only one domain when multiple are relevant
+* Ignores inventory/marketing/customer interactions
+* Fabricates causality without evidence
+* Executes or assumes execution of corrective actions
+* Fails to decompose multi-step remediation
