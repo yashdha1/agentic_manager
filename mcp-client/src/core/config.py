@@ -27,8 +27,8 @@ class Settings(BaseSettings):
     langgraph_api_url: str = Field(default="http://localhost:2024", alias="LANGGRAPH_API_URL")
 
     redis_host: str = Field(default="localhost", alias="REDIS_HOST")
-    redis_port: int = Field(default=6379, alias="REDIS_PORT")
-    # STM TTL in seconds (None = no expiry).  Default: 86400 s = 24 h.
+    redis_port: int = Field(default=6379, alias="REDIS_PORT") 
+    
     redis_stm_ttl: int | None = Field(default=86400, alias="REDIS_STM_TTL")
 
     mcp_server_url: str = Field(default="http://localhost:9000", alias="MCP_SERVER_URL")
@@ -45,5 +45,7 @@ class Settings(BaseSettings):
     # Qdrant resolver collection (must match mcp-server RESOLVER_COLLECTION)
     qdrant_resolver_collection: str = Field(default="resolver_memory", alias="RESOLVER_COLLECTION")
 
-
+    stm_thread_key: str = Field(default="stm:threads", alias="STM_THREAD_KEY")
+    stm_msg_key_prefix: str = Field(default="stm:thread:", alias="STM_MSG_KEY_PREFIX")
+    
 settings = Settings()

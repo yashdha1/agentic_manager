@@ -81,23 +81,18 @@ async def lifespan(_: FastAPI) -> AsyncIterator[None]:
     async with AsyncExitStack() as stack:
         checkpointer, redis_url = await _make_checkpointer(stack)
 
-        # ── Short-Term Memory (STM) ──────────────────────────────────────────
-        # Thread message history is stored in Redis so it survives restarts.
-        # Falls back to in-process memory when Redis is unavailable.
         if redis_url:
             api_state.stm = RedisSTM(redis_url, ttl=settings.redis_stm_ttl)
             logger.info("Using Redis STM (ttl={} s)", settings.redis_stm_ttl)
         else:
             api_state.stm = InMemorySTM()
             logger.warning("Using in-memory STM (data will be lost on restart).")
-
-        # ── PostgreSQL (durable chat history) ───────────────────────────────
+ 
         try:
             await ensure_pg_ready()
         except Exception as exc:
             logger.warning("PostgreSQL unavailable ({}). Chat turns will not be persisted.", exc)
-
-        # ── LTM expiry subscriber ────────────────────────────────────────────
+ 
         _ltm_task = None
         if isinstance(api_state.stm, RedisSTM):
             from src.core import ltm

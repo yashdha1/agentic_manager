@@ -87,6 +87,7 @@ async def sweep_unsaved_threads(exclude_thread_id: str | None = None) -> None:
             task = asyncio.create_task(process_thread_expiry(tid))
             _bg_tasks.add(task)
             task.add_done_callback(_bg_tasks.discard)
-            logger.debug("Queued LTM sweep for thread {}.", tid)
+            logger.info("Queued LTM sweep for thread {}.", tid)
+            
     except Exception as exc:
         logger.error("LTM sweep failed: {}", exc)

@@ -108,7 +108,7 @@ async def get_unsaved_thread_ids() -> list[str]:
     async with AsyncSessionLocal() as session:
         rows = (
             await session.scalars(
-                select(Threads).where(Threads.ltm_saved == False)  # noqa: E712
+                select(Threads).where(not Threads.ltm_saved)
             )
         ).all()
     return [r.thread_id for r in rows]

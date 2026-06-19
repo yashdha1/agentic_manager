@@ -5,7 +5,7 @@ from uuid import uuid4
 
 from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
-from langchain_core.messages import HumanMessage
+from langchain_core.messages import HumanMessage, SystemMessage
 from langgraph.types import Command
 
 from src.api.v1 import state as api_state
@@ -26,12 +26,38 @@ def _fire(coro) -> None:
     _bg_tasks.add(t)
     t.add_done_callback(_bg_tasks.discard)
 
+
+async def _build_initial_messages(thread_id: str, message: str) -> list:
+    """Return the initial messages list for a graph invocation.
+
+    On a cold resume (no checkpoint), fetches the LTM summary from Qdrant
+    and prepends it as a SystemMessage so the graph has prior context.
+    Falls back silently to a plain HumanMessage if anything fails.
+    """
+    try:
+        snap = await workflow_module.graph.aget_state(
+            {"configurable": {"thread_id": thread_id}}
+        )
+        if not snap.values:
+            from src.core.qdrant import fetch_ltm_summary
+            summary = fetch_ltm_summary(thread_id)
+            if summary:
+                return [
+                    SystemMessage(content=f"[Prior conversation summary]\n{summary}"),
+                    HumanMessage(content=message),
+                ]
+    except Exception:
+        pass
+    return [HumanMessage(content=message)]
+
+
 @router.post("")
 async def chat(request: ChatRequest) -> ChatResponse:
     thread_id = request.thread_id or str(uuid4())
     config = {"configurable": {"thread_id": thread_id}}
+    initial_messages = await _build_initial_messages(thread_id, request.message)
     result = await workflow_module.graph.ainvoke(
-        {"query": request.message, "thread_id": thread_id, "messages": [HumanMessage(content=request.message)]},
+        {"query": request.message, "thread_id": thread_id, "messages": initial_messages},
         config,
     )
     return ChatResponse(response=result.get("final_response", ""), thread_id=thread_id)
@@ -107,11 +133,12 @@ async def _sse_events(input_data, config: dict, thread_id: str, user_message: st
 async def stream_chat(request: StreamChatRequest):
     thread_id = request.thread_id or str(uuid4())
     config = {"configurable": {"thread_id": thread_id}}
+    initial_messages = await _build_initial_messages(thread_id, request.message)
 
     async def generator():
         yield f"data: {json.dumps({'type': 'thread_id', 'data': thread_id})}\n\n"
         async for chunk in _sse_events(
-            {"query": request.message, "thread_id": thread_id, "messages": [HumanMessage(content=request.message)]},
+            {"query": request.message, "thread_id": thread_id, "messages": initial_messages},
             config,
             thread_id,
             request.message,

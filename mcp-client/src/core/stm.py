@@ -1,69 +1,53 @@
-"""Short-Term Memory (STM) backed by Redis.
-
-Key schema
-----------
-stm:threads              → Redis SET   — all known thread IDs
-stm:thread:{thread_id}   → Redis LIST  — JSON-encoded {role, content} dicts,
-                                         newest items pushed to the right (RPUSH).
-
-An optional TTL (seconds) is refreshed on every write.  When Redis is
-unavailable the fallback ``InMemorySTM`` provides the same interface so the
-rest of the application is unaffected.
-"""
-
 from __future__ import annotations
-
 import json
-import logging
 
-logger = logging.getLogger(__name__)
-
-_THREADS_KEY = "stm:threads"
-_MSG_KEY_PREFIX = "stm:thread:"
+from .logger import logger
+from .config import settings
 
 
 class RedisSTM:
     """Async Redis-backed Short-Term Memory store for thread conversations."""
 
     def __init__(self, redis_url: str, ttl: int | None = None) -> None:
-        import redis.asyncio as aioredis
+        import redis.asyncio as aioredis # rare
 
         self._client: aioredis.Redis = aioredis.from_url(
             redis_url,
             socket_connect_timeout=5,
             decode_responses=True,
         )
-        self._ttl = ttl  # seconds; None → no expiry
+        self._ttl = ttl  
 
-    # ── helpers ──────────────────────────────────────────────────────────────
-
+  
     def _msg_key(self, thread_id: str) -> str:
-        return f"{_MSG_KEY_PREFIX}{thread_id}"
-
-    # ── public API ────────────────────────────────────────────────────────────
-
+        return f"{settings.stm_msg_key_prefix}{thread_id}"
+ 
     async def create_thread(self, thread_id: str) -> None:
         """Register a thread in the thread-set (idempotent)."""
-        await self._client.sadd(_THREADS_KEY, thread_id)
+        await self._client.sadd(settings.stm_thread_key, thread_id)
 
     async def thread_exists(self, thread_id: str) -> bool:
-        return bool(await self._client.sismember(_THREADS_KEY, thread_id))
+        return bool(await self._client.sismember(settings.stm_thread_key, thread_id))
 
     async def list_threads(self) -> list[str]:
-        members = await self._client.smembers(_THREADS_KEY)
+        members = await self._client.smembers(settings.stm_thread_key)
         return sorted(members)
 
     async def append_message(self, thread_id: str, role: str, content: str) -> None:
         """Append a message to the thread's Redis list."""
         key = self._msg_key(thread_id)
+
         payload = json.dumps({"role": role, "content": content})
+
+        # pipe batch jobs:-
         pipe = self._client.pipeline()
-        pipe.sadd(_THREADS_KEY, thread_id)
+        pipe.sadd(settings.stm_thread_key, thread_id)
         pipe.rpush(key, payload)
         if self._ttl is not None:
             pipe.expire(key, self._ttl)
         await pipe.execute()
-        logger.debug("STM append [{}] {}", thread_id, role)
+
+        logger.info("STM append [{}] {}", thread_id, role)
 
     async def get_messages(self, thread_id: str) -> list[dict]:
         """Return all messages for a thread in insertion order."""
@@ -73,27 +57,26 @@ class RedisSTM:
     async def close(self) -> None:
         await self._client.aclose()
 
-    # ── LTM expiry hooks ─────────────────────────────────────────────────────
-
+    # LTM expiry hooks 
     async def enable_keyspace_notifications(self) -> None:
         """Enable Redis keyspace notifications for expired events (required for LTM)."""
         await self._client.config_set("notify-keyspace-events", "Kx")
         logger.info("Redis keyspace notifications enabled (expired events).")
 
     async def subscribe_expiry_events(self, callback) -> None:
-        """Listen for STM key expiry events and invoke *callback(thread_id)* for each.
-
-        Runs indefinitely; cancel the wrapping asyncio.Task to stop.
+        """
+            Listen for STM key expiry events and invoke *callback(thread_id)* for each.
         """
         channel = "__keyevent@0__:expired"
         pubsub = self._client.pubsub()
         await pubsub.subscribe(channel)
         logger.info("Subscribed to Redis expiry channel for LTM processing.")
+        
         async for message in pubsub.listen():
             if message["type"] == "message":
                 key: str = message["data"]
-                if key.startswith(_MSG_KEY_PREFIX):
-                    thread_id = key[len(_MSG_KEY_PREFIX):]
+                if key.startswith(settings.stm_msg_key_prefix):
+                    thread_id = key[len(settings.stm_msg_key_prefix):]
                     try:
                         await callback(thread_id)
                     except Exception as exc:

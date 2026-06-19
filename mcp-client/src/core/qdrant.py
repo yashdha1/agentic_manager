@@ -42,6 +42,18 @@ async def upsert_ltm(thread_id: str, summary: str, metadata: dict) -> None:
         ],
     )
 
+def fetch_ltm_summary(thread_id: str) -> str | None:
+    """Retrieve the LTM summary for a thread by its deterministic point ID.
+ 
+    Returns None if the thread has no LTM entry yet.
+    """
+    point_id = str(uuid.uuid5(uuid.NAMESPACE_DNS, thread_id))
+    results = _qdrant().retrieve(
+        collection_name=settings.qdrant_thread_collection,
+        ids=[point_id],
+        with_payload=True,
+    )
+    return results[0].payload.get("summary") if results else None
 
 async def upsert_resolver(
     thread_id: str,
