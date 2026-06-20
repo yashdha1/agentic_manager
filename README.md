@@ -1,6 +1,5 @@
-# agentic manager for a ecommerce store
+# USAGE 
 
-#### Notable Tech Used 
-
-1. fastmcp
-2. langgraph
+```bash
+  docker compose up -d
+```
