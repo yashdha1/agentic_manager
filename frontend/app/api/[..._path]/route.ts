@@ -11,11 +11,20 @@ async function proxy(request: NextRequest, params: { _path?: string[] }) {
   const url = new URL(`${TARGET}/api/${path}`);
   url.search = request.nextUrl.search;
 
-  const response = await fetch(url.toString(), {
-    method: request.method,
-    headers: request.headers,
-    body: request.method === "GET" || request.method === "HEAD" ? undefined : await request.text(),
-  });
+  let response: Response;
+  try {
+    response = await fetch(url.toString(), {
+      method: request.method,
+      headers: request.headers,
+      body: request.method === "GET" || request.method === "HEAD" ? undefined : await request.text(),
+    });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Backend unreachable";
+    return new NextResponse(JSON.stringify({ error: message }), {
+      status: 502,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
 
   // For SSE / streaming responses, pipe the body directly instead of buffering
   // with response.text() — buffering causes the entire stream to arrive at once

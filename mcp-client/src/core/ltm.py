@@ -44,7 +44,7 @@ async def process_thread_expiry(thread_id: str) -> None:
         llm = AzureChatOpenAI(
             azure_deployment=settings.azure_chat_light_model,
             azure_endpoint=settings.azure_endpoint,
-            api_key=settings.azure_api_key.get_secret_value() if settings.azure_api_key else None,
+            api_key=settings.azure_api_key.get_secret_value(),
             api_version=settings.azure_api_version,
         )
         response = await llm.ainvoke(

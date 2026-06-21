@@ -29,14 +29,14 @@ def init_agents() -> None:
         azure_deployment=settings.azure_chat_flag_model,
         api_version=settings.azure_api_version,
         azure_endpoint=settings.azure_endpoint,
-        api_key=settings.azure_api_key.get_secret_value() if settings.azure_api_key else None,
+        api_key=settings.azure_api_key.get_secret_value(),
     )
 
     _model_light = AzureChatOpenAI(
         azure_deployment=settings.azure_chat_light_model,
         api_version=settings.azure_api_version,
         azure_endpoint=settings.azure_endpoint,
-        api_key=settings.azure_api_key.get_secret_value() if settings.azure_api_key else None,
+        api_key=settings.azure_api_key.get_secret_value(),
     )
 
     orchestrator = create_agent(

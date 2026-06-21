@@ -1,4 +1,4 @@
-from pydantic import Field, SecretStr
+from pydantic import Field, SecretStr, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -9,13 +9,20 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
-    azure_api_key: SecretStr | None = Field(default=None, alias="AZURE_API_KEY")
-    azure_api_version: str | None = Field(default=None, alias="AZURE_API_VERSION")
-    azure_chat_flag_model: str | None = Field(default=None, alias="AZURE_CHAT_FLAG_MODEL")
-    azure_chat_light_model: str | None = Field(default=None, alias="AZURE_CHAT_LIGHT_MODEL")
-    azure_endpoint: str | None = Field(default=None, alias="AZURE_ENDPOINT")
-    azure_embedding_model: str | None = Field(default=None, alias="AZURE_EMBEDDING_MODEL")
-    azure_embedding_dimensions: int | None = Field(default=None, alias="AZURE_EMBEDDING_DIMENSIONS")
+    azure_api_key: SecretStr = Field(alias="AZURE_API_KEY")
+    azure_api_version: str = Field(alias="AZURE_API_VERSION")
+    azure_chat_flag_model: str = Field(alias="AZURE_CHAT_FLAG_MODEL")
+    azure_chat_light_model: str = Field(alias="AZURE_CHAT_LIGHT_MODEL")
+    azure_endpoint: str = Field(alias="AZURE_ENDPOINT")
+    azure_embedding_model: str = Field(alias="AZURE_EMBEDDING_MODEL")
+    azure_embedding_dimensions: int = Field(alias="AZURE_EMBEDDING_DIMENSIONS")
+
+    @field_validator("azure_endpoint", "azure_api_version", "azure_chat_flag_model", "azure_chat_light_model", "azure_embedding_model", mode="after")
+    @classmethod
+    def _non_empty(cls, v: str) -> str:
+        if not v or not v.strip():
+            raise ValueError("Azure setting must not be empty — check your .env file.")
+        return v
 
     langchain_tracing_v2: bool = Field(default=False, alias="LANGCHAIN_TRACING_V2")
     langsmith_api_key: SecretStr | None = Field(default=None, alias="LANGSMITH_API_KEY")

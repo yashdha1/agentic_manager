@@ -256,6 +256,22 @@ _inventory_node = _make_node(AgentsTool.INVENTORY, "inventory.md",        "inven
 _knowledge_node = _make_node(AgentsTool.KNOWLEDGE, "knowledge.md",        "knowledge")
 
 
+async def _general_node(state: State) -> dict:
+    msgs = [SystemMessage(content=_load_md("general.md"))] + _build_sub_agent_messages(state)
+    response: AIMessage = await agent_static._model_light.ainvoke(msgs)
+    content = response.content
+    if isinstance(content, list):
+        content = "".join(
+            b.get("text", "") for b in content
+            if isinstance(b, dict) and b.get("type") == "text"
+        )
+    final = content or ""
+    return {
+        "final_response": final,
+        "messages": [AIMessage(content=final)],
+    }
+
+
 async def _aggregator_node(state: State) -> dict:
     policies_text = "\n".join(state.get("policies", [])) or "None"
     agent_sections = "\n".join(
@@ -302,7 +318,13 @@ async def _aggregator_node(state: State) -> dict:
 
 
 def _route_to_agents(state: State):
-    """Fan-out to all agents selected by the orchestrator (runs in parallel)."""
+    """Fan-out to all agents selected by the orchestrator (runs in parallel).
+
+    If the orchestrator selected `general`, route exclusively to it — it goes
+    straight to END and must never be paired with domain agents.
+    """
+    if "general" in state["selected_agents"]:
+        return [Send("general", state)]
     return [Send(agent_name, state) for agent_name in state["selected_agents"]]
 
 def init_workflow(checkpointer) -> None:
@@ -317,16 +339,20 @@ def init_workflow(checkpointer) -> None:
     builder.add_node("inventory", _inventory_node)
     builder.add_node("knowledge", _knowledge_node)
     builder.add_node("aggregator", _aggregator_node)
+    builder.add_node("general", _general_node)
 
     builder.add_edge(START, "orchestrator")
     builder.add_conditional_edges("orchestrator", _route_to_agents)
 
-    # Each sub-agent feeds into the aggregator.
+    # Each domain sub-agent feeds into the aggregator.
     builder.add_edge("sales", "aggregator")
     builder.add_edge("customers", "aggregator")
     builder.add_edge("inventory", "aggregator")
     builder.add_edge("knowledge", "aggregator")
 
     builder.add_edge("aggregator", END)
+
+    # General agent bypasses the aggregator and goes straight to END.
+    builder.add_edge("general", END)
 
     graph = builder.compile(checkpointer=checkpointer)

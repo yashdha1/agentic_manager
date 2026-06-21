@@ -33,7 +33,19 @@ def _order_amounts_payload(order: Order) -> dict:
         "ordered_at": order.ordered_at.isoformat() if order.ordered_at else None,
     }
 
+@mcp.tool
+async def sales_get_order_by_id(order_id: int) -> dict:
+    """Return a single order by ID with amount details."""
+    async with get_async_session() as session:
+        stmt = select(Order).where(Order.id == order_id)
+        order = (await session.execute(stmt)).scalar_one_or_none()
+        if not order:
+            log.info(f"Order with id={order_id} not found")
+            return {"error": "Order not found", "order_id": order_id}
 
+        log.info(f"Retrieved order with id={order_id}")
+        return _order_amounts_payload(order)
+    
 @mcp.tool
 async def sales_get_orders_by_channel(
     acquisition_channel: str,

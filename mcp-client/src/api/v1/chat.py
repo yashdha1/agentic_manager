@@ -5,12 +5,13 @@ from uuid import uuid4
 
 from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
-from langchain_core.messages import HumanMessage, SystemMessage
+from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
 from langgraph.types import Command
 
 from src.api.v1 import state as api_state
 from src.api.v1.schemas import ChatRequest, ChatResponse, ResumeChatRequest, StreamChatRequest
 from src.declarative import workflow as workflow_module
+from src.core.logger import logger 
 
 router = APIRouter(prefix="/chat", tags=["chat"])
 
@@ -30,8 +31,10 @@ def _fire(coro) -> None:
 async def _build_initial_messages(thread_id: str, message: str) -> list:
     """Return the initial messages list for a graph invocation.
 
-    On a cold resume (no checkpoint), fetches the LTM summary from Qdrant
-    and prepends it as a SystemMessage so the graph has prior context.
+    On a cold resume (no checkpoint), restores the full conversation history
+    from PostgreSQL as HumanMessage/AIMessage pairs so all agents — including
+    the general/summarization agent — have real prior context.  Also prepends
+    the LTM summary from Qdrant when available.
     Falls back silently to a plain HumanMessage if anything fails.
     """
     try:
@@ -39,13 +42,27 @@ async def _build_initial_messages(thread_id: str, message: str) -> list:
             {"configurable": {"thread_id": thread_id}}
         )
         if not snap.values:
+            from src.core.chat_persistence import get_conversations
             from src.core.qdrant import fetch_ltm_summary
+
+            messages: list = []
+
+            # Prepend LTM summary as orientation context if one exists.
             summary = fetch_ltm_summary(thread_id)
+            logger.debug(f"Fetched LTM summary for thread {thread_id}: {summary}") 
             if summary:
-                return [
-                    SystemMessage(content=f"[Prior conversation summary]\n{summary}"),
-                    HumanMessage(content=message),
-                ]
+                messages.append(
+                    SystemMessage(content=f"[Prior conversation summary]\n{summary}")
+                )
+
+            # Restore full PG history so agents can reference prior turns.
+            conversations = await get_conversations(thread_id)
+            for c in conversations:
+                messages.append(HumanMessage(content=c["human_message"]))
+                messages.append(AIMessage(content=c["ai_message"]))
+
+            messages.append(HumanMessage(content=message))
+            return messages
     except Exception:
         pass
     return [HumanMessage(content=message)]
@@ -67,37 +84,48 @@ async def _sse_events(input_data, config: dict, thread_id: str, user_message: st
     """Shared SSE generator for /stream and /resume endpoints."""
     total_usage: dict[str, int] = {"input_tokens": 0, "output_tokens": 0, "total_tokens": 0}
 
-    async for event in workflow_module.graph.astream_events(input_data, config, version="v2"):
-        kind: str = event["event"]
-        name: str = event.get("name", "")
-        node: str = event.get("metadata", {}).get("langgraph_node", "")
+    try:
+        stream = workflow_module.graph.astream_events(input_data, config, version="v2")
+    except Exception as exc:
+        yield f"data: {json.dumps({'type': 'error', 'message': str(exc)})}\n\n"
+        return
 
-        if kind == "on_chain_start" and name in AGENT_NODES:
-            yield f"data: {json.dumps({'type': 'agent_start', 'agent': name})}\n\n"
+    try:
+        async for event in stream:
+            kind: str = event["event"]
+            name: str = event.get("name", "")
+            node: str = event.get("metadata", {}).get("langgraph_node", "")
 
-        elif kind == "on_chain_end" and name in AGENT_NODES:
-            yield f"data: {json.dumps({'type': 'agent_end', 'agent': name})}\n\n"
+            if kind == "on_chain_start" and name in AGENT_NODES:
+                yield f"data: {json.dumps({'type': 'agent_start', 'agent': name})}\n\n"
 
-        elif kind == "on_chat_model_stream":
-            chunk = event["data"]["chunk"]
-            content = chunk.content
-            if isinstance(content, list):
-                text = "".join(c.get("text", "") for c in content if isinstance(c, dict))
-            else:
-                text = content or ""
-            if text:
-                yield f"data: {json.dumps({'type': 'token', 'agent': node, 'content': text})}\n\n"
+            elif kind == "on_chain_end" and name in AGENT_NODES:
+                yield f"data: {json.dumps({'type': 'agent_end', 'agent': name})}\n\n"
 
-        elif kind == "on_tool_start" and node in AGENT_NODES:
-            yield f"data: {json.dumps({'type': 'tool_call', 'agent': node, 'tool': name})}\n\n"
+            elif kind == "on_chat_model_stream":
+                chunk = event["data"]["chunk"]
+                content = chunk.content
+                if isinstance(content, list):
+                    text = "".join(c.get("text", "") for c in content if isinstance(c, dict))
+                else:
+                    text = content or ""
+                if text:
+                    yield f"data: {json.dumps({'type': 'token', 'agent': node, 'content': text})}\n\n"
 
-        elif kind == "on_chat_model_end":
-            output = event.get("data", {}).get("output")
-            if output and hasattr(output, "usage_metadata") and output.usage_metadata:
-                um = output.usage_metadata
-                total_usage["input_tokens"] += um.get("input_tokens", 0)
-                total_usage["output_tokens"] += um.get("output_tokens", 0)
-                total_usage["total_tokens"] += um.get("total_tokens", 0)
+            elif kind == "on_tool_start" and node in AGENT_NODES:
+                yield f"data: {json.dumps({'type': 'tool_call', 'agent': node, 'tool': name})}\n\n"
+
+            elif kind == "on_chat_model_end":
+                output = event.get("data", {}).get("output")
+                if output and hasattr(output, "usage_metadata") and output.usage_metadata:
+                    um = output.usage_metadata
+                    total_usage["input_tokens"] += um.get("input_tokens", 0)
+                    total_usage["output_tokens"] += um.get("output_tokens", 0)
+                    total_usage["total_tokens"] += um.get("total_tokens", 0)
+
+    except Exception as exc:
+        yield f"data: {json.dumps({'type': 'error', 'message': str(exc)})}\n\n"
+        return
 
     # After stream exhausts — check if graph is paused (interrupted) or done
     snap = await workflow_module.graph.aget_state(config)

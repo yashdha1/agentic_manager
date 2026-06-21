@@ -39,6 +39,7 @@ Handles all product, order, and sales analytics queries. Optimizes revenue, trac
 | `sales_get_orders_by_place` | Orders by geographical place |
 | `sales_get_orders_by_payment_method` | Orders by payment method (credit card, UPI, etc.) |
 | `sales_analyze_orders` | Cross-dimensional order analysis |
+| `sales_get_order_by_id` | Get order by the provided ID |
 
 ### Strategy & Updates 
 | `sales_analyze_performance_policy` | Evaluate policy impact on sales |

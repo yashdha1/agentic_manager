@@ -2,7 +2,7 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
-AgentName = Literal["sales", "knowledge", "customers", "inventory"]
+AgentName = Literal["sales", "knowledge", "customers", "inventory", "general"]
 
 
 class OrchestratorOutput(BaseModel):
