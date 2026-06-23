@@ -1,0 +1,209 @@
+id,order_id,reason,refund_amount,status,processed_at
+1,3,wrong_item_sent,157.32,approved,2025-03-30 15:51:37
+2,11,changed_mind,122.98,pending,
+3,19,late_delivery,369.03,approved,2025-03-18 05:11:00
+4,29,changed_mind,92.57,approved,2024-09-19 08:40:13
+5,30,late_delivery,107.44,approved,2023-02-19 19:15:48
+6,44,late_delivery,447.66,approved,2022-08-26 21:56:15
+7,52,damaged_on_arrival,44.62,approved,2025-01-29 02:32:26
+8,65,wrong_item_sent,176.41,approved,2025-03-10 03:27:41
+9,79,late_delivery,127.63,approved,2025-01-09 01:26:08
+10,83,size_or_fit_issue,31.58,approved,2024-09-13 22:52:20
+11,107,changed_mind,222.44,approved,2022-11-24 03:27:46
+12,114,damaged_on_arrival,350.41,approved,2022-09-29 16:25:39
+13,143,size_or_fit_issue,183.51,approved,2025-08-27 17:14:17
+14,150,changed_mind,85.56,approved,2022-08-26 22:42:27
+15,161,late_delivery,239.63,approved,2025-02-19 02:56:13
+16,170,size_or_fit_issue,23.37,approved,2025-08-12 21:59:26
+17,176,item_not_as_described,464.65,approved,2025-08-23 21:40:08
+18,178,damaged_on_arrival,400.53,approved,2023-08-19 12:10:02
+19,179,item_not_as_described,347.42,pending,
+20,186,damaged_on_arrival,336.05,approved,2025-11-03 02:28:41
+21,190,changed_mind,40.94,approved,2023-12-09 05:36:52
+22,205,damaged_on_arrival,563.78,rejected,2022-02-16 19:19:28
+23,207,wrong_item_sent,80.94,approved,2022-02-27 00:58:20
+24,209,changed_mind,404.63,rejected,2025-12-30 17:13:34
+25,236,item_not_as_described,318.04,pending,
+26,237,size_or_fit_issue,231.65,approved,2025-05-02 04:50:09
+27,247,wrong_item_sent,471.09,approved,2024-10-20 07:59:35
+28,261,wrong_item_sent,142.07,approved,2025-12-19 22:41:35
+29,284,changed_mind,138.61,approved,2025-06-23 12:07:58
+30,300,size_or_fit_issue,53.89,approved,2024-04-03 20:39:22
+31,323,changed_mind,383.21,approved,2025-09-09 13:32:25
+32,363,damaged_on_arrival,185.69,approved,2025-02-16 02:19:12
+33,369,damaged_on_arrival,577.4,approved,2025-07-14 08:12:38
+34,370,changed_mind,533.59,approved,2025-09-25 04:37:08
+35,386,changed_mind,170.35,approved,2023-06-20 17:11:50
+36,398,changed_mind,112.58,approved,2023-04-04 17:16:58
+37,415,wrong_item_sent,391.11,approved,2025-04-17 12:13:53
+38,424,late_delivery,308.95,approved,2025-10-01 02:19:47
+39,429,size_or_fit_issue,186.69,approved,2024-02-21 18:17:20
+40,444,size_or_fit_issue,235.55,approved,2025-01-28 08:05:33
+41,448,changed_mind,147.0,pending,
+42,461,damaged_on_arrival,197.37,approved,2025-06-26 19:21:09
+43,472,size_or_fit_issue,199.89,approved,2023-08-30 03:26:00
+44,473,damaged_on_arrival,281.09,approved,2025-02-03 03:03:52
+45,477,wrong_item_sent,512.02,pending,
+46,478,size_or_fit_issue,89.71,rejected,2024-12-01 08:11:58
+47,487,item_not_as_described,455.71,approved,2024-08-13 01:35:30
+48,495,item_not_as_described,141.4,approved,2025-01-30 04:37:24
+49,496,item_not_as_described,25.48,pending,
+50,501,wrong_item_sent,119.19,approved,2023-06-23 18:09:21
+51,503,wrong_item_sent,147.3,approved,2025-12-09 00:58:44
+52,513,damaged_on_arrival,74.84,approved,2024-05-16 17:41:18
+53,517,wrong_item_sent,411.14,rejected,2025-04-23 02:37:48
+54,540,size_or_fit_issue,409.82,approved,2024-11-19 19:07:29
+55,551,late_delivery,335.71,approved,2025-06-14 11:18:40
+56,556,wrong_item_sent,555.39,approved,2023-06-28 16:09:26
+57,559,changed_mind,25.12,approved,2025-12-21 11:49:57
+58,567,item_not_as_described,567.84,approved,2025-05-01 06:36:36
+59,568,wrong_item_sent,125.07,approved,2025-05-16 08:33:35
+60,597,item_not_as_described,303.86,approved,2025-07-17 03:56:03
+61,634,wrong_item_sent,350.25,approved,2024-04-03 18:29:02
+62,638,item_not_as_described,409.58,pending,
+63,639,late_delivery,424.62,pending,
+64,642,wrong_item_sent,306.59,approved,2022-08-18 11:45:20
+65,645,wrong_item_sent,619.25,approved,2024-02-10 02:46:26
+66,647,size_or_fit_issue,382.71,approved,2024-06-23 07:47:27
+67,677,changed_mind,228.76,approved,2024-10-31 09:09:06
+68,678,changed_mind,539.4,approved,2024-07-13 06:47:04
+69,685,late_delivery,407.41,approved,2024-12-30 16:08:27
+70,688,damaged_on_arrival,306.77,approved,2025-04-16 18:42:34
+71,690,size_or_fit_issue,191.32,approved,2024-05-29 21:37:25
+72,692,wrong_item_sent,170.18,approved,2025-08-26 06:19:33
+73,698,item_not_as_described,115.54,pending,
+74,721,late_delivery,65.54,approved,2025-04-29 09:08:54
+75,735,size_or_fit_issue,229.76,pending,
+76,741,size_or_fit_issue,292.61,approved,2025-06-30 07:21:23
+77,746,changed_mind,41.21,approved,2024-05-03 12:04:15
+78,759,item_not_as_described,153.33,pending,
+79,764,item_not_as_described,110.94,pending,
+80,767,item_not_as_described,50.24,approved,2025-11-13 12:47:46
+81,781,size_or_fit_issue,25.27,pending,
+82,795,changed_mind,136.62,approved,2024-10-22 03:43:08
+83,807,item_not_as_described,416.28,approved,2025-01-05 17:59:31
+84,824,changed_mind,384.25,approved,2025-01-05 10:32:15
+85,826,size_or_fit_issue,521.11,approved,2025-03-22 08:11:27
+86,828,changed_mind,184.25,pending,
+87,833,wrong_item_sent,47.74,approved,2024-12-03 21:30:59
+88,835,size_or_fit_issue,459.35,approved,2025-07-22 23:04:43
+89,836,late_delivery,223.82,pending,
+90,853,wrong_item_sent,308.3,approved,2024-11-20 11:30:11
+91,885,item_not_as_described,155.64,rejected,2025-08-06 21:25:29
+92,891,late_delivery,403.44,pending,
+93,894,item_not_as_described,208.98,approved,2025-06-17 04:22:48
+94,895,size_or_fit_issue,622.53,approved,2024-03-22 20:04:25
+95,896,late_delivery,503.09,pending,
+96,901,late_delivery,122.08,pending,
+97,944,changed_mind,57.69,rejected,2025-11-12 16:11:04
+98,981,late_delivery,408.78,approved,2024-04-15 10:25:52
+99,993,changed_mind,389.74,approved,2024-05-14 23:16:17
+100,998,damaged_on_arrival,148.49,pending,
+101,1003,damaged_on_arrival,166.6,approved,2025-01-17 02:42:27
+102,1009,late_delivery,165.91,pending,
+103,1030,item_not_as_described,87.58,approved,2025-09-18 07:31:33
+104,1038,size_or_fit_issue,336.24,approved,2025-05-18 23:46:24
+105,1042,size_or_fit_issue,217.01,pending,
+106,1054,size_or_fit_issue,142.88,approved,2025-03-28 04:16:31
+107,1059,wrong_item_sent,615.39,approved,2025-05-30 02:51:03
+108,1061,late_delivery,341.83,approved,2025-08-05 15:04:08
+109,1088,damaged_on_arrival,470.71,rejected,2023-11-18 01:29:10
+110,1101,item_not_as_described,157.16,approved,2024-12-31 13:41:17
+111,1114,wrong_item_sent,415.85,approved,2025-09-02 06:12:46
+112,1115,damaged_on_arrival,588.65,approved,2025-01-04 16:53:45
+113,1118,size_or_fit_issue,115.28,approved,2023-11-19 22:41:34
+114,1120,item_not_as_described,67.83,approved,2025-01-15 23:17:17
+115,1121,changed_mind,370.23,approved,2024-01-30 06:02:28
+116,1122,item_not_as_described,198.44,approved,2024-12-15 16:54:39
+117,1132,late_delivery,438.64,approved,2022-08-13 06:20:20
+118,1133,changed_mind,247.41,pending,
+119,1137,item_not_as_described,132.96,rejected,2024-11-07 15:07:45
+120,1150,damaged_on_arrival,208.63,approved,2025-02-24 14:59:23
+121,1160,damaged_on_arrival,391.06,approved,2024-04-19 02:37:46
+122,1180,wrong_item_sent,334.47,approved,2023-10-03 02:43:43
+123,1190,wrong_item_sent,462.63,approved,2025-10-01 06:22:24
+124,1194,size_or_fit_issue,493.69,approved,2025-03-12 15:23:57
+125,1195,wrong_item_sent,317.43,pending,
+126,1196,item_not_as_described,326.39,approved,2025-10-09 13:51:00
+127,1225,size_or_fit_issue,106.3,approved,2025-07-03 19:51:08
+128,1238,damaged_on_arrival,34.49,approved,2025-10-25 08:03:12
+129,1240,changed_mind,133.24,approved,2025-01-27 19:22:08
+130,1293,damaged_on_arrival,445.88,approved,2025-09-11 10:47:32
+131,1295,size_or_fit_issue,207.2,approved,2025-10-11 22:07:38
+132,1305,item_not_as_described,172.81,approved,2024-12-08 02:31:19
+133,1310,damaged_on_arrival,406.95,approved,2024-04-25 17:31:46
+134,1321,item_not_as_described,248.88,approved,2023-04-11 03:54:41
+135,1327,size_or_fit_issue,47.73,approved,2025-01-23 08:35:02
+136,1329,size_or_fit_issue,363.32,approved,2025-07-29 10:05:08
+137,1351,item_not_as_described,643.75,rejected,2024-05-27 19:47:11
+138,1364,size_or_fit_issue,334.07,approved,2025-06-09 00:18:28
+139,1365,size_or_fit_issue,176.26,approved,2022-07-03 08:31:16
+140,1370,changed_mind,126.39,approved,2025-06-13 20:23:48
+141,1380,damaged_on_arrival,279.82,approved,2024-02-08 14:22:53
+142,1386,damaged_on_arrival,499.53,approved,2025-02-11 19:36:03
+143,1390,wrong_item_sent,404.35,approved,2023-05-29 04:49:03
+144,1396,damaged_on_arrival,362.05,approved,2023-03-25 19:04:51
+145,1407,late_delivery,133.12,rejected,2024-05-17 03:48:09
+146,1409,damaged_on_arrival,541.9,approved,2025-09-30 17:59:21
+147,1412,size_or_fit_issue,492.35,approved,2023-12-13 18:44:41
+148,1446,item_not_as_described,132.41,approved,2023-09-11 05:11:16
+149,1464,wrong_item_sent,280.66,approved,2025-10-30 23:17:13
+150,1469,item_not_as_described,119.6,approved,2025-11-12 17:44:25
+151,1474,size_or_fit_issue,495.02,approved,2025-01-20 18:02:57
+152,1479,size_or_fit_issue,155.64,pending,
+153,1492,late_delivery,426.79,approved,2025-12-05 02:11:42
+154,1501,size_or_fit_issue,270.16,approved,2025-08-05 16:30:32
+155,1503,changed_mind,15.21,approved,2025-07-25 00:12:24
+156,1508,damaged_on_arrival,343.5,approved,2022-06-29 07:50:54
+157,1514,damaged_on_arrival,244.92,pending,
+158,1518,late_delivery,173.35,pending,
+159,1545,size_or_fit_issue,241.28,approved,2025-12-14 02:07:03
+160,1548,late_delivery,27.24,approved,2025-11-18 11:44:19
+161,1571,item_not_as_described,248.87,pending,
+162,1573,changed_mind,381.33,approved,2023-08-01 08:58:51
+163,1583,damaged_on_arrival,156.34,approved,2024-04-29 18:14:53
+164,1586,wrong_item_sent,167.89,approved,2025-09-17 16:10:10
+165,1613,late_delivery,262.95,pending,
+166,1625,size_or_fit_issue,66.73,approved,2025-06-12 05:11:17
+167,1628,late_delivery,684.17,pending,
+168,1663,late_delivery,23.59,approved,2023-04-26 18:24:46
+169,1674,damaged_on_arrival,470.74,approved,2024-04-07 16:18:15
+170,1675,late_delivery,204.07,approved,2023-11-20 09:54:12
+171,1677,size_or_fit_issue,515.87,approved,2025-03-24 12:39:49
+172,1678,changed_mind,203.45,approved,2025-03-08 02:23:35
+173,1680,changed_mind,475.09,pending,
+174,1688,late_delivery,321.42,pending,
+175,1691,item_not_as_described,309.72,approved,2024-05-14 08:25:14
+176,1696,size_or_fit_issue,476.05,rejected,2025-07-20 13:23:42
+177,1702,wrong_item_sent,472.98,pending,
+178,1704,changed_mind,259.11,approved,2025-04-24 03:55:50
+179,1705,late_delivery,362.48,approved,2025-09-06 13:42:50
+180,1723,wrong_item_sent,446.15,rejected,2025-07-01 23:06:37
+181,1730,damaged_on_arrival,681.9,pending,
+182,1734,late_delivery,397.36,approved,2024-01-25 07:25:25
+183,1738,changed_mind,73.1,approved,2025-04-22 21:51:44
+184,1739,wrong_item_sent,292.96,approved,2025-11-23 05:41:33
+185,1745,late_delivery,243.43,approved,2025-11-30 17:04:18
+186,1748,damaged_on_arrival,286.57,approved,2025-06-01 03:17:48
+187,1752,damaged_on_arrival,103.05,approved,2025-08-18 17:43:24
+188,1759,late_delivery,512.07,approved,2025-07-30 20:30:54
+189,1788,late_delivery,124.79,approved,2024-03-07 07:09:23
+190,1824,changed_mind,464.77,approved,2025-09-11 23:51:08
+191,1855,damaged_on_arrival,539.18,approved,2025-06-07 03:31:17
+192,1860,wrong_item_sent,302.92,approved,2025-11-22 12:56:04
+193,1862,wrong_item_sent,391.82,rejected,2025-02-02 23:39:04
+194,1887,item_not_as_described,465.91,approved,2024-12-11 08:38:18
+195,1888,changed_mind,101.47,approved,2025-09-30 01:11:26
+196,1898,wrong_item_sent,500.39,approved,2024-08-21 06:33:19
+197,1900,changed_mind,722.15,pending,
+198,1907,changed_mind,118.63,approved,2025-10-11 05:35:53
+199,1918,item_not_as_described,269.79,approved,2025-06-25 22:12:11
+200,1927,late_delivery,155.8,approved,2022-05-28 22:43:02
+201,1940,changed_mind,271.1,rejected,2023-07-30 17:12:18
+202,1942,size_or_fit_issue,512.9,approved,2025-12-28 02:51:41
+203,1943,wrong_item_sent,252.91,approved,2024-04-28 22:56:29
+204,1961,item_not_as_described,413.68,approved,2023-11-18 01:38:08
+205,1966,item_not_as_described,114.41,approved,2025-06-13 04:48:24
+206,1968,changed_mind,98.97,approved,2025-02-16 14:05:26
+207,1974,wrong_item_sent,689.86,approved,2023-06-25 23:49:27
+208,1977,size_or_fit_issue,329.45,pending,

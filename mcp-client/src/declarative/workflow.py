@@ -15,6 +15,7 @@ from src.core import chat_persistence
 from src.core.logger import logger
 from src.declarative.AgentSpec import AgentsTool, get_tools_for
 from src.models.AgentOutput import AgentName, OrchestratorOutput
+from src.models.config import settings
 
 graph = None # OBJ
 
@@ -49,16 +50,21 @@ def _merge_dicts(a: dict, b: dict) -> dict:
     """Reducer that merges parallel agent-response dicts."""
     return {**a, **b}
 
-
+# STATE GRAPH: 
 class State(TypedDict):
+
     query: str
     thread_id: str
+
     selected_agents: list[AgentName]
     policies: list[str]
+
     # Accumulated by all parallel sub-agent nodes before aggregator runs.
+
     agent_responses: Annotated[dict[str, str], _merge_dicts]
-    final_response: str
-    # Conversation history — persisted in Redis per thread_id via the checkpointer.
+
+    final_response: str 
+    
     messages: Annotated[list[BaseMessage], add_messages]
 
 async def _orchestrator_node(state: State) -> dict:
@@ -120,6 +126,7 @@ async def _run_agent_loop(
     hitl_tool_names: set[str],
     messages: list,
     agent_name: str = "",
+    recursion_depth: int = settings.recursion_depth
 ) -> str:
     """Run an agent tool-call loop with direct interrupt() for HITL tools.
 
@@ -130,6 +137,11 @@ async def _run_agent_loop(
     scratchpad never carries resume values, so HITL can never properly resume.
     """
     while True:
+        if recursion_depth <= 0:
+            raise RuntimeError(
+                f"Recursion depth exceeded for agent '{agent_name}' — "
+                f"check your tool calls to avoid infinite loops."
+            )
         response: AIMessage = await model.ainvoke(messages)
         messages = [*messages, response]
 
@@ -162,7 +174,6 @@ async def _run_agent_loop(
                 ToolMessage(content=outcome, name=tc["name"], tool_call_id=tc["id"])
             )
 
-        # ── HITL tools: single interrupt() call for the whole batch ───────────
         if hitl_calls:
             hitl_request = {
                 "agent": agent_name,
@@ -234,6 +245,7 @@ async def _run_agent_loop(
                 )
 
         messages = [*messages, *tool_results]
+        recursion_depth -= 1
 
 
 def _make_node(agent_tool: AgentsTool, md_file: str, key: str):
@@ -249,13 +261,13 @@ def _make_node(agent_tool: AgentsTool, md_file: str, key: str):
     _node.__name__ = f"_{key}_node"
     return _node
 
-
+# CUSTOME AGENTS WITH HITL FUNCTIONALITY: 
 _sales_node     = _make_node(AgentsTool.SALES,     "sales.md",            "sales")
 _customers_node = _make_node(AgentsTool.CUSTOMER,  "customer_support.md", "customers")
 _inventory_node = _make_node(AgentsTool.INVENTORY, "inventory.md",        "inventory")
 _knowledge_node = _make_node(AgentsTool.KNOWLEDGE, "knowledge.md",        "knowledge")
 
-
+# GENERALIST -> PATCH
 async def _general_node(state: State) -> dict:
     msgs = [SystemMessage(content=_load_md("general.md"))] + _build_sub_agent_messages(state)
     response: AIMessage = await agent_static._model_light.ainvoke(msgs)

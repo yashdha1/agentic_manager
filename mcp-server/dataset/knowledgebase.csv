@@ -1,0 +1,51 @@
+ID,Category,Title,Body,effective_date,status
+PA-011,Policy,Order cancellation policy,"Orders may be cancelled within 2 hours of placement if they have not entered processing.",2023-07-01 00:00:00,active
+PA-012,Policy,Gift card usage,"Gift cards can be redeemed during checkout and may be combined with promotional offers unless stated otherwise.",2023-07-05 00:00:00,active
+PA-013,Policy,International shipping,"We ship to select international destinations. Delivery times vary by country.",2023-07-10 00:00:00,active
+PA-014,Policy,Lost or damaged shipments,"Report lost or damaged shipments within 7 days of expected delivery for investigation.",2023-07-15 00:00:00,active
+PA-015,Policy,Subscription management,"Customers may modify or cancel subscriptions anytime through their account settings.",2023-08-01 00:00:00,inactive
+PA-016,Policy,Price matching policy,"We match competitor pricing on eligible products within 14 days of purchase.",2023-08-05 00:00:00,active
+PA-017,Policy,Customer support availability,"Support is available via chat, email, and phone Monday through Friday.",2023-08-10 00:00:00,active
+PA-018,Policy,Digital product delivery,"Digital products are delivered via email immediately after successful payment.",2023-08-15 00:00:00,inactive
+PA-019,Policy,Tax information,"Applicable sales taxes are calculated automatically based on shipping address.",2023-09-01 00:00:00,active
+PA-020,Policy,Accessibility commitment,"Our website follows accessibility best practices to improve usability for all customers.",2023-09-10 00:00:00,active
+CA-006,Campaign,Back to School Sale,"Special discounts on educational and office products during back-to-school season.",2023-07-20 00:00:00,active
+CA-007,Campaign,Weekend Mega Deals,"Exclusive weekend offers on selected categories.",2023-08-01 00:00:00,active
+CA-008,Campaign,Customer Appreciation Month,"Rewards and discounts offered to loyal customers throughout the month.",2023-08-15 00:00:00,active
+CA-009,Campaign,Autumn Essentials Promotion,"Featured products for the fall season with promotional pricing.",2023-09-01 00:00:00,active
+CA-010,Campaign,Black Friday Countdown,"Early access discounts leading up to Black Friday.",2023-10-15 00:00:00,inactive
+CA-011,Campaign,Cyber Monday Specials,"Online-only promotional offers for technology and electronics.",2023-11-20 00:00:00,inactive
+CA-012,Campaign,New Customer Welcome Offer,"First-time shoppers receive a discount on their initial purchase.",2023-07-25 00:00:00,active
+CA-013,Campaign,Bundle and Save Event,"Discounts applied when purchasing qualifying product bundles.",2023-08-20 00:00:00,inactive
+CA-014,Campaign,VIP Member Exclusive Sale,"Special promotions available only to loyalty members.",2023-09-15 00:00:00,active
+CA-015,Campaign,Year-End Clearance,"Inventory clearance event with reduced pricing.",2023-12-01 00:00:00,inactive
+MK-006,Marketing,Video Content Expansion,"Created additional product demonstration and tutorial videos.",2023-07-01 00:00:00,active
+MK-007,Marketing,Affiliate Marketing Program,"Introduced affiliate partnerships to drive referral traffic and sales.",2023-07-15 00:00:00,active
+MK-008,Marketing,Customer Review Campaign,"Encouraged customers to submit reviews through post-purchase communications.",2023-08-01 00:00:00,active
+MK-009,Marketing,Seasonal Social Media Push,"Increased social media activity during key shopping periods.",2023-08-20 00:00:00,active
+MK-010,Marketing,Personalized Product Recommendations,"Implemented recommendation engine for tailored shopping experiences.",2023-09-01 00:00:00,active
+MK-011,Marketing,Live Shopping Events,"Hosted live-stream product showcases with exclusive discounts.",2023-09-15 00:00:00,active
+MK-012,Marketing,Mobile App Adoption Campaign,"Promoted app downloads through incentives and targeted advertising.",2023-10-01 00:00:00,inactive
+MK-013,Marketing,Holiday Gift Guide Promotion,"Published curated gift guides for holiday shoppers.",2023-10-20 00:00:00,active
+MK-014,Marketing,Search Engine Optimization Initiative,"Optimized website content to improve organic search visibility.",2023-11-01 00:00:00,active
+MK-015,Marketing,Customer Retention Strategy,"Focused on repeat purchase incentives and engagement programs.",2023-11-15 00:00:00,active 
+PA-001,Policy,How to place an order,"Step 1: Browse products. Step 2: Add to cart. Step 3: Checkout and pay.",2023-01-15 00:00:00,active
+PA-002,Policy,Track your order,"Use the order number from your confirmation email to track your shipment in real-time.",2023-01-15 00:00:00,inactive
+PA-003,Policy,Return policy basics,"Items can be returned within 30 days of delivery in original condition for full refund.",2023-01-31 00:00:00,active
+PA-004,Policy,Shipping information,"Standard shipping: 3-7 business days. Express shipping: 1-2 business days. Free shipping over $50.",2023-03-02 00:00:00,inactive
+PA-005,Policy,Payment methods accepted,"We accept credit cards, PayPal, Apple Pay, and Google Pay for secure transactions.",2023-02-14 00:00:00,active
+PA-006,Policy,Account registration,"Create an account to save your addresses, view order history, and receive personalized recommendations.",2023-01-20 00:00:00,active
+PA-007,Policy,Product warranty details,"Electronics come with 1-year manufacturer warranty. Check product page for specific coverage details.",2023-05-01 00:00:00,active
+PA-008,Policy,How to apply a coupon,"Enter your coupon code at checkout before payment. Code appears in promotional emails or cart banners.",2023-02-01 00:00:00,active
+PA-009,Policy,Bulk order discounts,"Orders of 10+ identical items receive 10% discount automatically applied at checkout.",2023-06-15 00:00:00,inactive
+PA-010,Policy,Privacy and data protection,"We protect your data with encryption and never sell your information to third parties. GDPR compliant.",2023-04-01 00:00:00,active
+CA-001,Campaign,Spring Savings Event,"Seasonal promotion offering up to 20% off selected products.",2023-03-15 00:00:00,active
+CA-002,Campaign,Free Shipping Week,"Free standard shipping on all orders for one week.",2023-02-10 00:00:00,inactive
+CA-003,Campaign,Refer a Friend Program,"Customers receive store credit when referred friends complete a purchase.",2023-04-05 00:00:00,active
+CA-004,Campaign,Summer Launch Promotion,"Marketing campaign supporting new summer product releases.",2023-06-01 00:00:00,active
+CA-005,Campaign,Holiday Flash Sale,"Limited-time discounts during holiday season.",2023-01-25 00:00:00,inactive
+MK-001,Marketing,Email Newsletter Expansion,"Increased email marketing frequency from weekly to twice weekly.",2023-02-05 00:00:00,active
+MK-002,Marketing,Influencer Partnership Program,"Collaborated with social media influencers to promote products.",2023-03-20 00:00:00,active
+MK-003,Marketing,Retargeting Ads Initiative,"Launched retargeting advertisements for abandoned carts.",2023-04-12 00:00:00,active
+MK-004,Marketing,SMS Promotions Trial,"Tested promotional SMS campaigns for repeat customers.",2023-05-18 00:00:00,inactive
+MK-005,Marketing,Loyalty Program Awareness Campaign,"Marketing effort to increase loyalty program enrollments.",2023-06-10 00:00:00,active

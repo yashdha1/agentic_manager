@@ -55,4 +55,5 @@ class Settings(BaseSettings):
     stm_thread_key: str = Field(default="stm:threads", alias="STM_THREAD_KEY")
     stm_msg_key_prefix: str = Field(default="stm:thread:", alias="STM_MSG_KEY_PREFIX")
     
+    recursion_depth: int = Field(default=5, alias="RECURSION_DEPTH")
 settings = Settings()

@@ -9,12 +9,6 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from langgraph.checkpoint.memory import MemorySaver
 
-
-# ── Patch JsonPlusRedisSerializer to handle Pydantic models ──────────────────
-# The bundled serializer calls self._encode_constructor_args() which does not
-# exist on the class, causing a crash whenever a Pydantic BaseModel (e.g. the
-# orchestrator's `structured_response`) is present in a checkpoint.  Converting
-# Pydantic objects to plain dicts makes them fully JSON-serialisable.
 def _patch_redis_serializer() -> None:
     try:
         from langgraph.checkpoint.redis.jsonplus_redis import JsonPlusRedisSerializer
@@ -50,12 +44,12 @@ from src.core.stm import InMemorySTM, RedisSTM
 from src.core.tracing import configure_langsmith_tracing
 from src.declarative.AgentSpec import _all_tools
 from src.declarative.mcp_tools import prepare_workflow
-
+from src.core import ltm
+import redis.asyncio as aioredis
+from langgraph.checkpoint.redis.aio import AsyncRedisSaver
 
 async def _make_checkpointer(stack: AsyncExitStack):
-    """Try Redis; fall back to in-memory if Redis is unavailable."""
-    import redis.asyncio as aioredis
-    from langgraph.checkpoint.redis.aio import AsyncRedisSaver
+    """Try Redis; fall back to in-memory if Redis is unavailable.""" 
 
     redis_url = f"redis://{settings.redis_host}:{settings.redis_port}"
     try:
@@ -95,7 +89,6 @@ async def lifespan(_: FastAPI) -> AsyncIterator[None]:
  
         _ltm_task = None
         if isinstance(api_state.stm, RedisSTM):
-            from src.core import ltm
             try:
                 await api_state.stm.enable_keyspace_notifications()
                 _ltm_task = asyncio.create_task(

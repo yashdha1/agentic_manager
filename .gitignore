@@ -11,9 +11,7 @@ wheels/
 # js generated files
 node_modules/
 dist/
-build/
-dataset/
-scripts/
+build/ 
 logs/
 
 # Virtual environments
@@ -22,8 +20,6 @@ logs/
 # envs 
 env/
 .env
-*.log
-opencode.json
-*.csv
+*.log  
 .deepeval
 eval/

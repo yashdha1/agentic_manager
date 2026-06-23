@@ -1,7 +1,6 @@
 import enum
 
-from langchain_core.tools import BaseTool
-from pydantic import BaseModel, model_validator
+from langchain_core.tools import BaseTool 
 
 
 class AgentsTool(enum.Enum):
@@ -32,22 +31,4 @@ def store_tools(tools: list[BaseTool]) -> None:
 def get_tools_for(agent: AgentsTool) -> list[BaseTool]:
     """Return only the tools whose name starts with the agent's prefix."""
     return [t for t in _all_tools if t.name.startswith(agent.value)]
-
-class AgentSpec(BaseModel):
-    """Declarative agent specification with auto-filtered MCP tools."""
-
-    name: Agent
-    system_prompt: str = ""
-    user_prompt: str = ""
-
-    tools: list[BaseTool] = []
-
-    model_config = {"arbitrary_types_allowed": True}
-
-    @model_validator(mode="after")
-    def _populate_tools(self) -> "AgentSpec":
-        if not self.tools:
-            self.tools = get_tools_for(self.name)
-        return self
-
-    ... 
+ 

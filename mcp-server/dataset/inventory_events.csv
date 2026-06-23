@@ -1,0 +1,1001 @@
+id,product_id,event_type,quantity_change,new_stock_level,event_date,notes
+1,70,sale_deduction,-2,1038,2022-01-07 14:37:24,Online sale processed
+2,39,adjustment,-6,549,2022-01-07 23:46:02,Audit correction
+3,210,sale_deduction,-2,4421,2022-01-08 08:59:10,Online sale processed
+4,358,sale_deduction,-1,1939,2022-01-08 10:08:04,Customer order fulfilled
+5,479,sale_deduction,-3,516,2022-01-08 15:08:07,Online sale processed
+6,115,sale_deduction,-3,986,2022-01-09 23:44:16,Customer order fulfilled
+7,149,sale_deduction,-3,1403,2022-01-16 08:34:04,Customer order fulfilled
+8,251,restock,423,3078,2022-01-17 08:12:51,Warehouse transfer in
+9,471,restock,351,422,2022-01-20 02:24:04,Bulk import - quarterly stock review
+10,373,restock,486,2681,2022-01-29 03:27:47,Bulk import - quarterly stock review
+11,85,sale_deduction,-3,4840,2022-01-29 07:05:15,Customer order fulfilled
+12,18,sale_deduction,-2,319,2022-01-30 18:15:03,Customer order fulfilled
+13,271,sale_deduction,-3,3229,2022-02-01 08:18:38,Online sale processed
+14,415,adjustment,-22,4185,2022-02-01 13:46:52,Stock count correction
+15,323,restock,319,1486,2022-02-03 01:22:54,Emergency restock due to high demand
+16,90,sale_deduction,-2,2363,2022-02-03 20:42:33,Online sale processed
+17,394,restock,165,3435,2022-02-05 16:16:09,Warehouse transfer in
+18,282,adjustment,-23,3929,2022-02-06 02:29:59,Stock count correction
+19,31,sale_deduction,-1,4872,2022-02-07 03:15:54,Online sale processed
+20,413,sale_deduction,-3,4389,2022-02-09 15:59:32,Online sale processed
+21,293,sale_deduction,-1,79,2022-02-10 03:07:27,Order dispatched
+22,6,restock,129,3260,2022-02-10 15:32:36,Supplier delivery received
+23,135,sale_deduction,-3,1084,2022-02-13 01:54:55,Online sale processed
+24,410,sale_deduction,-2,4432,2022-02-15 20:16:34,Order dispatched
+25,396,sale_deduction,-2,1432,2022-02-17 06:33:44,Online sale processed
+26,357,restock,87,2607,2022-02-17 14:44:35,Emergency restock due to high demand
+27,61,sale_deduction,-2,1041,2022-02-19 05:44:59,Online sale processed
+28,123,adjustment,3,2739,2022-02-19 17:52:28,Shrinkage adjustment
+29,421,adjustment,30,3148,2022-02-20 19:44:43,System reconciliation
+30,446,restock,239,2817,2022-02-21 15:09:30,Warehouse transfer in
+31,321,sale_deduction,-1,812,2022-02-23 16:50:30,Customer order fulfilled
+32,499,sale_deduction,-2,1346,2022-02-23 19:40:51,Customer order fulfilled
+33,127,restock,62,5051,2022-02-24 08:35:23,Warehouse transfer in
+34,404,sale_deduction,-3,88,2022-02-27 09:15:30,Online sale processed
+35,494,adjustment,-14,4724,2022-02-27 17:53:48,Stock count correction
+36,415,adjustment,7,4207,2022-03-01 02:06:10,System reconciliation
+37,344,restock,444,1004,2022-03-05 02:40:09,Supplier delivery received
+38,387,sale_deduction,-3,4696,2022-03-06 21:10:29,Order dispatched
+39,173,sale_deduction,-3,3969,2022-03-11 14:23:03,Order dispatched
+40,479,sale_deduction,-2,514,2022-03-12 02:46:54,Customer order fulfilled
+41,218,restock,261,948,2022-03-13 08:18:57,Warehouse transfer in
+42,239,adjustment,-14,2300,2022-03-13 18:30:16,Shrinkage adjustment
+43,77,sale_deduction,-1,1938,2022-03-14 14:38:41,Online sale processed
+44,352,sale_deduction,-3,4908,2022-03-14 17:07:23,Order dispatched
+45,216,restock,109,4166,2022-03-17 17:56:16,Supplier delivery received
+46,126,restock,210,3341,2022-03-20 02:31:39,Bulk import - quarterly stock review
+47,138,sale_deduction,-1,2209,2022-03-21 02:17:29,Order dispatched
+48,446,sale_deduction,-3,2578,2022-03-22 18:10:13,Online sale processed
+49,365,adjustment,20,2779,2022-03-25 14:26:23,Shrinkage adjustment
+50,480,sale_deduction,-1,4906,2022-03-26 03:51:47,Customer order fulfilled
+51,497,restock,347,4766,2022-03-26 05:09:23,Emergency restock due to high demand
+52,139,sale_deduction,-3,444,2022-03-27 15:53:41,Online sale processed
+53,127,adjustment,28,5103,2022-03-27 22:39:05,Damaged units written off
+54,374,sale_deduction,-2,1785,2022-03-28 02:18:48,Order dispatched
+55,180,sale_deduction,-2,1636,2022-03-28 23:01:23,Customer order fulfilled
+56,348,restock,182,2968,2022-03-29 17:57:57,Warehouse transfer in
+57,387,sale_deduction,-2,4699,2022-04-03 04:52:22,Order dispatched
+58,121,adjustment,-8,1693,2022-04-03 14:13:16,Shrinkage adjustment
+59,490,restock,83,3413,2022-04-04 17:50:35,Return to stock - quality check passed
+60,71,sale_deduction,-3,2937,2022-04-06 20:46:40,Order dispatched
+61,463,restock,376,5317,2022-04-06 22:32:19,Return to stock - quality check passed
+62,5,sale_deduction,-3,238,2022-04-09 10:03:29,Customer order fulfilled
+63,129,restock,161,1563,2022-04-14 22:50:50,Emergency restock due to high demand
+64,51,sale_deduction,-1,712,2022-04-16 09:42:40,Order dispatched
+65,493,restock,170,4688,2022-04-17 09:23:16,Supplier delivery received
+66,166,restock,390,2746,2022-04-19 02:50:12,Supplier delivery received
+67,31,sale_deduction,-2,4870,2022-04-22 10:00:18,Online sale processed
+68,140,sale_deduction,-2,2992,2022-04-22 15:13:53,Online sale processed
+69,330,adjustment,-18,1720,2022-04-22 18:57:51,Stock count correction
+70,328,sale_deduction,-2,4545,2022-04-23 04:44:27,Online sale processed
+71,442,adjustment,-8,1351,2022-04-23 11:02:55,Stock count correction
+72,12,adjustment,10,223,2022-04-27 15:25:18,System reconciliation
+73,204,restock,242,3702,2022-04-30 12:43:20,Bulk import - quarterly stock review
+74,77,restock,164,2123,2022-05-03 18:38:11,Bulk import - quarterly stock review
+75,103,sale_deduction,-2,2699,2022-05-04 23:06:56,Customer order fulfilled
+76,403,adjustment,9,156,2022-05-07 10:11:41,Audit correction
+77,89,restock,473,4846,2022-05-09 03:18:05,Bulk import - quarterly stock review
+78,28,restock,282,5198,2022-05-09 13:24:25,Bulk import - quarterly stock review
+79,123,restock,170,2909,2022-05-09 19:01:19,Emergency restock due to high demand
+80,366,adjustment,0,171,2022-05-19 12:33:50,System reconciliation
+81,428,sale_deduction,-1,4604,2022-05-25 10:59:52,Customer order fulfilled
+82,298,restock,335,3528,2022-05-25 16:16:52,Warehouse transfer in
+83,470,restock,180,1295,2022-05-27 01:30:42,Emergency restock due to high demand
+84,472,sale_deduction,-1,1374,2022-05-27 04:00:53,Customer order fulfilled
+85,444,sale_deduction,-1,4770,2022-05-27 11:14:02,Online sale processed
+86,21,adjustment,2,1464,2022-05-28 05:40:15,Stock count correction
+87,60,restock,124,4017,2022-05-28 13:28:36,Supplier delivery received
+88,446,sale_deduction,-1,2581,2022-05-28 14:30:04,Customer order fulfilled
+89,395,restock,430,1782,2022-06-01 02:48:47,Warehouse transfer in
+90,155,sale_deduction,-3,3618,2022-06-02 02:46:17,Online sale processed
+91,290,adjustment,-2,198,2022-06-02 11:28:53,Stock count correction
+92,414,sale_deduction,-2,3181,2022-06-05 05:18:33,Order dispatched
+93,438,sale_deduction,-2,3253,2022-06-06 10:03:41,Online sale processed
+94,282,restock,77,4022,2022-06-07 03:04:01,Warehouse transfer in
+95,114,sale_deduction,-3,3287,2022-06-15 22:28:33,Online sale processed
+96,83,sale_deduction,-2,2388,2022-06-16 13:30:32,Order dispatched
+97,447,restock,306,1140,2022-06-17 22:02:36,Supplier delivery received
+98,55,restock,403,3174,2022-06-17 23:46:09,Emergency restock due to high demand
+99,427,sale_deduction,-2,2457,2022-06-21 21:48:10,Online sale processed
+100,474,sale_deduction,-1,4879,2022-06-26 23:13:12,Order dispatched
+101,471,adjustment,2,71,2022-06-27 18:45:24,Audit correction
+102,70,adjustment,-26,1012,2022-06-28 06:47:16,Audit correction
+103,286,sale_deduction,-2,4216,2022-06-28 12:03:31,Order dispatched
+104,309,sale_deduction,-3,264,2022-07-01 16:50:05,Online sale processed
+105,182,sale_deduction,-2,112,2022-07-03 04:19:05,Order dispatched
+106,73,sale_deduction,-1,2947,2022-07-04 10:00:21,Customer order fulfilled
+107,69,restock,211,2700,2022-07-05 01:57:22,Supplier delivery received
+108,70,restock,494,1506,2022-07-05 05:21:57,Return to stock - quality check passed
+109,254,adjustment,25,2674,2022-07-06 09:17:59,Damaged units written off
+110,161,sale_deduction,-2,3470,2022-07-06 17:18:49,Customer order fulfilled
+111,164,sale_deduction,-3,4530,2022-07-07 20:07:55,Customer order fulfilled
+112,241,restock,180,1269,2022-07-10 17:02:33,Return to stock - quality check passed
+113,370,sale_deduction,-3,433,2022-07-13 23:38:48,Online sale processed
+114,307,sale_deduction,-2,3603,2022-07-14 13:55:53,Customer order fulfilled
+115,125,restock,259,2927,2022-07-14 18:17:21,Warehouse transfer in
+116,470,sale_deduction,-3,1115,2022-07-15 21:44:49,Online sale processed
+117,217,restock,387,2501,2022-07-19 15:08:58,Return to stock - quality check passed
+118,463,adjustment,22,4948,2022-07-22 01:46:02,Damaged units written off
+119,455,sale_deduction,-3,3138,2022-07-25 16:10:44,Order dispatched
+120,142,sale_deduction,-1,4124,2022-07-29 20:54:44,Customer order fulfilled
+121,241,restock,374,1643,2022-07-30 20:52:46,Supplier delivery received
+122,495,sale_deduction,-1,1270,2022-07-31 01:38:20,Online sale processed
+123,18,sale_deduction,-3,316,2022-08-14 20:24:50,Online sale processed
+124,41,sale_deduction,-2,3885,2022-08-18 09:08:36,Online sale processed
+125,325,sale_deduction,-3,3331,2022-08-18 21:05:08,Customer order fulfilled
+126,347,sale_deduction,-1,194,2022-08-21 04:37:59,Online sale processed
+127,67,restock,77,1211,2022-08-22 08:21:46,Bulk import - quarterly stock review
+128,386,restock,401,5212,2022-08-23 15:29:57,Return to stock - quality check passed
+129,100,restock,391,2033,2022-08-24 03:09:39,Emergency restock due to high demand
+130,241,sale_deduction,-2,1089,2022-08-25 12:47:47,Customer order fulfilled
+131,466,sale_deduction,-1,1842,2022-08-28 00:38:41,Online sale processed
+132,200,sale_deduction,-3,4049,2022-08-28 18:57:07,Order dispatched
+133,4,sale_deduction,-3,2876,2022-08-29 08:42:44,Order dispatched
+134,190,restock,107,1750,2022-08-29 10:53:52,Bulk import - quarterly stock review
+135,98,restock,194,1423,2022-08-29 15:55:42,Bulk import - quarterly stock review
+136,414,sale_deduction,-3,3178,2022-08-30 22:45:48,Online sale processed
+137,296,adjustment,-21,2270,2022-08-31 16:11:27,Damaged units written off
+138,11,restock,465,1978,2022-09-01 00:09:09,Return to stock - quality check passed
+139,333,restock,298,2932,2022-09-01 08:17:09,Warehouse transfer in
+140,315,sale_deduction,-1,3351,2022-09-01 11:23:37,Order dispatched
+141,67,sale_deduction,-1,1134,2022-09-02 18:49:45,Order dispatched
+142,404,sale_deduction,-2,86,2022-09-08 14:45:51,Customer order fulfilled
+143,488,restock,402,1979,2022-09-11 13:45:06,Emergency restock due to high demand
+144,477,adjustment,29,4049,2022-09-12 16:50:05,Stock count correction
+145,40,sale_deduction,-3,4656,2022-09-13 16:54:54,Online sale processed
+146,229,adjustment,-27,1087,2022-09-14 02:15:31,Stock count correction
+147,331,sale_deduction,-3,3234,2022-09-16 06:06:49,Online sale processed
+148,4,adjustment,-3,2873,2022-09-16 11:08:12,System reconciliation
+149,145,sale_deduction,-1,894,2022-09-16 21:42:13,Order dispatched
+150,316,restock,168,867,2022-09-19 08:22:35,Warehouse transfer in
+151,416,sale_deduction,-3,105,2022-09-20 10:11:36,Customer order fulfilled
+152,377,sale_deduction,-1,3617,2022-09-22 16:48:10,Customer order fulfilled
+153,438,sale_deduction,-3,3257,2022-09-23 04:19:42,Order dispatched
+154,304,restock,252,1825,2022-09-25 12:39:09,Emergency restock due to high demand
+155,281,adjustment,15,2964,2022-10-03 11:33:35,Audit correction
+156,459,sale_deduction,-3,4848,2022-10-04 03:51:45,Customer order fulfilled
+157,261,sale_deduction,-2,3463,2022-10-05 05:01:10,Order dispatched
+158,210,sale_deduction,-1,4420,2022-10-08 22:13:12,Order dispatched
+159,482,sale_deduction,-1,1404,2022-10-09 04:04:47,Customer order fulfilled
+160,201,sale_deduction,-1,1049,2022-10-09 05:35:30,Customer order fulfilled
+161,474,restock,50,4929,2022-10-09 16:01:55,Emergency restock due to high demand
+162,98,sale_deduction,-3,617,2022-10-11 17:54:48,Online sale processed
+163,135,adjustment,-7,1077,2022-10-15 22:32:30,Damaged units written off
+164,331,restock,440,4062,2022-10-18 01:37:59,Supplier delivery received
+165,386,restock,163,4811,2022-10-20 15:39:42,Bulk import - quarterly stock review
+166,284,adjustment,-16,4149,2022-10-22 05:46:34,System reconciliation
+167,463,restock,129,5446,2022-10-23 14:57:02,Supplier delivery received
+168,149,restock,445,1844,2022-10-24 15:11:52,Bulk import - quarterly stock review
+169,280,restock,58,2833,2022-10-27 04:17:00,Emergency restock due to high demand
+170,328,sale_deduction,-2,4543,2022-10-27 18:05:34,Online sale processed
+171,364,sale_deduction,-1,358,2022-10-28 06:47:09,Online sale processed
+172,149,restock,362,2510,2022-10-29 04:27:44,Supplier delivery received
+173,147,sale_deduction,-2,2386,2022-10-30 18:37:45,Online sale processed
+174,387,restock,59,4755,2022-10-30 22:32:00,Return to stock - quality check passed
+175,255,sale_deduction,-1,2205,2022-10-30 23:36:01,Order dispatched
+176,197,restock,363,4046,2022-11-01 16:47:53,Emergency restock due to high demand
+177,381,restock,167,262,2022-11-05 13:33:53,Warehouse transfer in
+178,320,sale_deduction,-2,2782,2022-11-08 07:48:00,Order dispatched
+179,378,sale_deduction,-1,639,2022-11-10 08:06:54,Order dispatched
+180,64,sale_deduction,-2,1931,2022-11-12 15:54:46,Customer order fulfilled
+181,260,sale_deduction,-1,783,2022-11-14 03:48:01,Online sale processed
+182,134,adjustment,2,803,2022-11-14 04:42:11,Damaged units written off
+183,358,restock,361,2300,2022-11-14 20:23:51,Warehouse transfer in
+184,207,sale_deduction,-2,612,2022-11-16 09:05:52,Online sale processed
+185,79,restock,473,2759,2022-11-18 21:27:50,Emergency restock due to high demand
+186,298,sale_deduction,-1,3193,2022-11-21 23:16:28,Order dispatched
+187,433,sale_deduction,-3,228,2022-11-24 05:56:42,Order dispatched
+188,232,sale_deduction,-1,1062,2022-11-24 07:41:11,Order dispatched
+189,398,adjustment,-24,546,2022-11-26 13:19:51,System reconciliation
+190,256,restock,351,5012,2022-11-26 13:21:16,Warehouse transfer in
+191,349,restock,277,1058,2022-11-27 09:07:53,Bulk import - quarterly stock review
+192,499,sale_deduction,-1,1348,2022-11-27 20:52:19,Order dispatched
+193,194,sale_deduction,-1,3133,2022-11-30 05:18:31,Online sale processed
+194,456,sale_deduction,-3,4375,2022-12-02 11:00:50,Order dispatched
+195,395,sale_deduction,-1,745,2022-12-04 03:24:22,Order dispatched
+196,202,adjustment,-5,3012,2022-12-05 04:53:39,Stock count correction
+197,401,adjustment,-27,57,2022-12-05 16:31:03,System reconciliation
+198,302,adjustment,-1,2071,2022-12-07 23:16:14,Audit correction
+199,69,sale_deduction,-3,2491,2022-12-09 02:09:27,Customer order fulfilled
+200,196,sale_deduction,-3,4438,2022-12-10 16:58:16,Online sale processed
+201,174,restock,413,4989,2022-12-10 20:45:16,Bulk import - quarterly stock review
+202,232,restock,109,1171,2022-12-14 07:35:33,Warehouse transfer in
+203,278,sale_deduction,-1,3414,2022-12-14 10:46:57,Order dispatched
+204,205,sale_deduction,-2,3092,2022-12-16 03:49:44,Customer order fulfilled
+205,485,restock,397,1934,2022-12-16 22:27:40,Warehouse transfer in
+206,13,sale_deduction,-3,4021,2022-12-18 18:06:42,Customer order fulfilled
+207,344,sale_deduction,-1,355,2022-12-21 03:27:04,Order dispatched
+208,172,adjustment,-19,2948,2022-12-23 18:12:35,Shrinkage adjustment
+209,53,restock,59,2270,2022-12-24 00:24:47,Return to stock - quality check passed
+210,380,sale_deduction,-3,4446,2022-12-24 08:25:06,Order dispatched
+211,42,sale_deduction,-2,2743,2022-12-26 15:06:47,Order dispatched
+212,385,restock,418,3596,2022-12-27 03:50:25,Warehouse transfer in
+213,21,sale_deduction,-3,1462,2022-12-30 11:35:30,Customer order fulfilled
+214,229,sale_deduction,-1,821,2022-12-30 23:46:27,Order dispatched
+215,20,restock,163,3861,2023-01-02 03:59:53,Bulk import - quarterly stock review
+216,2,restock,157,967,2023-01-03 08:29:25,Supplier delivery received
+217,5,sale_deduction,-3,235,2023-01-05 00:48:35,Online sale processed
+218,242,sale_deduction,-2,2097,2023-01-06 09:45:04,Customer order fulfilled
+219,63,sale_deduction,-3,538,2023-01-09 08:07:43,Order dispatched
+220,478,restock,272,4672,2023-01-13 17:35:58,Return to stock - quality check passed
+221,280,sale_deduction,-3,2775,2023-01-15 04:52:49,Online sale processed
+222,279,sale_deduction,-3,1318,2023-01-17 19:47:22,Customer order fulfilled
+223,406,sale_deduction,-1,840,2023-01-19 19:18:43,Online sale processed
+224,329,adjustment,16,508,2023-01-20 02:29:17,Damaged units written off
+225,26,adjustment,6,1667,2023-01-20 03:31:58,System reconciliation
+226,98,restock,267,1229,2023-01-20 13:22:06,Supplier delivery received
+227,200,sale_deduction,-2,4047,2023-01-22 00:30:34,Online sale processed
+228,277,adjustment,-20,3973,2023-01-23 15:11:03,Damaged units written off
+229,216,restock,82,4057,2023-01-23 22:00:11,Warehouse transfer in
+230,250,adjustment,8,4602,2023-01-23 22:56:48,Stock count correction
+231,305,sale_deduction,-1,508,2023-01-25 15:10:30,Customer order fulfilled
+232,164,restock,295,5095,2023-01-25 21:00:09,Warehouse transfer in
+233,308,adjustment,12,3760,2023-01-26 00:34:44,System reconciliation
+234,395,restock,283,1155,2023-01-27 20:42:54,Bulk import - quarterly stock review
+235,164,adjustment,-30,4800,2023-01-28 05:49:32,Damaged units written off
+236,373,sale_deduction,-1,2197,2023-01-29 05:32:49,Online sale processed
+237,271,sale_deduction,-3,3232,2023-01-30 12:16:20,Order dispatched
+238,175,sale_deduction,-3,139,2023-01-30 18:32:37,Order dispatched
+239,338,sale_deduction,-1,736,2023-01-31 16:48:56,Online sale processed
+240,248,sale_deduction,-2,4022,2023-02-01 13:07:07,Order dispatched
+241,426,restock,323,3863,2023-02-02 10:04:37,Supplier delivery received
+242,25,sale_deduction,-1,2522,2023-02-02 23:49:55,Online sale processed
+243,70,sale_deduction,-3,1040,2023-02-04 01:34:44,Customer order fulfilled
+244,32,sale_deduction,-3,2448,2023-02-04 11:27:19,Online sale processed
+245,286,sale_deduction,-1,4215,2023-02-04 12:33:07,Customer order fulfilled
+246,270,sale_deduction,-3,3315,2023-02-06 18:10:07,Order dispatched
+247,250,restock,461,5063,2023-02-08 21:18:29,Bulk import - quarterly stock review
+248,94,adjustment,-25,72,2023-02-09 08:59:20,Audit correction
+249,66,adjustment,20,4905,2023-02-11 13:15:19,Damaged units written off
+250,453,sale_deduction,-1,4494,2023-02-14 01:09:06,Customer order fulfilled
+251,482,restock,118,1520,2023-02-14 14:37:01,Emergency restock due to high demand
+252,201,sale_deduction,-3,1046,2023-02-14 15:05:12,Order dispatched
+253,27,restock,464,508,2023-02-20 12:14:01,Return to stock - quality check passed
+254,149,restock,253,2097,2023-02-25 11:18:36,Bulk import - quarterly stock review
+255,131,sale_deduction,-1,4842,2023-02-25 22:59:31,Order dispatched
+256,440,sale_deduction,-3,1097,2023-02-27 02:46:34,Customer order fulfilled
+257,249,sale_deduction,-1,3850,2023-02-28 15:20:02,Online sale processed
+258,119,sale_deduction,-3,718,2023-03-02 08:12:43,Customer order fulfilled
+259,41,restock,309,4194,2023-03-02 21:36:39,Return to stock - quality check passed
+260,399,sale_deduction,-3,858,2023-03-05 12:46:46,Online sale processed
+261,345,sale_deduction,-1,1593,2023-03-08 00:19:11,Customer order fulfilled
+262,386,sale_deduction,-1,4648,2023-03-08 10:00:32,Customer order fulfilled
+263,2,adjustment,1,813,2023-03-14 00:17:32,Stock count correction
+264,195,restock,236,4482,2023-03-18 18:32:49,Supplier delivery received
+265,389,adjustment,12,4951,2023-03-20 07:04:00,Damaged units written off
+266,324,restock,61,4858,2023-03-20 08:50:19,Return to stock - quality check passed
+267,75,sale_deduction,-3,3729,2023-03-22 01:00:35,Order dispatched
+268,389,restock,324,5275,2023-03-23 00:53:16,Supplier delivery received
+269,105,sale_deduction,-3,2937,2023-03-23 14:06:50,Order dispatched
+270,163,sale_deduction,-3,2236,2023-03-26 16:26:19,Customer order fulfilled
+271,207,sale_deduction,-3,614,2023-03-26 23:38:46,Order dispatched
+272,494,restock,357,4710,2023-03-27 04:14:39,Supplier delivery received
+273,236,restock,137,2567,2023-03-27 05:40:52,Emergency restock due to high demand
+274,498,sale_deduction,-3,2500,2023-03-27 15:52:18,Customer order fulfilled
+275,130,sale_deduction,-3,4732,2023-03-27 22:24:48,Order dispatched
+276,142,restock,144,4268,2023-03-28 04:45:21,Warehouse transfer in
+277,251,adjustment,-7,3174,2023-03-30 01:10:01,System reconciliation
+278,195,adjustment,-8,4246,2023-03-30 16:46:31,Audit correction
+279,471,sale_deduction,-1,70,2023-03-31 16:54:00,Order dispatched
+280,119,restock,98,816,2023-03-31 21:40:46,Supplier delivery received
+281,109,restock,256,2773,2023-03-31 23:24:20,Warehouse transfer in
+282,62,restock,348,4398,2023-04-04 10:14:45,Bulk import - quarterly stock review
+283,406,sale_deduction,-1,841,2023-04-04 19:18:38,Customer order fulfilled
+284,260,sale_deduction,-3,784,2023-04-05 08:02:26,Customer order fulfilled
+285,134,sale_deduction,-1,801,2023-04-06 02:55:18,Online sale processed
+286,34,adjustment,19,492,2023-04-07 01:01:08,System reconciliation
+287,230,adjustment,30,4513,2023-04-15 04:53:45,Audit correction
+288,320,restock,79,2861,2023-04-17 00:21:06,Emergency restock due to high demand
+289,211,adjustment,6,1484,2023-04-17 09:50:04,Damaged units written off
+290,227,sale_deduction,-1,1311,2023-04-19 03:34:45,Online sale processed
+291,275,sale_deduction,-3,4659,2023-04-20 11:05:50,Customer order fulfilled
+292,4,sale_deduction,-3,2879,2023-04-21 09:30:56,Customer order fulfilled
+293,78,restock,155,4112,2023-04-22 16:18:38,Supplier delivery received
+294,465,sale_deduction,-2,479,2023-04-24 18:37:59,Customer order fulfilled
+295,180,sale_deduction,-1,1635,2023-04-25 23:37:56,Online sale processed
+296,471,sale_deduction,-1,69,2023-04-27 14:45:40,Online sale processed
+297,490,sale_deduction,-2,3330,2023-04-30 16:36:19,Customer order fulfilled
+298,85,restock,376,5213,2023-05-06 11:19:19,Return to stock - quality check passed
+299,254,restock,481,3155,2023-05-07 03:57:21,Supplier delivery received
+300,149,restock,51,2148,2023-05-10 16:43:45,Warehouse transfer in
+301,98,sale_deduction,-1,614,2023-05-10 21:03:02,Order dispatched
+302,222,sale_deduction,-2,2247,2023-05-12 01:14:16,Customer order fulfilled
+303,407,sale_deduction,-3,1649,2023-05-12 05:56:30,Online sale processed
+304,62,restock,276,4050,2023-05-12 07:22:01,Emergency restock due to high demand
+305,485,sale_deduction,-3,1537,2023-05-13 12:37:22,Order dispatched
+306,300,adjustment,16,2505,2023-05-14 16:55:40,Audit correction
+307,113,sale_deduction,-3,868,2023-05-17 03:56:26,Customer order fulfilled
+308,259,adjustment,14,1271,2023-05-17 15:01:57,Audit correction
+309,164,restock,300,4830,2023-05-18 07:50:50,Return to stock - quality check passed
+310,448,restock,343,3097,2023-05-21 18:03:37,Return to stock - quality check passed
+311,392,restock,99,1780,2023-05-21 21:24:42,Bulk import - quarterly stock review
+312,90,sale_deduction,-1,2362,2023-05-22 02:31:39,Customer order fulfilled
+313,253,restock,472,3164,2023-05-22 23:49:02,Warehouse transfer in
+314,347,restock,156,345,2023-05-23 18:48:50,Emergency restock due to high demand
+315,106,adjustment,-15,3130,2023-05-24 19:49:26,System reconciliation
+316,53,sale_deduction,-3,2229,2023-05-25 01:14:08,Online sale processed
+317,368,restock,376,1559,2023-05-25 13:49:41,Return to stock - quality check passed
+318,52,sale_deduction,-3,1714,2023-05-26 11:26:16,Online sale processed
+319,243,sale_deduction,-3,4964,2023-05-27 03:37:02,Online sale processed
+320,124,sale_deduction,-3,235,2023-05-30 15:24:42,Online sale processed
+321,301,restock,430,1444,2023-05-31 13:39:32,Supplier delivery received
+322,484,sale_deduction,-2,2882,2023-06-01 19:57:08,Customer order fulfilled
+323,203,restock,275,811,2023-06-03 10:56:43,Warehouse transfer in
+324,98,sale_deduction,-2,615,2023-06-04 02:33:07,Customer order fulfilled
+325,120,sale_deduction,-1,4341,2023-06-04 18:02:35,Order dispatched
+326,272,sale_deduction,-1,1540,2023-06-06 04:21:49,Customer order fulfilled
+327,243,restock,236,5682,2023-06-06 22:51:38,Return to stock - quality check passed
+328,334,restock,438,4627,2023-06-08 06:44:07,Warehouse transfer in
+329,483,adjustment,-15,2581,2023-06-09 01:20:59,Stock count correction
+330,385,restock,396,3178,2023-06-10 17:09:09,Return to stock - quality check passed
+331,187,restock,250,2129,2023-06-11 04:49:53,Return to stock - quality check passed
+332,145,adjustment,-29,865,2023-06-13 00:59:47,Stock count correction
+333,350,restock,319,851,2023-06-13 16:32:05,Emergency restock due to high demand
+334,271,restock,158,3383,2023-06-17 05:30:37,Warehouse transfer in
+335,222,sale_deduction,-3,2244,2023-06-18 00:33:19,Online sale processed
+336,76,restock,131,3844,2023-06-21 22:05:04,Bulk import - quarterly stock review
+337,183,sale_deduction,-1,1751,2023-06-22 01:35:46,Customer order fulfilled
+338,332,restock,390,2997,2023-06-22 05:47:35,Supplier delivery received
+339,73,sale_deduction,-2,2949,2023-06-23 08:08:21,Online sale processed
+340,226,restock,426,4050,2023-06-25 06:12:02,Bulk import - quarterly stock review
+341,380,adjustment,-29,4501,2023-06-27 11:08:46,Stock count correction
+342,271,sale_deduction,-1,3225,2023-06-29 00:11:19,Online sale processed
+343,54,restock,149,3016,2023-06-29 20:53:58,Return to stock - quality check passed
+344,330,sale_deduction,-1,1738,2023-06-30 03:17:17,Customer order fulfilled
+345,62,sale_deduction,-2,3774,2023-07-01 19:20:13,Customer order fulfilled
+346,247,adjustment,-22,2129,2023-07-04 14:18:23,Stock count correction
+347,499,sale_deduction,-3,1349,2023-07-05 06:05:51,Customer order fulfilled
+348,215,sale_deduction,-1,1931,2023-07-05 20:40:42,Order dispatched
+349,421,sale_deduction,-1,3124,2023-07-07 09:21:45,Customer order fulfilled
+350,476,restock,170,4350,2023-07-09 07:00:30,Emergency restock due to high demand
+351,190,sale_deduction,-1,1639,2023-07-09 07:39:06,Online sale processed
+352,124,restock,229,464,2023-07-13 10:13:46,Bulk import - quarterly stock review
+353,289,restock,98,3571,2023-07-13 10:21:58,Warehouse transfer in
+354,137,restock,396,4199,2023-07-14 03:23:40,Bulk import - quarterly stock review
+355,279,restock,302,1623,2023-07-15 14:13:00,Supplier delivery received
+356,191,adjustment,26,4788,2023-07-17 23:30:44,Shrinkage adjustment
+357,72,adjustment,-11,3121,2023-07-18 14:54:31,Shrinkage adjustment
+358,34,sale_deduction,-3,473,2023-07-18 15:23:58,Online sale processed
+359,447,adjustment,14,834,2023-07-19 06:15:21,Stock count correction
+360,352,restock,192,5097,2023-07-20 03:26:27,Supplier delivery received
+361,483,restock,193,2596,2023-07-20 05:40:57,Supplier delivery received
+362,315,sale_deduction,-3,3352,2023-07-22 14:09:28,Customer order fulfilled
+363,108,sale_deduction,-2,1550,2023-07-24 15:22:42,Customer order fulfilled
+364,444,restock,53,5115,2023-07-26 08:14:36,Warehouse transfer in
+365,32,sale_deduction,-1,2446,2023-07-27 07:19:21,Order dispatched
+366,379,restock,422,2754,2023-07-28 09:26:16,Bulk import - quarterly stock review
+367,208,sale_deduction,-3,1844,2023-07-29 03:22:20,Online sale processed
+368,89,adjustment,11,4373,2023-08-05 15:01:09,Stock count correction
+369,454,sale_deduction,-3,1730,2023-08-06 07:53:10,Customer order fulfilled
+370,155,restock,344,3956,2023-08-08 20:10:46,Supplier delivery received
+371,231,restock,259,1373,2023-08-10 15:46:55,Supplier delivery received
+372,297,restock,257,3878,2023-08-12 17:12:57,Supplier delivery received
+373,217,sale_deduction,-2,2114,2023-08-13 21:32:31,Customer order fulfilled
+374,139,sale_deduction,-2,447,2023-08-18 10:12:59,Order dispatched
+375,299,sale_deduction,-2,2555,2023-08-20 10:41:51,Online sale processed
+376,356,restock,359,3929,2023-08-20 19:17:31,Return to stock - quality check passed
+377,130,restock,259,4977,2023-08-22 03:54:04,Emergency restock due to high demand
+378,256,sale_deduction,-1,4661,2023-08-22 19:30:02,Online sale processed
+379,85,sale_deduction,-1,4839,2023-08-25 12:04:08,Online sale processed
+380,155,sale_deduction,-3,3615,2023-08-28 01:48:28,Order dispatched
+381,32,adjustment,-18,2428,2023-08-29 22:48:10,System reconciliation
+382,85,sale_deduction,-2,4837,2023-08-31 01:22:10,Order dispatched
+383,215,restock,440,2344,2023-08-31 21:57:50,Return to stock - quality check passed
+384,497,sale_deduction,-2,3831,2023-09-03 07:17:34,Customer order fulfilled
+385,49,sale_deduction,-3,2678,2023-09-03 11:31:43,Online sale processed
+386,247,adjustment,-5,2151,2023-09-03 13:27:48,Damaged units written off
+387,153,sale_deduction,-1,4370,2023-09-04 16:21:51,Online sale processed
+388,451,sale_deduction,-1,3899,2023-09-05 19:27:07,Order dispatched
+389,342,restock,79,4566,2023-09-06 18:51:30,Emergency restock due to high demand
+390,410,sale_deduction,-1,4436,2023-09-08 01:06:25,Order dispatched
+391,275,sale_deduction,-2,4662,2023-09-08 08:43:20,Online sale processed
+392,290,restock,147,200,2023-09-09 00:02:40,Emergency restock due to high demand
+393,123,sale_deduction,-2,2736,2023-09-09 11:29:00,Online sale processed
+394,251,restock,328,2655,2023-09-09 12:02:32,Supplier delivery received
+395,2,sale_deduction,-3,812,2023-09-10 17:04:00,Customer order fulfilled
+396,228,adjustment,8,659,2023-09-13 23:00:32,System reconciliation
+397,228,sale_deduction,-3,651,2023-09-14 23:21:15,Online sale processed
+398,496,sale_deduction,-2,3027,2023-09-16 09:37:40,Customer order fulfilled
+399,323,adjustment,-4,1482,2023-09-16 12:26:30,System reconciliation
+400,329,restock,324,832,2023-09-17 04:52:31,Bulk import - quarterly stock review
+401,263,restock,253,940,2023-09-18 18:01:34,Bulk import - quarterly stock review
+402,59,sale_deduction,-3,2110,2023-09-19 21:47:21,Online sale processed
+403,364,restock,125,483,2023-09-21 18:36:02,Bulk import - quarterly stock review
+404,479,sale_deduction,-1,519,2023-09-21 22:19:25,Online sale processed
+405,397,sale_deduction,-1,3220,2023-09-23 14:43:21,Online sale processed
+406,219,sale_deduction,-1,1150,2023-09-25 13:36:07,Online sale processed
+407,259,sale_deduction,-2,1257,2023-09-26 14:19:34,Order dispatched
+408,191,restock,67,4855,2023-09-26 19:13:59,Return to stock - quality check passed
+409,409,restock,73,3478,2023-09-27 23:09:18,Return to stock - quality check passed
+410,331,sale_deduction,-2,3232,2023-09-28 08:57:06,Order dispatched
+411,13,sale_deduction,-1,4024,2023-09-30 04:37:26,Customer order fulfilled
+412,204,restock,122,3824,2023-09-30 12:44:43,Emergency restock due to high demand
+413,149,sale_deduction,-2,1401,2023-09-30 14:07:10,Online sale processed
+414,73,sale_deduction,-1,2948,2023-10-02 04:30:56,Order dispatched
+415,214,sale_deduction,-1,526,2023-10-03 02:17:11,Customer order fulfilled
+416,445,restock,453,2629,2023-10-04 11:21:34,Supplier delivery received
+417,370,restock,457,890,2023-10-05 14:57:51,Supplier delivery received
+418,190,adjustment,8,1643,2023-10-07 08:22:27,System reconciliation
+419,58,restock,187,4023,2023-10-10 14:17:46,Supplier delivery received
+420,22,sale_deduction,-3,1340,2023-10-10 20:57:17,Order dispatched
+421,496,sale_deduction,-1,3026,2023-10-13 04:21:57,Customer order fulfilled
+422,78,sale_deduction,-1,3957,2023-10-13 11:35:53,Order dispatched
+423,239,sale_deduction,-3,2314,2023-10-14 19:02:57,Online sale processed
+424,159,restock,486,3443,2023-10-14 23:02:41,Warehouse transfer in
+425,397,restock,306,3526,2023-10-15 19:38:50,Emergency restock due to high demand
+426,255,restock,63,2398,2023-10-16 05:10:53,Emergency restock due to high demand
+427,413,adjustment,13,4402,2023-10-16 09:41:39,Audit correction
+428,421,sale_deduction,-3,3118,2023-10-19 19:27:08,Online sale processed
+429,343,restock,302,2947,2023-10-20 06:41:58,Emergency restock due to high demand
+430,426,sale_deduction,-2,3540,2023-10-22 04:39:58,Order dispatched
+431,344,restock,229,560,2023-10-23 18:23:07,Warehouse transfer in
+432,443,adjustment,6,3917,2023-10-26 10:13:39,System reconciliation
+433,426,sale_deduction,-3,3542,2023-10-26 20:54:03,Customer order fulfilled
+434,156,sale_deduction,-2,3288,2023-10-29 22:00:30,Order dispatched
+435,375,sale_deduction,-3,685,2023-10-31 03:42:33,Customer order fulfilled
+436,426,sale_deduction,-2,3548,2023-10-31 20:56:33,Online sale processed
+437,278,sale_deduction,-2,3415,2023-11-02 08:42:37,Customer order fulfilled
+438,410,sale_deduction,-1,4431,2023-11-03 00:37:21,Online sale processed
+439,109,sale_deduction,-2,2518,2023-11-04 19:24:25,Customer order fulfilled
+440,64,restock,57,1988,2023-11-05 05:13:39,Return to stock - quality check passed
+441,405,sale_deduction,-2,4355,2023-11-05 18:17:41,Online sale processed
+442,109,sale_deduction,-1,2517,2023-11-08 01:41:58,Order dispatched
+443,154,adjustment,7,4481,2023-11-11 19:02:05,Audit correction
+444,399,sale_deduction,-3,855,2023-11-12 03:03:29,Customer order fulfilled
+445,147,restock,108,2658,2023-11-12 15:25:18,Emergency restock due to high demand
+446,245,restock,171,2949,2023-11-13 07:45:17,Emergency restock due to high demand
+447,229,adjustment,-3,1084,2023-11-13 21:50:54,Shrinkage adjustment
+448,191,sale_deduction,-2,4762,2023-11-14 01:04:00,Online sale processed
+449,376,sale_deduction,-1,3694,2023-11-14 02:02:06,Online sale processed
+450,459,sale_deduction,-2,4846,2023-11-14 23:28:41,Order dispatched
+451,74,sale_deduction,-3,125,2023-11-17 07:31:17,Online sale processed
+452,224,restock,364,2888,2023-11-17 09:53:11,Return to stock - quality check passed
+453,113,restock,115,983,2023-11-17 15:39:27,Warehouse transfer in
+454,55,sale_deduction,-3,2771,2023-11-18 22:19:11,Online sale processed
+455,120,restock,277,4618,2023-11-19 16:31:25,Bulk import - quarterly stock review
+456,416,restock,148,253,2023-11-22 02:36:37,Emergency restock due to high demand
+457,283,sale_deduction,-1,4043,2023-11-22 13:23:27,Order dispatched
+458,428,adjustment,-14,4590,2023-11-27 15:05:37,Stock count correction
+459,133,sale_deduction,-1,3853,2023-11-30 07:36:56,Online sale processed
+460,196,sale_deduction,-2,4441,2023-12-02 04:03:03,Customer order fulfilled
+461,78,restock,131,4243,2023-12-03 01:45:29,Emergency restock due to high demand
+462,463,adjustment,-7,4941,2023-12-05 05:15:25,Stock count correction
+463,239,sale_deduction,-1,2317,2023-12-07 03:29:14,Customer order fulfilled
+464,434,sale_deduction,-3,2023,2023-12-10 20:40:18,Order dispatched
+465,487,adjustment,-23,2059,2023-12-11 08:42:24,Stock count correction
+466,266,sale_deduction,-3,2905,2023-12-14 06:50:02,Customer order fulfilled
+467,482,sale_deduction,-2,1402,2023-12-14 18:05:08,Order dispatched
+468,74,sale_deduction,-1,121,2023-12-15 22:46:50,Customer order fulfilled
+469,8,sale_deduction,-1,1130,2023-12-16 11:33:16,Online sale processed
+470,48,sale_deduction,-3,201,2023-12-18 00:09:27,Customer order fulfilled
+471,335,restock,465,4872,2023-12-18 12:42:34,Warehouse transfer in
+472,489,sale_deduction,-2,3550,2023-12-24 02:47:52,Online sale processed
+473,316,adjustment,-23,699,2023-12-26 06:57:33,System reconciliation
+474,415,sale_deduction,-2,3945,2023-12-26 11:13:44,Order dispatched
+475,64,sale_deduction,-1,1933,2023-12-26 21:01:13,Online sale processed
+476,44,restock,454,3350,2023-12-27 07:51:23,Bulk import - quarterly stock review
+477,71,sale_deduction,-3,2934,2023-12-30 02:53:33,Customer order fulfilled
+478,388,restock,315,3008,2023-12-30 16:22:52,Bulk import - quarterly stock review
+479,392,restock,374,2154,2024-01-02 04:34:26,Return to stock - quality check passed
+480,357,restock,130,2737,2024-01-02 09:10:57,Supplier delivery received
+481,201,restock,149,1970,2024-01-02 14:51:03,Bulk import - quarterly stock review
+482,149,restock,165,2890,2024-01-02 17:48:17,Emergency restock due to high demand
+483,449,adjustment,9,4239,2024-01-04 16:47:43,Shrinkage adjustment
+484,88,restock,164,2990,2024-01-05 23:42:27,Supplier delivery received
+485,431,restock,377,1965,2024-01-07 01:31:03,Return to stock - quality check passed
+486,160,adjustment,22,2543,2024-01-09 05:34:41,Damaged units written off
+487,448,adjustment,16,3113,2024-01-11 02:11:45,System reconciliation
+488,185,adjustment,1,2575,2024-01-11 19:51:56,Damaged units written off
+489,70,sale_deduction,-1,1043,2024-01-12 08:17:33,Order dispatched
+490,301,restock,370,1814,2024-01-12 20:38:28,Supplier delivery received
+491,33,restock,363,1360,2024-01-12 22:44:06,Bulk import - quarterly stock review
+492,361,restock,470,812,2024-01-13 22:45:21,Supplier delivery received
+493,215,sale_deduction,-2,1932,2024-01-14 21:18:01,Online sale processed
+494,270,restock,326,3665,2024-01-16 22:31:21,Bulk import - quarterly stock review
+495,91,sale_deduction,-1,4351,2024-01-17 08:07:21,Order dispatched
+496,293,sale_deduction,-1,80,2024-01-19 11:58:22,Order dispatched
+497,91,restock,70,4421,2024-01-20 08:16:27,Supplier delivery received
+498,310,restock,131,2526,2024-01-20 21:30:14,Emergency restock due to high demand
+499,496,sale_deduction,-3,3029,2024-01-26 09:21:39,Customer order fulfilled
+500,195,sale_deduction,-2,4254,2024-01-26 12:12:57,Online sale processed
+501,455,restock,377,3515,2024-01-26 12:31:51,Bulk import - quarterly stock review
+502,495,sale_deduction,-3,1265,2024-01-30 09:05:53,Order dispatched
+503,340,sale_deduction,-3,4659,2024-02-03 16:25:04,Order dispatched
+504,19,restock,322,2661,2024-02-05 09:38:01,Bulk import - quarterly stock review
+505,415,restock,491,4676,2024-02-08 02:41:17,Return to stock - quality check passed
+506,433,restock,347,638,2024-02-11 03:51:22,Supplier delivery received
+507,213,sale_deduction,-1,3783,2024-02-11 22:15:10,Online sale processed
+508,484,restock,87,3935,2024-02-13 07:56:25,Supplier delivery received
+509,361,sale_deduction,-3,342,2024-02-16 02:48:01,Online sale processed
+510,426,sale_deduction,-1,3547,2024-02-16 03:02:01,Customer order fulfilled
+511,100,sale_deduction,-1,1642,2024-02-21 03:58:29,Order dispatched
+512,337,restock,305,3946,2024-02-21 18:19:34,Bulk import - quarterly stock review
+513,272,sale_deduction,-3,1535,2024-02-21 20:28:45,Order dispatched
+514,50,adjustment,-19,280,2024-02-23 21:12:52,Damaged units written off
+515,71,restock,150,3084,2024-02-24 18:32:00,Return to stock - quality check passed
+516,144,sale_deduction,-3,534,2024-02-25 18:38:47,Online sale processed
+517,286,restock,354,4569,2024-02-26 00:21:21,Warehouse transfer in
+518,99,sale_deduction,-1,508,2024-02-26 12:15:14,Online sale processed
+519,164,sale_deduction,-1,4533,2024-02-28 14:23:18,Order dispatched
+520,169,adjustment,28,3800,2024-02-28 22:41:24,Stock count correction
+521,150,sale_deduction,-2,1357,2024-03-01 06:47:48,Online sale processed
+522,401,sale_deduction,-3,84,2024-03-01 12:50:18,Online sale processed
+523,441,sale_deduction,-2,481,2024-03-01 17:18:28,Order dispatched
+524,152,restock,167,4774,2024-03-02 03:57:49,Bulk import - quarterly stock review
+525,143,sale_deduction,-3,1002,2024-03-04 23:38:59,Order dispatched
+526,397,sale_deduction,-2,3221,2024-03-05 01:20:05,Online sale processed
+527,197,sale_deduction,-3,3684,2024-03-05 12:14:32,Online sale processed
+528,415,restock,255,4200,2024-03-11 12:45:42,Supplier delivery received
+529,208,sale_deduction,-2,1848,2024-03-13 18:08:05,Order dispatched
+530,267,adjustment,6,3225,2024-03-13 18:58:40,Damaged units written off
+531,49,sale_deduction,-2,2676,2024-03-17 01:34:34,Order dispatched
+532,321,restock,273,1083,2024-03-21 05:40:40,Emergency restock due to high demand
+533,133,sale_deduction,-1,3854,2024-03-23 01:02:33,Online sale processed
+534,72,sale_deduction,-3,3132,2024-03-23 19:47:31,Customer order fulfilled
+535,104,sale_deduction,-3,570,2024-03-25 02:10:19,Order dispatched
+536,9,sale_deduction,-3,2597,2024-03-25 06:09:27,Online sale processed
+537,464,restock,498,2767,2024-03-27 11:28:36,Emergency restock due to high demand
+538,380,restock,84,4530,2024-03-28 13:54:51,Bulk import - quarterly stock review
+539,96,restock,194,5121,2024-03-28 15:03:53,Bulk import - quarterly stock review
+540,494,sale_deduction,-2,4353,2024-03-29 17:47:59,Online sale processed
+541,328,sale_deduction,-2,4540,2024-04-02 17:22:39,Online sale processed
+542,57,adjustment,-10,4360,2024-04-02 23:37:56,Stock count correction
+543,7,sale_deduction,-1,4958,2024-04-03 01:25:37,Online sale processed
+544,95,adjustment,-3,1578,2024-04-04 20:10:30,Damaged units written off
+545,410,adjustment,-9,4422,2024-04-06 11:36:27,Damaged units written off
+546,215,adjustment,-27,1904,2024-04-08 14:33:10,System reconciliation
+547,500,sale_deduction,-1,4166,2024-04-08 15:24:25,Order dispatched
+548,217,restock,151,2652,2024-04-12 05:28:11,Warehouse transfer in
+549,495,sale_deduction,-2,1271,2024-04-20 05:46:35,Online sale processed
+550,169,sale_deduction,-2,3772,2024-04-21 02:09:04,Order dispatched
+551,365,adjustment,1,2759,2024-04-21 23:58:20,Audit correction
+552,441,sale_deduction,-3,478,2024-04-23 21:07:39,Customer order fulfilled
+553,186,sale_deduction,-3,2684,2024-04-25 14:44:43,Online sale processed
+554,185,restock,282,2949,2024-04-28 07:16:14,Supplier delivery received
+555,186,adjustment,14,2698,2024-04-29 10:00:52,Shrinkage adjustment
+556,274,restock,248,1493,2024-04-30 12:37:50,Emergency restock due to high demand
+557,431,sale_deduction,-2,1588,2024-04-30 13:53:31,Customer order fulfilled
+558,324,sale_deduction,-3,4797,2024-04-30 21:53:58,Order dispatched
+559,273,adjustment,16,4850,2024-05-01 08:54:27,Damaged units written off
+560,334,restock,307,4189,2024-05-01 11:29:24,Supplier delivery received
+561,15,sale_deduction,-1,3597,2024-05-03 04:17:00,Customer order fulfilled
+562,258,sale_deduction,-3,3264,2024-05-09 09:48:07,Customer order fulfilled
+563,105,sale_deduction,-3,2934,2024-05-09 19:03:48,Customer order fulfilled
+564,292,restock,295,3648,2024-05-10 12:56:56,Emergency restock due to high demand
+565,56,restock,378,1083,2024-05-13 19:22:26,Warehouse transfer in
+566,181,restock,94,1409,2024-05-15 05:57:54,Emergency restock due to high demand
+567,127,adjustment,24,5075,2024-05-16 12:37:50,System reconciliation
+568,398,adjustment,24,570,2024-05-16 16:50:48,Audit correction
+569,128,sale_deduction,-1,1652,2024-05-17 04:53:35,Online sale processed
+570,272,sale_deduction,-2,1538,2024-05-17 08:00:36,Customer order fulfilled
+571,470,restock,300,1595,2024-05-20 03:32:31,Warehouse transfer in
+572,67,sale_deduction,-2,1136,2024-05-21 17:19:50,Customer order fulfilled
+573,228,sale_deduction,-2,654,2024-05-23 06:11:01,Online sale processed
+574,244,restock,229,3462,2024-05-26 07:59:11,Bulk import - quarterly stock review
+575,110,sale_deduction,-3,345,2024-05-28 00:03:44,Online sale processed
+576,433,restock,63,291,2024-06-03 06:01:18,Warehouse transfer in
+577,474,sale_deduction,-3,4880,2024-06-03 15:22:28,Order dispatched
+578,236,restock,299,2430,2024-06-05 22:27:29,Warehouse transfer in
+579,172,sale_deduction,-2,2967,2024-06-05 23:03:02,Customer order fulfilled
+580,166,adjustment,-26,2720,2024-06-07 00:45:12,System reconciliation
+581,45,sale_deduction,-2,1357,2024-06-07 22:29:06,Customer order fulfilled
+582,254,sale_deduction,-1,2649,2024-06-08 04:09:58,Order dispatched
+583,45,adjustment,23,1616,2024-06-09 16:17:33,Stock count correction
+584,308,sale_deduction,-1,3748,2024-06-11 12:55:04,Customer order fulfilled
+585,471,sale_deduction,-3,71,2024-06-12 02:14:08,Online sale processed
+586,213,sale_deduction,-2,3784,2024-06-12 04:13:00,Online sale processed
+587,389,sale_deduction,-3,4939,2024-06-13 05:54:24,Order dispatched
+588,273,sale_deduction,-2,4408,2024-06-13 08:30:59,Order dispatched
+589,67,sale_deduction,-1,1135,2024-06-13 15:59:10,Online sale processed
+590,321,sale_deduction,-1,810,2024-06-16 00:58:21,Order dispatched
+591,379,restock,339,1976,2024-06-19 07:10:29,Return to stock - quality check passed
+592,358,restock,164,2464,2024-06-20 03:29:00,Supplier delivery received
+593,161,sale_deduction,-3,3467,2024-06-20 20:44:28,Customer order fulfilled
+594,407,restock,113,1762,2024-06-20 23:36:30,Bulk import - quarterly stock review
+595,392,adjustment,-10,1681,2024-06-21 03:44:26,Audit correction
+596,118,sale_deduction,-2,2217,2024-06-23 21:10:22,Customer order fulfilled
+597,175,restock,493,632,2024-06-24 04:17:46,Supplier delivery received
+598,403,adjustment,26,182,2024-06-26 05:13:32,Shrinkage adjustment
+599,313,sale_deduction,-3,3702,2024-06-26 16:44:26,Online sale processed
+600,462,sale_deduction,-3,69,2024-06-30 19:47:52,Order dispatched
+601,305,restock,231,739,2024-07-01 15:31:13,Warehouse transfer in
+602,407,restock,235,1997,2024-07-01 17:49:58,Return to stock - quality check passed
+603,497,sale_deduction,-1,3838,2024-07-02 17:26:50,Customer order fulfilled
+604,449,adjustment,14,4230,2024-07-04 03:47:24,Damaged units written off
+605,367,sale_deduction,-3,1961,2024-07-06 17:59:24,Order dispatched
+606,195,sale_deduction,-3,4256,2024-07-07 07:12:54,Customer order fulfilled
+607,73,restock,158,3105,2024-07-07 19:42:22,Emergency restock due to high demand
+608,48,sale_deduction,-3,198,2024-07-08 10:33:01,Online sale processed
+609,172,restock,314,3262,2024-07-09 18:21:54,Return to stock - quality check passed
+610,96,adjustment,-23,5098,2024-07-12 09:15:22,Damaged units written off
+611,427,sale_deduction,-2,2455,2024-07-15 01:07:13,Order dispatched
+612,482,adjustment,6,1526,2024-07-15 08:47:29,Stock count correction
+613,448,restock,280,3393,2024-07-16 05:02:15,Supplier delivery received
+614,257,sale_deduction,-1,578,2024-07-19 07:41:50,Online sale processed
+615,271,sale_deduction,-3,3226,2024-07-19 20:05:16,Customer order fulfilled
+616,110,sale_deduction,-2,348,2024-07-21 14:49:21,Online sale processed
+617,425,restock,60,4001,2024-07-25 15:14:51,Emergency restock due to high demand
+618,299,restock,372,2901,2024-07-29 01:50:19,Bulk import - quarterly stock review
+619,475,adjustment,-11,3514,2024-07-31 21:55:52,Shrinkage adjustment
+620,458,sale_deduction,-3,3576,2024-08-01 16:50:59,Customer order fulfilled
+621,264,restock,353,2812,2024-08-02 12:49:41,Supplier delivery received
+622,478,sale_deduction,-3,4400,2024-08-04 23:29:41,Online sale processed
+623,53,adjustment,-18,2211,2024-08-05 16:58:22,System reconciliation
+624,126,restock,373,3714,2024-08-08 19:46:35,Return to stock - quality check passed
+625,352,restock,276,5373,2024-08-08 22:45:08,Emergency restock due to high demand
+626,279,adjustment,3,1321,2024-08-09 10:23:55,Damaged units written off
+627,188,sale_deduction,-2,102,2024-08-09 11:01:39,Order dispatched
+628,449,sale_deduction,-2,4216,2024-08-13 20:50:43,Online sale processed
+629,299,adjustment,-26,2529,2024-08-14 00:39:10,Audit correction
+630,75,sale_deduction,-3,3732,2024-08-14 20:36:02,Customer order fulfilled
+631,381,sale_deduction,-2,95,2024-08-15 18:27:40,Order dispatched
+632,355,adjustment,12,3954,2024-08-18 12:00:55,System reconciliation
+633,493,restock,94,5048,2024-08-19 05:31:14,Bulk import - quarterly stock review
+634,31,sale_deduction,-1,4869,2024-08-21 16:29:24,Customer order fulfilled
+635,198,restock,220,2921,2024-08-22 22:13:34,Bulk import - quarterly stock review
+636,255,restock,130,2335,2024-08-25 15:11:20,Bulk import - quarterly stock review
+637,208,adjustment,6,1850,2024-08-25 18:01:31,Stock count correction
+638,281,sale_deduction,-2,2949,2024-08-27 00:40:40,Order dispatched
+639,408,sale_deduction,-3,2758,2024-08-27 02:10:07,Online sale processed
+640,297,sale_deduction,-1,3621,2024-08-27 18:05:00,Customer order fulfilled
+641,67,adjustment,-29,1182,2024-08-27 20:06:05,Damaged units written off
+642,355,sale_deduction,-1,3942,2024-08-28 03:48:57,Online sale processed
+643,182,sale_deduction,-3,109,2024-08-29 03:16:37,Online sale processed
+644,390,sale_deduction,-1,4292,2024-09-01 08:04:47,Order dispatched
+645,39,restock,401,950,2024-09-02 04:16:25,Emergency restock due to high demand
+646,45,restock,237,1593,2024-09-05 04:24:39,Warehouse transfer in
+647,127,sale_deduction,-3,4989,2024-09-08 07:03:06,Customer order fulfilled
+648,266,restock,188,3093,2024-09-11 02:11:28,Bulk import - quarterly stock review
+649,405,sale_deduction,-3,4357,2024-09-11 15:49:18,Customer order fulfilled
+650,188,sale_deduction,-1,99,2024-09-13 07:42:55,Customer order fulfilled
+651,391,restock,390,3871,2024-09-16 07:06:09,Return to stock - quality check passed
+652,85,sale_deduction,-2,4845,2024-09-16 18:23:10,Customer order fulfilled
+653,495,restock,343,1897,2024-09-16 18:37:02,Supplier delivery received
+654,104,restock,227,797,2024-09-16 20:46:15,Warehouse transfer in
+655,445,sale_deduction,-1,2176,2024-09-19 04:14:14,Order dispatched
+656,476,restock,431,4781,2024-09-19 11:00:34,Return to stock - quality check passed
+657,160,sale_deduction,-2,2521,2024-09-19 20:23:21,Online sale processed
+658,348,sale_deduction,-2,2788,2024-09-20 06:50:55,Customer order fulfilled
+659,391,restock,278,3481,2024-09-21 11:05:23,Warehouse transfer in
+660,111,sale_deduction,-1,1158,2024-09-21 17:57:49,Customer order fulfilled
+661,463,sale_deduction,-1,4926,2024-09-22 02:01:12,Online sale processed
+662,172,restock,67,3329,2024-09-22 07:49:37,Return to stock - quality check passed
+663,248,adjustment,27,4049,2024-09-22 22:19:41,Shrinkage adjustment
+664,445,adjustment,-3,2647,2024-09-23 02:33:34,Stock count correction
+665,164,sale_deduction,-3,4534,2024-09-24 16:24:32,Customer order fulfilled
+666,202,restock,93,3017,2024-09-24 22:48:59,Return to stock - quality check passed
+667,414,adjustment,3,3181,2024-10-01 02:15:36,Stock count correction
+668,285,restock,338,4380,2024-10-02 22:52:42,Return to stock - quality check passed
+669,342,adjustment,25,4389,2024-10-03 10:46:44,Stock count correction
+670,497,restock,168,4096,2024-10-03 11:36:09,Bulk import - quarterly stock review
+671,320,restock,273,3134,2024-10-05 09:06:37,Bulk import - quarterly stock review
+672,379,adjustment,27,1637,2024-10-05 22:14:32,Audit correction
+673,25,sale_deduction,-1,2521,2024-10-12 02:52:52,Order dispatched
+674,189,restock,306,1480,2024-10-16 17:37:01,Emergency restock due to high demand
+675,418,sale_deduction,-2,4897,2024-10-17 16:54:12,Customer order fulfilled
+676,461,restock,130,2748,2024-10-20 15:44:09,Emergency restock due to high demand
+677,285,sale_deduction,-1,3982,2024-10-23 12:04:15,Customer order fulfilled
+678,442,sale_deduction,-1,1359,2024-10-24 04:11:21,Order dispatched
+679,365,adjustment,-25,2758,2024-10-25 04:12:31,Stock count correction
+680,424,restock,479,3952,2024-10-26 21:40:34,Warehouse transfer in
+681,495,sale_deduction,-1,1264,2024-10-27 03:02:20,Customer order fulfilled
+682,104,sale_deduction,-1,573,2024-10-27 10:29:42,Customer order fulfilled
+683,396,restock,238,1670,2024-10-27 12:51:21,Return to stock - quality check passed
+684,9,adjustment,-2,2593,2024-10-27 19:29:55,Shrinkage adjustment
+685,53,adjustment,20,2290,2024-10-29 15:33:34,Stock count correction
+686,175,adjustment,17,720,2024-10-29 23:35:17,Damaged units written off
+687,351,sale_deduction,-2,455,2024-11-01 21:02:17,Online sale processed
+688,310,adjustment,23,2395,2024-11-04 11:42:47,Shrinkage adjustment
+689,192,restock,495,4464,2024-11-04 23:10:49,Return to stock - quality check passed
+690,212,restock,161,3989,2024-11-06 00:48:58,Return to stock - quality check passed
+691,478,adjustment,7,4679,2024-11-07 15:46:16,Audit correction
+692,236,adjustment,2,2569,2024-11-08 18:15:03,Audit correction
+693,297,adjustment,-29,3849,2024-11-12 15:13:18,Damaged units written off
+694,277,sale_deduction,-3,3993,2024-11-13 08:18:45,Online sale processed
+695,484,restock,241,3425,2024-11-15 08:57:29,Warehouse transfer in
+696,152,restock,486,5260,2024-11-16 02:03:37,Emergency restock due to high demand
+697,421,sale_deduction,-1,3123,2024-11-18 06:49:35,Order dispatched
+698,348,sale_deduction,-2,2786,2024-11-18 08:25:30,Order dispatched
+699,306,sale_deduction,-2,4816,2024-11-19 19:52:00,Order dispatched
+700,484,restock,302,3184,2024-11-20 17:42:00,Warehouse transfer in
+701,70,restock,393,1899,2024-11-20 19:00:42,Emergency restock due to high demand
+702,151,restock,105,1642,2024-11-21 08:30:52,Emergency restock due to high demand
+703,347,sale_deduction,-1,195,2024-11-21 17:22:04,Order dispatched
+704,260,adjustment,13,796,2024-11-22 07:09:03,Shrinkage adjustment
+705,134,restock,226,1756,2024-11-25 17:46:48,Return to stock - quality check passed
+706,282,adjustment,16,3945,2024-11-29 00:20:30,Stock count correction
+707,415,adjustment,-27,4649,2024-12-02 13:23:32,Audit correction
+708,494,adjustment,28,4738,2024-12-02 19:42:20,Shrinkage adjustment
+709,382,restock,263,4149,2024-12-02 23:34:01,Bulk import - quarterly stock review
+710,331,sale_deduction,-1,3237,2024-12-03 05:50:36,Online sale processed
+711,188,sale_deduction,-2,100,2024-12-04 01:52:34,Online sale processed
+712,122,sale_deduction,-2,4073,2024-12-04 11:15:40,Online sale processed
+713,151,restock,218,1537,2024-12-05 11:07:05,Return to stock - quality check passed
+714,339,restock,317,3290,2024-12-05 15:51:30,Emergency restock due to high demand
+715,4,restock,93,2966,2024-12-09 13:59:33,Warehouse transfer in
+716,170,adjustment,10,2926,2024-12-10 21:33:29,Audit correction
+717,308,restock,162,3922,2024-12-12 02:29:52,Bulk import - quarterly stock review
+718,114,restock,478,3765,2024-12-12 17:30:31,Return to stock - quality check passed
+719,185,restock,92,2667,2024-12-12 19:56:38,Emergency restock due to high demand
+720,497,sale_deduction,-3,3835,2024-12-12 20:26:29,Online sale processed
+721,2,adjustment,-3,810,2024-12-13 18:24:25,Stock count correction
+722,374,sale_deduction,-3,1787,2024-12-14 11:06:16,Customer order fulfilled
+723,324,adjustment,2,4860,2024-12-15 01:49:01,Damaged units written off
+724,284,adjustment,-23,4101,2024-12-15 10:56:07,Stock count correction
+725,358,sale_deduction,-2,1942,2024-12-15 15:29:21,Customer order fulfilled
+726,249,sale_deduction,-1,3851,2024-12-16 17:08:45,Online sale processed
+727,74,sale_deduction,-3,122,2024-12-16 23:27:53,Customer order fulfilled
+728,54,restock,331,3347,2024-12-17 16:20:39,Emergency restock due to high demand
+729,201,restock,290,1821,2024-12-18 17:02:20,Supplier delivery received
+730,96,adjustment,17,4927,2024-12-23 18:09:16,Stock count correction
+731,390,sale_deduction,-2,4293,2024-12-24 09:45:12,Customer order fulfilled
+732,29,adjustment,6,1520,2024-12-25 20:08:54,System reconciliation
+733,341,sale_deduction,-3,1040,2024-12-26 21:38:37,Order dispatched
+734,106,restock,360,3145,2024-12-29 04:29:37,Bulk import - quarterly stock review
+735,74,restock,126,247,2025-01-01 04:38:24,Bulk import - quarterly stock review
+736,131,sale_deduction,-3,4843,2025-01-01 08:42:08,Order dispatched
+737,191,sale_deduction,-3,4764,2025-01-03 20:27:24,Customer order fulfilled
+738,69,sale_deduction,-2,2489,2025-01-07 22:12:37,Customer order fulfilled
+739,222,adjustment,-16,2228,2025-01-09 11:05:09,Damaged units written off
+740,362,sale_deduction,-2,2710,2025-01-09 18:46:28,Online sale processed
+741,156,restock,218,3506,2025-01-10 19:19:10,Bulk import - quarterly stock review
+742,340,restock,50,4709,2025-01-12 21:00:13,Bulk import - quarterly stock review
+743,238,sale_deduction,-3,2177,2025-01-13 00:20:30,Customer order fulfilled
+744,419,sale_deduction,-2,4264,2025-01-13 02:51:19,Order dispatched
+745,182,sale_deduction,-3,106,2025-01-14 01:52:28,Order dispatched
+746,74,adjustment,-3,244,2025-01-23 06:47:24,System reconciliation
+747,395,restock,197,1352,2025-01-31 07:39:01,Return to stock - quality check passed
+748,300,restock,444,2949,2025-01-31 09:19:24,Warehouse transfer in
+749,47,sale_deduction,-2,4299,2025-02-03 09:58:01,Customer order fulfilled
+750,76,adjustment,27,3713,2025-02-04 01:58:11,Audit correction
+751,481,sale_deduction,-1,1319,2025-02-04 03:41:15,Online sale processed
+752,81,adjustment,23,3742,2025-02-04 10:01:48,Damaged units written off
+753,9,sale_deduction,-2,2595,2025-02-07 09:52:40,Customer order fulfilled
+754,435,adjustment,-22,3230,2025-02-08 17:56:51,System reconciliation
+755,422,sale_deduction,-1,1575,2025-02-12 07:25:23,Online sale processed
+756,432,sale_deduction,-3,469,2025-02-12 15:20:34,Order dispatched
+757,251,restock,103,3181,2025-02-13 03:31:23,Emergency restock due to high demand
+758,83,sale_deduction,-1,2384,2025-02-15 18:06:43,Order dispatched
+759,85,sale_deduction,-2,4843,2025-02-16 15:00:26,Customer order fulfilled
+760,305,restock,216,955,2025-02-17 05:55:56,Emergency restock due to high demand
+761,445,adjustment,21,2650,2025-02-18 08:02:19,Damaged units written off
+762,40,sale_deduction,-1,4659,2025-02-19 11:25:09,Order dispatched
+763,270,adjustment,24,3339,2025-02-19 16:43:20,Damaged units written off
+764,363,sale_deduction,-1,244,2025-02-20 19:40:40,Online sale processed
+765,285,sale_deduction,-1,3983,2025-02-23 04:44:19,Order dispatched
+766,316,sale_deduction,-3,722,2025-02-24 07:44:10,Order dispatched
+767,385,sale_deduction,-1,2782,2025-02-24 10:16:25,Customer order fulfilled
+768,16,sale_deduction,-2,4978,2025-02-26 10:53:04,Customer order fulfilled
+769,71,sale_deduction,-2,2940,2025-02-27 11:44:25,Online sale processed
+770,101,sale_deduction,-3,867,2025-02-27 15:39:07,Online sale processed
+771,107,restock,248,1812,2025-02-28 14:02:18,Bulk import - quarterly stock review
+772,427,sale_deduction,-1,2454,2025-03-03 23:03:04,Online sale processed
+773,497,restock,97,3928,2025-03-05 01:16:58,Supplier delivery received
+774,304,adjustment,-4,1573,2025-03-05 01:45:31,Damaged units written off
+775,266,sale_deduction,-3,2908,2025-03-05 09:48:02,Order dispatched
+776,240,sale_deduction,-2,1927,2025-03-07 03:13:15,Customer order fulfilled
+777,7,adjustment,1,4959,2025-03-07 11:25:11,Damaged units written off
+778,479,sale_deduction,-3,511,2025-03-09 18:38:23,Online sale processed
+779,138,adjustment,-4,2205,2025-03-09 18:52:20,Stock count correction
+780,426,sale_deduction,-2,3545,2025-03-10 19:53:57,Order dispatched
+781,303,sale_deduction,-1,4691,2025-03-11 16:59:50,Customer order fulfilled
+782,151,sale_deduction,-1,1319,2025-03-13 18:48:37,Customer order fulfilled
+783,406,restock,278,1118,2025-03-15 11:01:49,Warehouse transfer in
+784,89,adjustment,-13,4833,2025-03-16 13:18:16,Damaged units written off
+785,475,restock,395,3525,2025-03-16 23:45:37,Warehouse transfer in
+786,473,sale_deduction,-1,2771,2025-03-17 05:15:03,Online sale processed
+787,282,sale_deduction,-2,3952,2025-03-17 18:47:32,Customer order fulfilled
+788,479,sale_deduction,-3,520,2025-03-20 07:50:19,Customer order fulfilled
+789,285,sale_deduction,-3,3979,2025-03-23 17:30:14,Order dispatched
+790,69,adjustment,12,2712,2025-03-24 03:13:11,Audit correction
+791,438,sale_deduction,-2,3255,2025-03-24 13:44:18,Order dispatched
+792,155,sale_deduction,-3,3612,2025-03-25 10:39:04,Customer order fulfilled
+793,197,sale_deduction,-1,3683,2025-03-27 22:35:05,Order dispatched
+794,188,restock,459,558,2025-03-28 17:43:15,Return to stock - quality check passed
+795,415,sale_deduction,-2,3947,2025-03-31 01:57:54,Online sale processed
+796,160,restock,482,3025,2025-03-31 02:57:23,Bulk import - quarterly stock review
+797,274,sale_deduction,-3,1245,2025-04-01 12:48:47,Customer order fulfilled
+798,105,adjustment,-7,2927,2025-04-03 14:46:36,System reconciliation
+799,233,adjustment,-13,2122,2025-04-03 17:53:16,Shrinkage adjustment
+800,268,adjustment,-3,2168,2025-04-05 18:11:17,Stock count correction
+801,45,sale_deduction,-1,1356,2025-04-07 05:59:43,Online sale processed
+802,288,sale_deduction,-2,2957,2025-04-07 19:32:50,Order dispatched
+803,286,sale_deduction,-2,4220,2025-04-08 23:36:47,Online sale processed
+804,344,adjustment,-24,331,2025-04-12 14:33:43,Audit correction
+805,446,adjustment,-7,2810,2025-04-15 09:31:28,System reconciliation
+806,82,sale_deduction,-2,4893,2025-04-16 07:16:21,Order dispatched
+807,484,restock,423,3848,2025-04-16 10:07:55,Supplier delivery received
+808,183,sale_deduction,-1,1752,2025-04-17 13:56:01,Online sale processed
+809,205,sale_deduction,-2,3090,2025-04-17 14:35:35,Order dispatched
+810,117,sale_deduction,-3,54,2025-04-17 15:46:42,Order dispatched
+811,190,sale_deduction,-3,1635,2025-04-19 16:48:07,Customer order fulfilled
+812,493,restock,266,4954,2025-04-20 03:09:50,Bulk import - quarterly stock review
+813,79,sale_deduction,-3,2286,2025-04-20 18:57:14,Customer order fulfilled
+814,36,sale_deduction,-1,1061,2025-04-21 02:42:01,Customer order fulfilled
+815,147,restock,164,2550,2025-04-21 22:36:34,Bulk import - quarterly stock review
+816,334,adjustment,-21,3882,2025-04-23 23:54:56,Damaged units written off
+817,470,sale_deduction,-3,1118,2025-04-24 04:21:51,Online sale processed
+818,417,restock,377,867,2025-04-25 02:10:36,Supplier delivery received
+819,187,adjustment,29,1879,2025-04-25 13:39:19,Shrinkage adjustment
+820,213,restock,83,3864,2025-04-25 21:11:50,Emergency restock due to high demand
+821,232,sale_deduction,-2,1063,2025-04-27 19:50:12,Online sale processed
+822,150,sale_deduction,-3,1359,2025-05-01 04:14:06,Order dispatched
+823,448,restock,465,2754,2025-05-02 13:05:34,Supplier delivery received
+824,258,restock,234,3498,2025-05-03 04:36:02,Warehouse transfer in
+825,357,sale_deduction,-2,2520,2025-05-03 10:27:30,Online sale processed
+826,193,restock,246,1348,2025-05-05 16:58:10,Bulk import - quarterly stock review
+827,229,restock,293,1114,2025-05-05 18:32:25,Return to stock - quality check passed
+828,99,sale_deduction,-2,509,2025-05-06 05:21:48,Order dispatched
+829,47,adjustment,7,4306,2025-05-06 19:45:02,Audit correction
+830,357,sale_deduction,-3,2525,2025-05-09 14:57:59,Customer order fulfilled
+831,367,sale_deduction,-3,1964,2025-05-12 19:34:02,Customer order fulfilled
+832,259,sale_deduction,-3,1259,2025-05-13 00:36:41,Order dispatched
+833,477,restock,55,4020,2025-05-13 17:14:46,Supplier delivery received
+834,130,adjustment,-14,4718,2025-05-16 07:58:54,Audit correction
+835,148,adjustment,-29,2644,2025-05-16 20:05:56,Shrinkage adjustment
+836,318,sale_deduction,-3,149,2025-05-16 20:52:35,Order dispatched
+837,331,restock,390,3622,2025-05-17 01:08:32,Supplier delivery received
+838,347,sale_deduction,-2,189,2025-05-17 07:10:06,Customer order fulfilled
+839,315,sale_deduction,-1,3350,2025-05-19 16:19:27,Online sale processed
+840,497,sale_deduction,-2,3833,2025-05-20 19:51:00,Order dispatched
+841,52,sale_deduction,-2,1717,2025-05-28 03:35:24,Customer order fulfilled
+842,114,sale_deduction,-1,3292,2025-06-04 16:55:52,Customer order fulfilled
+843,288,sale_deduction,-3,2959,2025-06-05 18:11:09,Order dispatched
+844,14,restock,213,2423,2025-06-05 23:02:12,Bulk import - quarterly stock review
+845,270,restock,280,3945,2025-06-06 10:45:53,Bulk import - quarterly stock review
+846,392,restock,331,2485,2025-06-06 17:17:21,Supplier delivery received
+847,328,sale_deduction,-1,4542,2025-06-11 19:03:31,Order dispatched
+848,262,restock,429,4634,2025-06-12 00:05:57,Supplier delivery received
+849,208,sale_deduction,-1,1847,2025-06-12 20:20:09,Customer order fulfilled
+850,395,restock,127,872,2025-06-16 00:45:36,Emergency restock due to high demand
+851,265,sale_deduction,-3,4202,2025-06-18 15:14:40,Customer order fulfilled
+852,115,restock,499,1485,2025-06-18 20:23:52,Return to stock - quality check passed
+853,210,restock,413,4833,2025-06-20 00:46:59,Return to stock - quality check passed
+854,428,restock,423,5013,2025-06-24 09:50:14,Warehouse transfer in
+855,198,sale_deduction,-1,2481,2025-06-25 05:46:04,Order dispatched
+856,357,sale_deduction,-3,2522,2025-06-29 13:59:03,Customer order fulfilled
+857,421,sale_deduction,-2,3121,2025-06-30 06:44:20,Customer order fulfilled
+858,464,adjustment,29,2269,2025-06-30 18:44:45,System reconciliation
+859,358,sale_deduction,-2,1940,2025-07-02 07:12:42,Online sale processed
+860,491,restock,418,2659,2025-07-03 10:06:10,Warehouse transfer in
+861,121,sale_deduction,-3,1701,2025-07-04 01:18:38,Online sale processed
+862,230,sale_deduction,-3,4483,2025-07-07 09:31:11,Online sale processed
+863,98,restock,348,962,2025-07-08 20:41:40,Warehouse transfer in
+864,284,restock,64,4165,2025-07-10 03:59:18,Emergency restock due to high demand
+865,353,restock,68,897,2025-07-11 14:46:32,Return to stock - quality check passed
+866,24,restock,496,3241,2025-07-12 05:02:48,Bulk import - quarterly stock review
+867,477,sale_deduction,-1,3965,2025-07-13 07:18:15,Order dispatched
+868,30,restock,372,2816,2025-07-15 03:43:12,Return to stock - quality check passed
+869,198,restock,220,2701,2025-07-16 17:07:45,Bulk import - quarterly stock review
+870,32,sale_deduction,-1,2447,2025-07-19 22:15:08,Order dispatched
+871,276,sale_deduction,-1,3404,2025-07-20 12:29:09,Online sale processed
+872,495,restock,290,1554,2025-07-21 04:05:14,Return to stock - quality check passed
+873,111,restock,356,1531,2025-07-22 10:15:14,Return to stock - quality check passed
+874,150,sale_deduction,-1,1356,2025-07-23 04:05:39,Order dispatched
+875,495,sale_deduction,-2,1268,2025-07-23 17:46:59,Online sale processed
+876,476,adjustment,7,4180,2025-07-24 19:27:22,Audit correction
+877,67,adjustment,-5,1177,2025-07-25 14:24:17,System reconciliation
+878,261,adjustment,20,3483,2025-07-27 15:28:48,Shrinkage adjustment
+879,476,sale_deduction,-2,4173,2025-07-28 03:06:41,Order dispatched
+880,443,sale_deduction,-3,3911,2025-07-28 13:32:35,Customer order fulfilled
+881,114,sale_deduction,-2,3290,2025-07-28 23:56:33,Customer order fulfilled
+882,275,restock,446,5105,2025-07-29 00:07:12,Return to stock - quality check passed
+883,83,sale_deduction,-3,2385,2025-07-30 11:22:06,Order dispatched
+884,320,restock,323,3457,2025-08-02 17:39:56,Return to stock - quality check passed
+885,273,sale_deduction,-2,4410,2025-08-08 23:35:00,Customer order fulfilled
+886,444,sale_deduction,-1,4769,2025-08-10 02:42:35,Order dispatched
+887,460,restock,68,4794,2025-08-10 13:51:19,Bulk import - quarterly stock review
+888,287,sale_deduction,-1,4993,2025-08-10 14:40:16,Online sale processed
+889,419,sale_deduction,-2,4262,2025-08-10 21:31:32,Customer order fulfilled
+890,53,sale_deduction,-1,2232,2025-08-15 00:58:44,Online sale processed
+891,343,sale_deduction,-1,2645,2025-08-15 07:05:08,Online sale processed
+892,153,adjustment,-18,4349,2025-08-18 20:04:18,Stock count correction
+893,202,sale_deduction,-3,2924,2025-08-19 19:31:48,Order dispatched
+894,190,sale_deduction,-1,1638,2025-08-21 22:52:09,Order dispatched
+895,431,sale_deduction,-1,1590,2025-08-26 13:14:49,Order dispatched
+896,54,sale_deduction,-2,2867,2025-08-27 10:16:17,Online sale processed
+897,321,sale_deduction,-1,811,2025-08-28 05:27:06,Order dispatched
+898,169,sale_deduction,-2,3774,2025-08-29 06:07:11,Online sale processed
+899,126,restock,94,3808,2025-08-29 08:38:09,Bulk import - quarterly stock review
+900,201,restock,485,1531,2025-08-29 22:16:33,Return to stock - quality check passed
+901,458,restock,95,3671,2025-08-30 08:26:33,Warehouse transfer in
+902,438,sale_deduction,-1,3252,2025-09-01 17:54:29,Online sale processed
+903,462,sale_deduction,-3,72,2025-09-05 20:22:51,Customer order fulfilled
+904,149,sale_deduction,-2,1399,2025-09-05 22:39:46,Customer order fulfilled
+905,149,restock,215,2725,2025-09-07 23:31:08,Warehouse transfer in
+906,143,sale_deduction,-3,999,2025-09-12 14:38:08,Order dispatched
+907,285,restock,63,4042,2025-09-12 22:01:19,Warehouse transfer in
+908,65,adjustment,17,4564,2025-09-13 01:51:43,Damaged units written off
+909,134,restock,375,1178,2025-09-16 13:18:49,Return to stock - quality check passed
+910,282,sale_deduction,-1,3954,2025-09-18 01:32:31,Online sale processed
+911,216,sale_deduction,-1,3975,2025-09-19 03:40:26,Customer order fulfilled
+912,288,restock,127,3084,2025-09-20 02:37:37,Warehouse transfer in
+913,21,restock,123,1587,2025-09-22 06:09:24,Return to stock - quality check passed
+914,286,sale_deduction,-2,4218,2025-09-22 07:15:44,Online sale processed
+915,338,adjustment,3,739,2025-09-24 18:46:30,Shrinkage adjustment
+916,173,restock,240,4209,2025-09-24 19:26:24,Emergency restock due to high demand
+917,444,restock,293,5062,2025-09-25 03:22:17,Return to stock - quality check passed
+918,470,sale_deduction,-3,1121,2025-09-28 12:15:04,Customer order fulfilled
+919,342,restock,98,4487,2025-09-29 08:49:29,Bulk import - quarterly stock review
+920,410,sale_deduction,-2,4434,2025-10-02 20:56:33,Online sale processed
+921,203,restock,364,1175,2025-10-05 16:09:20,Return to stock - quality check passed
+922,103,restock,209,2908,2025-10-06 01:00:28,Supplier delivery received
+923,249,restock,331,4181,2025-10-08 11:01:27,Warehouse transfer in
+924,246,restock,495,3061,2025-10-08 22:05:05,Warehouse transfer in
+925,160,restock,96,3121,2025-10-09 08:55:22,Return to stock - quality check passed
+926,87,sale_deduction,-1,4061,2025-10-10 12:42:41,Order dispatched
+927,488,restock,109,2088,2025-10-10 17:53:09,Warehouse transfer in
+928,450,restock,456,3119,2025-10-10 23:23:20,Emergency restock due to high demand
+929,273,restock,426,4834,2025-10-13 17:14:03,Warehouse transfer in
+930,341,restock,333,1373,2025-10-13 17:44:31,Supplier delivery received
+931,19,sale_deduction,-3,2339,2025-10-15 04:47:02,Customer order fulfilled
+932,27,sale_deduction,-3,44,2025-10-16 03:16:02,Customer order fulfilled
+933,435,sale_deduction,-3,3252,2025-10-16 15:11:28,Order dispatched
+934,282,adjustment,24,4046,2025-10-19 02:24:00,Shrinkage adjustment
+935,49,adjustment,-28,2648,2025-10-20 11:30:46,Shrinkage adjustment
+936,182,restock,392,498,2025-10-20 22:14:43,Emergency restock due to high demand
+937,120,sale_deduction,-1,4342,2025-10-22 10:25:25,Order dispatched
+938,87,sale_deduction,-1,4060,2025-10-24 02:07:41,Online sale processed
+939,18,restock,127,443,2025-10-25 05:35:51,Return to stock - quality check passed
+940,470,sale_deduction,-2,1124,2025-10-25 07:13:19,Customer order fulfilled
+941,118,restock,266,2483,2025-10-26 07:37:41,Warehouse transfer in
+942,362,sale_deduction,-3,2712,2025-10-26 18:00:00,Order dispatched
+943,243,restock,482,5446,2025-10-26 21:00:44,Supplier delivery received
+944,373,sale_deduction,-2,2195,2025-10-27 13:52:06,Online sale processed
+945,435,sale_deduction,-2,3255,2025-10-28 20:39:11,Online sale processed
+946,51,sale_deduction,-3,709,2025-10-30 16:35:43,Customer order fulfilled
+947,35,sale_deduction,-2,2350,2025-10-30 19:49:59,Order dispatched
+948,211,sale_deduction,-1,1478,2025-11-01 11:16:31,Online sale processed
+949,98,restock,113,1536,2025-11-02 02:48:55,Emergency restock due to high demand
+950,10,restock,496,3887,2025-11-02 12:24:18,Return to stock - quality check passed
+951,234,restock,246,3469,2025-11-02 22:19:24,Supplier delivery received
+952,379,restock,356,2332,2025-11-03 15:31:21,Warehouse transfer in
+953,468,adjustment,-12,3194,2025-11-07 23:36:03,Damaged units written off
+954,134,restock,352,1530,2025-11-10 06:10:57,Return to stock - quality check passed
+955,33,sale_deduction,-2,997,2025-11-11 14:27:36,Customer order fulfilled
+956,488,sale_deduction,-1,1577,2025-11-12 05:21:56,Order dispatched
+957,472,sale_deduction,-3,1375,2025-11-13 02:30:23,Order dispatched
+958,117,sale_deduction,-2,57,2025-11-13 08:35:55,Customer order fulfilled
+959,20,sale_deduction,-2,3698,2025-11-14 07:17:20,Customer order fulfilled
+960,93,adjustment,25,1621,2025-11-14 18:26:49,Shrinkage adjustment
+961,238,sale_deduction,-3,2174,2025-11-15 00:54:02,Customer order fulfilled
+962,497,restock,323,4419,2025-11-16 05:40:43,Return to stock - quality check passed
+963,436,sale_deduction,-3,2472,2025-11-16 11:04:26,Order dispatched
+964,223,adjustment,-9,4461,2025-11-16 23:57:40,Audit correction
+965,153,sale_deduction,-3,4367,2025-11-17 10:13:35,Order dispatched
+966,352,sale_deduction,-3,4905,2025-11-17 14:22:43,Customer order fulfilled
+967,48,restock,290,488,2025-11-18 11:01:48,Warehouse transfer in
+968,92,sale_deduction,-1,804,2025-11-20 01:17:17,Customer order fulfilled
+969,230,adjustment,17,4530,2025-11-20 20:53:50,Shrinkage adjustment
+970,289,restock,494,3473,2025-11-21 02:52:37,Supplier delivery received
+971,175,restock,71,703,2025-11-22 14:51:18,Emergency restock due to high demand
+972,213,sale_deduction,-2,3786,2025-11-22 22:58:15,Order dispatched
+973,77,adjustment,21,1959,2025-11-23 20:48:03,Damaged units written off
+974,347,sale_deduction,-3,191,2025-11-25 19:39:16,Order dispatched
+975,450,sale_deduction,-3,2663,2025-11-27 02:40:57,Online sale processed
+976,332,restock,475,3472,2025-11-27 05:45:49,Bulk import - quarterly stock review
+977,342,sale_deduction,-1,4364,2025-11-28 18:54:41,Order dispatched
+978,111,adjustment,17,1175,2025-11-29 09:44:41,Stock count correction
+979,128,sale_deduction,-3,1653,2025-11-29 16:55:07,Order dispatched
+980,349,sale_deduction,-2,781,2025-12-04 01:46:34,Customer order fulfilled
+981,126,restock,55,3131,2025-12-05 07:10:01,Supplier delivery received
+982,42,sale_deduction,-1,2742,2025-12-06 06:38:44,Customer order fulfilled
+983,206,sale_deduction,-1,4068,2025-12-07 12:13:38,Customer order fulfilled
+984,272,restock,329,1864,2025-12-12 09:43:30,Return to stock - quality check passed
+985,399,adjustment,3,858,2025-12-13 22:35:23,Stock count correction
+986,295,adjustment,-13,4245,2025-12-15 06:57:54,System reconciliation
+987,179,adjustment,-6,2066,2025-12-16 01:41:00,Audit correction
+988,302,restock,138,2072,2025-12-20 00:27:57,Bulk import - quarterly stock review
+989,213,sale_deduction,-2,3781,2025-12-20 05:52:26,Customer order fulfilled
+990,335,sale_deduction,-1,4407,2025-12-20 10:25:27,Customer order fulfilled
+991,328,restock,124,4664,2025-12-20 12:29:37,Bulk import - quarterly stock review
+992,264,sale_deduction,-1,2459,2025-12-23 23:18:18,Customer order fulfilled
+993,207,adjustment,22,634,2025-12-24 07:50:58,Shrinkage adjustment
+994,324,restock,383,5243,2025-12-24 15:12:00,Bulk import - quarterly stock review
+995,293,restock,429,508,2025-12-24 17:17:34,Bulk import - quarterly stock review
+996,199,adjustment,-15,881,2025-12-25 01:27:04,System reconciliation
+997,248,adjustment,3,4052,2025-12-26 09:02:12,Shrinkage adjustment
+998,330,sale_deduction,-3,1739,2025-12-27 03:05:02,Order dispatched
+999,117,restock,219,273,2025-12-30 03:05:04,Emergency restock due to high demand
+1000,348,sale_deduction,-1,2790,2025-12-30 16:53:12,Online sale processed
