@@ -9,6 +9,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from langgraph.checkpoint.memory import MemorySaver
 
+
 def _patch_redis_serializer() -> None:
     try:
         from langgraph.checkpoint.redis.jsonplus_redis import JsonPlusRedisSerializer
@@ -35,8 +36,12 @@ def _patch_redis_serializer() -> None:
 
 _patch_redis_serializer()
 
+import redis.asyncio as aioredis
+from langgraph.checkpoint.redis.aio import AsyncRedisSaver
+
 from src.api.v1 import router as api_router
 from src.api.v1 import state as api_state
+from src.core import ltm
 from src.core.config import settings
 from src.core.logger import logger
 from src.core.pg import close_pool, ensure_pg_ready
@@ -44,9 +49,7 @@ from src.core.stm import InMemorySTM, RedisSTM
 from src.core.tracing import configure_langsmith_tracing
 from src.declarative.AgentSpec import _all_tools
 from src.declarative.mcp_tools import prepare_workflow
-from src.core import ltm
-import redis.asyncio as aioredis
-from langgraph.checkpoint.redis.aio import AsyncRedisSaver
+
 
 async def _make_checkpointer(stack: AsyncExitStack):
     """Try Redis; fall back to in-memory if Redis is unavailable.""" 

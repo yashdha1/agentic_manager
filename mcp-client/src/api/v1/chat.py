@@ -10,8 +10,8 @@ from langgraph.types import Command
 
 from src.api.v1 import state as api_state
 from src.api.v1.schemas import ChatRequest, ChatResponse, ResumeChatRequest, StreamChatRequest
+from src.core.logger import logger
 from src.declarative import workflow as workflow_module
-from src.core.logger import logger 
 
 router = APIRouter(prefix="/chat", tags=["chat"])
 

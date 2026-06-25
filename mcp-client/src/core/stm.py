@@ -1,15 +1,16 @@
 from __future__ import annotations
+
 import json
 
-from .logger import logger
 from .config import settings
+from .logger import logger
 
 
 class RedisSTM:
     """Async Redis-backed Short-Term Memory store for thread conversations."""
 
     def __init__(self, redis_url: str, ttl: int | None = None) -> None:
-        import redis.asyncio as aioredis # rare
+        import redis.asyncio as aioredis  # rare
 
         self._client: aioredis.Redis = aioredis.from_url(
             redis_url,

@@ -2,8 +2,8 @@ import uuid
 
 from core.db.pg_engine import get_async_session
 from core.db.schemas import Email, User
-from core.time_utils import now
 from core.logger import logger as log
+from core.time_utils import now
 from fastmcp import FastMCP
 from sqlalchemy import select
 

@@ -1,6 +1,6 @@
 import enum
 
-from langchain_core.tools import BaseTool 
+from langchain_core.tools import BaseTool
 
 
 class AgentsTool(enum.Enum):
