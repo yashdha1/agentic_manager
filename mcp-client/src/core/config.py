@@ -17,7 +17,14 @@ class Settings(BaseSettings):
     azure_embedding_model: str = Field(alias="AZURE_EMBEDDING_MODEL")
     azure_embedding_dimensions: int = Field(alias="AZURE_EMBEDDING_DIMENSIONS")
 
-    @field_validator("azure_endpoint", "azure_api_version", "azure_chat_flag_model", "azure_chat_light_model", "azure_embedding_model", mode="after")
+    @field_validator(
+        "azure_endpoint",
+        "azure_api_version",
+        "azure_chat_flag_model",
+        "azure_chat_light_model",
+        "azure_embedding_model",
+        mode="after",
+    )
     @classmethod
     def _non_empty(cls, v: str) -> str:
         if not v or not v.strip():

@@ -98,7 +98,11 @@ def _build_sub_agent_messages(state: State) -> list[BaseMessage]:
     # about to append (avoids duplication when history was built by chat.py).
     if history and isinstance(history[-1], HumanMessage) and history[-1].content == state["query"]:
         history = history[:-1]
-    prior = history[-_SUB_AGENT_HISTORY_LIMIT:] if len(history) > _SUB_AGENT_HISTORY_LIMIT else history
+    prior = (
+        history[-_SUB_AGENT_HISTORY_LIMIT:]
+        if len(history) > _SUB_AGENT_HISTORY_LIMIT
+        else history
+    )
     return prior + [HumanMessage(content=state["query"])]
 
 

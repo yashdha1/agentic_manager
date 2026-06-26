@@ -110,7 +110,10 @@ async def _sse_events(input_data, config: dict, thread_id: str, user_message: st
                 else:
                     text = content or ""
                 if text:
-                    yield f"data: {json.dumps({'type': 'token', 'agent': node, 'content': text})}\n\n"
+                    data = json.dumps(
+                        {'type': 'token', 'agent': node, 'content': text}
+                    )
+                    yield f"data: {data}\n\n"
 
             elif kind == "on_tool_start" and node in AGENT_NODES:
                 yield f"data: {json.dumps({'type': 'tool_call', 'agent': node, 'tool': name})}\n\n"
@@ -213,14 +216,20 @@ async def resume_chat(request: ResumeChatRequest):
     }
 
     async def generator():
-        async for chunk in _sse_events(Command(resume=resume_value), config, request.thread_id, None):
+        async for chunk in _sse_events(
+            Command(resume=resume_value), config, request.thread_id, None
+        ):
             yield chunk
         # Save every HITL resolution to Qdrant resolver memory.
         if ordered_requests:
             from src.core.qdrant import upsert_resolver
             ts = datetime.now(UTC).isoformat()
             for i, req_info in enumerate(ordered_requests):
-                decision = request.decisions[i] if i < len(request.decisions) else {"type": "approve"}
+                decision = (
+                    request.decisions[i]
+                    if i < len(request.decisions)
+                    else {"type": "approve"}
+                )
                 _fire(upsert_resolver(
                     thread_id=request.thread_id,
                     tool_name=req_info["tool_name"],

@@ -50,7 +50,11 @@ async def process_thread_expiry(thread_id: str) -> None:
         response = await llm.ainvoke(
             [SystemMessage(content=_SUMMARISE_PROMPT), HumanMessage(content=transcript)]
         )
-        summary: str = response.content if isinstance(response.content, str) else str(response.content)
+        summary: str = (
+            response.content
+            if isinstance(response.content, str)
+            else str(response.content)
+        )
 
         await upsert_ltm(
             thread_id=thread_id,

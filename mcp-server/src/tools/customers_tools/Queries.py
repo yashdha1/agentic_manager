@@ -51,7 +51,8 @@ async def customers_send_subscribed_users_newsletter_hitl(
         )
         session.add(record)
         await session.commit()
-        log.info(f"Sent newsletter to {len(subscriber_emails)} subscribers with subject: '{subject}'")
+        count = len(subscriber_emails)
+        log.info(f"Sent newsletter to {count} subscribers with subject: '{subject}'")
 
         return {
             "status": "sent",
